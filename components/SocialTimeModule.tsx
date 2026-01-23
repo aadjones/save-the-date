@@ -3,6 +3,7 @@ import { TimeModuleProps, SocialUnit } from '../types';
 import { MILLISECONDS_PER_DAY } from '../constants';
 import { Coffee, Calendar, Flag } from 'lucide-react';
 import { getModuleHeaderClass, getModuleFooterClass, getButtonClass, typography, colors } from '../designSystem';
+import Tooltip from './Tooltip';
 
 const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [selectedUnit, setSelectedUnit] = useState<SocialUnit>(SocialUnit.WEEKENDS);
@@ -93,9 +94,24 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   }, [targetDate, selectedUnit]);
 
   const buttons = [
-    { id: SocialUnit.WEEKENDS, icon: Calendar, label: 'Weekends' },
-    { id: SocialUnit.MEALS, icon: Coffee, label: 'Meals' },
-    { id: SocialUnit.HOLIDAYS, icon: Flag, label: 'Holidays' },
+    {
+      id: SocialUnit.WEEKENDS,
+      icon: Calendar,
+      label: 'Weekends',
+      tooltip: 'Estimated Saturdays and Sundays remaining'
+    },
+    {
+      id: SocialUnit.MEALS,
+      icon: Coffee,
+      label: 'Meals',
+      tooltip: 'Assumes 3 meals per day (breakfast, lunch, dinner)'
+    },
+    {
+      id: SocialUnit.HOLIDAYS,
+      icon: Flag,
+      label: 'Holidays',
+      tooltip: 'U.S. Federal Holidays between now and the wedding'
+    },
   ];
 
   return (
@@ -111,23 +127,24 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
             const Icon = btn.icon;
             const active = selectedUnit === btn.id;
             return (
-                <button
-                    key={btn.id}
-                    onClick={() => setSelectedUnit(btn.id)}
-                    className={`${getButtonClass(active)} flex items-center gap-2 px-4 py-2`}
-                >
-                    <Icon size={16} className="sm:w-4 sm:h-4" />
-                    <span className={`${typography.label.small} font-bold`}>{btn.label}</span>
-                </button>
+                <Tooltip key={btn.id} content={btn.tooltip}>
+                    <button
+                        onClick={() => setSelectedUnit(btn.id)}
+                        className={`${getButtonClass(active)} flex items-center gap-2 px-4 py-2`}
+                    >
+                        <Icon size={16} className="sm:w-4 sm:h-4" />
+                        <span className={`${typography.label.small} font-bold`}>{btn.label}</span>
+                    </button>
+                </Tooltip>
             )
         })}
       </div>
 
       <div className="text-center animate-in fade-in duration-500">
-        <span className="text-7xl sm:text-9xl font-mono font-light tracking-tighter text-stone-100 block mb-2 sm:mb-4">
+        <span className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-mono font-light tracking-tighter text-stone-100 block mb-2 sm:mb-4">
             {Math.floor(count).toLocaleString()}
         </span>
-        <span className="text-lg sm:text-xl font-serif italic text-stone-500">
+        <span className="text-lg sm:text-xl md:text-2xl font-serif italic text-stone-500">
             {selectedUnit.toLowerCase()} remaining
         </span>
       </div>
