@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { TimeModuleProps } from '../types';
 import { ENGAGEMENT_DATE, MILLISECONDS_PER_DAY, SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON } from '../constants';
+import { getModuleHeaderClass, typography } from '../designSystem';
 
 const TWO_PI = Math.PI * 2;
 
@@ -180,8 +181,8 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
       </div>
 
       {/* Consistent Header */}
-      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
-        <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">The Relative Clock</h2>
+      <div className={getModuleHeaderClass()}>
+        The Relative Clock
       </div>
 
       <div className="relative z-10 w-full max-w-xl aspect-square p-6 sm:p-12 mt-8 sm:mt-10">
@@ -279,7 +280,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         </div>
       </div>
       
-      <div className="absolute bottom-6 text-stone-700 font-mono text-[10px] sm:text-xs uppercase tracking-widest animate-pulse">
+      <div className={`absolute bottom-6 ${typography.hint.animated}`}>
          Scroll or Tap to Cycle Hands
       </div>
     </div>

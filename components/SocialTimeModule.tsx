@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, SocialUnit } from '../types';
 import { MILLISECONDS_PER_DAY } from '../constants';
 import { Coffee, Calendar, Flag } from 'lucide-react';
+import { getModuleHeaderClass, getModuleFooterClass, getButtonClass, typography, colors } from '../designSystem';
 
 const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [selectedUnit, setSelectedUnit] = useState<SocialUnit>(SocialUnit.WEEKENDS);
@@ -101,11 +102,11 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     <div className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-6 relative">
 
       {/* Consistent Header */}
-      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
-        <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">Social Constructs</h2>
+      <div className={getModuleHeaderClass()}>
+        Social Constructs
       </div>
 
-      <div className="flex gap-3 sm:gap-4 mb-8 sm:mb-12 flex-wrap justify-center mt-10 sm:mt-0">
+      <div className="flex gap-3 sm:gap-4 mb-8 sm:mb-12 flex-col min-[400px]:flex-row justify-center mt-10 sm:mt-0">
         {buttons.map((btn) => {
             const Icon = btn.icon;
             const active = selectedUnit === btn.id;
@@ -113,14 +114,10 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
                 <button
                     key={btn.id}
                     onClick={() => setSelectedUnit(btn.id)}
-                    className={`flex items-center gap-2 px-4 py-2 sm:px-4 sm:py-2 rounded-full border transition-all duration-300 ${
-                        active
-                        ? 'bg-stone-100 text-stone-900 border-stone-100'
-                        : 'bg-transparent text-stone-500 border-stone-800 hover:border-stone-600'
-                    }`}
+                    className={getButtonClass(active)}
                 >
                     <Icon size={16} className="sm:w-4 sm:h-4" />
-                    <span className="uppercase text-xs sm:text-xs tracking-wider font-bold">{btn.label}</span>
+                    <span className={`${typography.label.small} font-bold`}>{btn.label}</span>
                 </button>
             )
         })}
@@ -135,7 +132,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         </span>
       </div>
       
-      <p className="absolute bottom-8 sm:bottom-12 left-0 right-0 text-center text-stone-700 text-[10px] sm:text-xs font-mono px-4">
+      <p className={getModuleFooterClass()}>
           *Estimates based on standard calendar weeks, 3 meals/day, and U.S. Federal Holidays.
       </p>
     </div>

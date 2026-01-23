@@ -3,6 +3,7 @@ import * as d3 from 'd3';
 import { TimeModuleProps } from '../types';
 import { Snowflake, Flower2, Sun, Leaf } from 'lucide-react';
 import { createRoot } from 'react-dom/client';
+import { getModuleHeaderClass } from '../designSystem';
 
 const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -350,8 +351,8 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       <div ref={containerRef} className="absolute inset-0 z-0" />
       
       {/* Consistent Header */}
-      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
-        <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">The Annual Cycle</h2>
+      <div className={getModuleHeaderClass()}>
+        The Annual Cycle
       </div>
 
     </div>

@@ -59,15 +59,15 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
       <div className="text-center select-none w-full max-w-2xl mt-8 sm:mt-10">
         <div className="my-8 sm:my-12">
-            <div className="text-6xl sm:text-8xl font-mono font-bold text-stone-100 mb-3 sm:mb-4 tabular-nums tracking-tight break-all sm:break-normal">
+            <div className={`${typography.number.large} mb-3 sm:mb-4 break-all sm:break-normal`}>
                 {Math.floor(count).toLocaleString()}
             </div>
-            <div className="text-2xl sm:text-3xl font-serif text-stone-400 px-4">
+            <div className={`text-2xl sm:text-3xl font-serif ${colors.text.tertiary} px-4`}>
                 {unit}
             </div>
         </div>
-        
-        <p className="text-stone-600 font-serif italic text-sm sm:text-base mt-2">Tap to change perspective</p>
+
+        <p className={typography.hint.standard}>Tap to change perspective</p>
 
         {unit === AbsurdUnit.OH_SHIT && (
              <p className={`${typography.caption.standard} ${colors.text.subtle} mt-4 px-4`}>

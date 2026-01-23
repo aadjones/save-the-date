@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON, MILLISECONDS_PER_DAY } from '../constants';
 import { TimeModuleProps } from '../types';
+import { typography, colors } from '../designSystem';
 
 interface MoonPhaseData {
   date: Date;
@@ -234,9 +235,9 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     <div className="h-full w-full bg-stone-950 text-stone-200 relative overflow-hidden flex flex-col">
        {/* Header - Fixed - Increased Top Padding for Mobile to clear global header */}
        <div className="pt-20 sm:pt-16 pb-4 text-center z-20 bg-gradient-to-b from-stone-950 via-stone-950 to-transparent flex-shrink-0">
-          <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">The Lunar Stack</h2>
-          <p className="text-[10px] sm:text-xs font-mono text-stone-600 mt-2 uppercase tracking-widest">
-             Scroll to traverse time
+          <h2 className={typography.header.module}>The Lunar Stack</h2>
+          <p className={`${colors.text.muted} ${typography.label.mono} mt-2 animate-pulse`}>
+             Scroll to Traverse Time
           </p>
        </div>
 
