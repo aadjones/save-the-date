@@ -58,33 +58,33 @@ export const colors = {
 export const typography = {
   // Headers
   header: {
-    module: 'text-xl sm:text-3xl italic font-serif text-stone-400',
+    module: 'text-xl sm:text-2xl md:text-3xl italic font-serif text-stone-400',
   },
 
   // Numbers (countdown displays)
   number: {
-    large: 'text-6xl sm:text-8xl font-mono font-bold text-stone-100 tabular-nums tracking-tight',
-    medium: 'text-4xl sm:text-6xl md:text-8xl font-mono font-light tracking-[-0.05em] tabular-nums text-stone-100',
-    small: 'text-2xl sm:text-4xl font-mono text-stone-200 tabular-nums',
+    large: 'text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-mono font-bold text-stone-100 tabular-nums tracking-tight',
+    medium: 'text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-mono font-light tracking-[-0.05em] tabular-nums text-stone-100',
+    small: 'text-2xl sm:text-3xl md:text-4xl font-mono text-stone-200 tabular-nums',
   },
 
   // Labels
   label: {
-    uppercase: 'text-xs sm:text-sm uppercase tracking-widest text-stone-500 font-semibold',
-    small: 'text-[10px] sm:text-xs uppercase tracking-widest text-stone-500',
-    mono: 'font-mono text-[10px] sm:text-xs uppercase tracking-widest',
+    uppercase: 'text-xs sm:text-sm md:text-base uppercase tracking-widest text-stone-500 font-semibold',
+    small: 'text-[10px] sm:text-xs md:text-sm uppercase tracking-widest text-stone-500',
+    mono: 'font-mono text-[10px] sm:text-xs md:text-sm uppercase tracking-widest',
   },
 
   // Captions (footer text)
   caption: {
-    standard: 'text-stone-600 font-mono text-[10px] sm:text-xs',
-    italic: 'text-stone-600 font-serif italic text-sm sm:text-base',
+    standard: 'text-stone-600 font-mono text-[10px] sm:text-xs md:text-sm',
+    italic: 'text-stone-600 font-serif italic text-sm sm:text-base md:text-lg',
   },
 
   // Interactive hints
   hint: {
-    standard: 'text-stone-600 font-serif italic text-sm sm:text-base',
-    animated: 'text-stone-700 font-mono text-[10px] sm:text-xs uppercase tracking-widest animate-pulse',
+    standard: 'text-stone-600 font-serif italic text-sm sm:text-base md:text-lg',
+    animated: 'text-stone-700 font-mono text-[10px] sm:text-xs md:text-sm uppercase tracking-widest animate-pulse',
   }
 } as const;
 

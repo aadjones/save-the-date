@@ -81,7 +81,7 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         The Standard Interval
       </div>
 
-      <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-2 gap-y-8 sm:gap-x-4 sm:gap-y-8 z-10 w-full max-w-4xl mt-10 sm:mt-0">
+      <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-2 gap-y-8 sm:gap-x-4 sm:gap-y-8 md:gap-x-8 md:gap-y-10 z-10 w-full max-w-4xl mt-10 sm:mt-0">
         <Item val={timeLeft.years} label="Years" />
         <Item val={timeLeft.months} label="Months" />
         <Item val={timeLeft.days} label="Days" />

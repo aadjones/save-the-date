@@ -260,9 +260,9 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         </svg>
 
         {/* Floating Label with Backdrop for Better Readability */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none mt-32 sm:mt-40 px-4">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none mt-32 sm:mt-40 md:mt-48 px-4">
             <div className="bg-stone-950/60 backdrop-blur-sm rounded-lg px-4 py-3 border border-stone-800/30">
-                <div className="text-4xl sm:text-5xl font-mono text-amber-100/90 font-light tracking-tighter drop-shadow-lg">
+                <div className="text-4xl sm:text-5xl md:text-6xl font-mono text-amber-100/90 font-light tracking-tighter drop-shadow-lg">
                     {activeHand.id === 'wait'
                         ? (activeHand.value * 100).toFixed(4) + '%'
                         : activeHand.id === 'year' || activeHand.id === 'lunar'
@@ -272,10 +272,10 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
                                  : (activeHand.value * (activeHand.id === 'hr' ? 12 : 1)).toFixed(2)
                     }
                 </div>
-                <div className="text-amber-500 font-serif italic text-xl sm:text-xl mt-2">
+                <div className="text-amber-500 font-serif italic text-xl sm:text-xl md:text-2xl mt-2">
                     {activeHand.label}
                 </div>
-                <div className="text-stone-500 font-mono text-[10px] sm:text-[10px] uppercase tracking-widest mt-2 max-w-[180px] sm:max-w-[200px] mx-auto leading-tight">
+                <div className="text-stone-500 font-mono text-[10px] sm:text-[10px] md:text-xs uppercase tracking-widest mt-2 max-w-[180px] sm:max-w-[200px] md:max-w-[240px] mx-auto leading-tight">
                     {activeHand.description}
                 </div>
             </div>

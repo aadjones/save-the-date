@@ -62,7 +62,7 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
             <div className={`${typography.number.large} mb-3 sm:mb-4 break-all sm:break-normal`}>
                 {Math.floor(count).toLocaleString()}
             </div>
-            <div className={`text-2xl sm:text-3xl font-serif ${colors.text.tertiary} px-4`}>
+            <div className={`text-2xl sm:text-3xl md:text-4xl font-serif ${colors.text.tertiary} px-4`}>
                 {unit}
             </div>
         </div>
