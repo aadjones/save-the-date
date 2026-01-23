@@ -8,6 +8,7 @@ import AbsurdModule from './components/AbsurdModule';
 import AnalogClockModule from './components/AnalogClockModule';
 import ShuffleButton from './components/ShuffleButton';
 import { TARGET_DATE } from './constants';
+import { components, colors, typography } from './designSystem';
 
 const App: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -60,12 +61,16 @@ const App: React.FC = () => {
               isActive={index === activeModule} 
             />
             
-            {/* Minimal pagination indicator */}
-            <div className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-40 pointer-events-none opacity-0 sm:opacity-50">
+            {/* Pagination indicator */}
+            <div className={components.pagination.container}>
                {modules.map((_, dotIndex) => (
-                 <div 
-                    key={dotIndex} 
-                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${dotIndex === index ? 'bg-stone-200 scale-125' : 'bg-stone-700'}`} 
+                 <div
+                    key={dotIndex}
+                    className={`${components.pagination.dot} ${
+                      dotIndex === index
+                        ? components.pagination.dotActive
+                        : components.pagination.dotInactive
+                    }`}
                  />
                ))}
             </div>
@@ -75,10 +80,10 @@ const App: React.FC = () => {
 
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50 pointer-events-none mix-blend-difference select-none">
          <div className="flex items-baseline gap-3">
-           <h1 className="text-stone-300 font-serif text-lg sm:text-xl tracking-wide font-bold">Save the Date</h1>
-           <p className="text-stone-500 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest">33°11'52.5"N 117°09'07.0"W</p>
+           <h1 className={`${colors.text.secondary} font-serif text-lg sm:text-xl tracking-wide font-bold`}>Save the Date</h1>
+           <p className={`${colors.text.muted} ${typography.label.mono}`}>33°11'52.5"N 117°09'07.0"W</p>
          </div>
-         <p className="text-stone-400 font-mono text-[10px] sm:text-xs uppercase tracking-widest mt-0.5 sm:mt-1">September 20, 2026</p>
+         <p className={`${colors.text.tertiary} ${typography.label.mono} mt-0.5 sm:mt-1`}>September 20, 2026</p>
       </div>
 
       <ShuffleButton onClick={handleShuffle} />

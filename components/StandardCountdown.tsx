@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, CountdownTime } from '../types';
+import { getModuleHeaderClass, getModuleFooterClass, typography, spacing, colors } from '../designSystem';
 
 const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState<CountdownTime>({ years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 });
@@ -60,10 +61,10 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
   const Item = ({ val, label }: { val: number; label: string }) => (
     <div className="flex flex-col items-center justify-center p-1 sm:p-4">
-      <span className="text-4xl sm:text-6xl md:text-8xl font-mono font-light tracking-tighter tabular-nums text-stone-100">
+      <span className={typography.number.medium}>
         {val.toString().padStart(2, '0')}
       </span>
-      <span className="text-xs sm:text-sm uppercase tracking-widest text-stone-500 font-semibold mt-1.5 sm:mt-2">{label}</span>
+      <span className={`${typography.label.uppercase} mt-1.5 sm:mt-2`}>{label}</span>
     </div>
   );
 
@@ -75,13 +76,11 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
       </div>
       
       {/* Consistent Header */}
-      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
-        <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">
-          The Standard Interval
-        </h2>
+      <div className={getModuleHeaderClass()}>
+        The Standard Interval
       </div>
-      
-      <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-1 gap-y-8 sm:gap-x-4 sm:gap-y-8 z-10 w-full max-w-4xl mt-10 sm:mt-0">
+
+      <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-2 gap-y-8 sm:gap-x-4 sm:gap-y-8 z-10 w-full max-w-4xl mt-10 sm:mt-0">
         <Item val={timeLeft.years} label="Years" />
         <Item val={timeLeft.months} label="Months" />
         <Item val={timeLeft.days} label="Days" />
@@ -89,8 +88,9 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <Item val={timeLeft.minutes} label="Minutes" />
         <Item val={timeLeft.seconds} label="Seconds" />
       </div>
-      
-      <p className="absolute bottom-8 sm:bottom-12 left-0 right-0 text-center text-stone-600 font-mono text-[10px] sm:text-xs px-4 z-10">
+
+
+      <p className={getModuleFooterClass()}>
         Local time. Gregorian calendar. The rhythm of bureaucracy.
       </p>
     </div>

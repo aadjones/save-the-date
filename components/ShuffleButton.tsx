@@ -1,5 +1,6 @@
 import React from 'react';
 import { Shuffle } from 'lucide-react';
+import { components } from '../designSystem';
 
 interface Props {
   onClick: () => void;
@@ -7,12 +8,12 @@ interface Props {
 
 const ShuffleButton: React.FC<Props> = ({ onClick }) => {
   return (
-    <button 
+    <button
       onClick={onClick}
-      className="fixed bottom-6 right-6 z-50 p-4 bg-stone-800 rounded-full text-stone-400 hover:bg-stone-700 hover:text-stone-200 transition-all shadow-2xl border border-stone-700"
+      className={`${components.shuffle.container} ${components.shuffle.button} ${components.button.focus}`}
       aria-label="Random Clock"
     >
-      <Shuffle size={20} />
+      <Shuffle size={18} strokeWidth={1.5} />
     </button>
   );
 };

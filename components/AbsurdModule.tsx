@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, AbsurdUnit } from '../types';
 import { ABSURD_CONVERSIONS, MILLISECONDS_PER_DAY } from '../constants';
+import { getModuleHeaderClass, typography, colors } from '../designSystem';
 
 const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [unit, setUnit] = useState<AbsurdUnit>(AbsurdUnit.OH_SHIT);
@@ -52,8 +53,8 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-8 pt-20 cursor-pointer hover:bg-[#0f0d0c] transition-colors relative"
     >
       {/* Consistent Header */}
-      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
-        <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">The Absurd Scale</h2>
+      <div className={getModuleHeaderClass()}>
+        The Absurd Scale
       </div>
 
       <div className="text-center select-none w-full max-w-2xl mt-8 sm:mt-10">
@@ -69,12 +70,12 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <p className="text-stone-600 font-serif italic text-sm sm:text-base mt-2">Tap to change perspective</p>
 
         {unit === AbsurdUnit.OH_SHIT && (
-             <p className="text-[10px] sm:text-xs text-stone-700 font-mono mt-4 px-4">
+             <p className={`${typography.caption.standard} ${colors.text.subtle} mt-4 px-4`}>
                  *Calculated based on a stress coefficient of 0.2 panics/day.
              </p>
         )}
          {unit === AbsurdUnit.HEARTBEATS && (
-             <p className="text-[10px] sm:text-xs text-red-900/50 font-mono mt-4 animate-pulse px-4">
+             <p className={`${typography.caption.standard} mt-4 px-4 opacity-70`}>
                  Based on 70 BPM resting rate.
              </p>
         )}
