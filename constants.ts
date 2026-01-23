@@ -1,6 +1,11 @@
 export const TARGET_DATE = new Date('2026-09-20T00:00:00');
 export const ENGAGEMENT_DATE = new Date('2025-12-19T00:00:00');
 
+// Wedding venue information
+export const VENUE_NAME = 'Twin Oaks House Weddings';
+export const VENUE_ADDRESS = '236 Deer Springs Rd, San Marcos, CA 92069';
+export const VENUE_COORDINATES = '33°10\'43.0"N 117°11\'33.0"W'; // Display format
+
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 export const MILLISECONDS_PER_SIDEREAL_DAY = 86164090.5; // ~23h 56m 4.0905s
 export const MILLISECONDS_PER_SOLAR_DAY = 86400000;
