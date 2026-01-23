@@ -28,16 +28,16 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     const isTablet = width >= 640 && width < 1024;
     
     // 1. Center Shift
-    // Mobile: Shift down significantly to make room for the header
+    // Mobile: Shift down to make room for the header
     // Desktop: Centered
-    const centerYOffset = isMobile ? 50 : 0;
-    
+    const centerYOffset = isMobile ? 30 : 0;
+
     // 2. Radius configuration
-    // Mobile: Compact to fit width
+    // Mobile: Increased size for better visibility
     // Tablet: Moderate
     // Desktop: Larger for grand presentation
-    let radiusScale = 0.36; 
-    if (isMobile) radiusScale = 0.21;
+    let radiusScale = 0.36;
+    if (isMobile) radiusScale = 0.24;
     else if (isTablet) radiusScale = 0.30;
 
     const radius = Math.min(width, height) * radiusScale;
@@ -252,7 +252,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
     // Label for Current
     // Dynamic extension
-    const curExtension = isMobile ? 35 : 80;
+    const curExtension = isMobile ? 40 : 80;
     const curLabelR = radius + curExtension;
     const curLabelX = Math.sin(currentAngle) * curLabelR;
     const curLabelY = -Math.cos(currentAngle) * curLabelR;
@@ -306,8 +306,8 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         .attr('stroke-width', 1.5);
 
     // Label for Target
-    const tarExtension = isMobile ? 35 : 100; // More extension on desktop for drama
-    const tarLabelR = radius + tarExtension; 
+    const tarExtension = isMobile ? 40 : 100; // More extension on desktop for drama
+    const tarLabelR = radius + tarExtension;
     const tarLabelX = Math.sin(targetAngle) * tarLabelR;
     const tarLabelY = -Math.cos(targetAngle) * tarLabelR;
 
@@ -350,7 +350,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       <div ref={containerRef} className="absolute inset-0 z-0" />
       
       {/* Consistent Header */}
-      <div className="absolute top-32 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
+      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
         <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">The Annual Cycle</h2>
       </div>
 

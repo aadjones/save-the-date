@@ -233,7 +233,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   return (
     <div className="h-full w-full bg-stone-950 text-stone-200 relative overflow-hidden flex flex-col">
        {/* Header - Fixed - Increased Top Padding for Mobile to clear global header */}
-       <div className="pt-32 sm:pt-24 pb-4 text-center z-20 bg-gradient-to-b from-stone-950 via-stone-950 to-transparent flex-shrink-0">
+       <div className="pt-20 sm:pt-16 pb-4 text-center z-20 bg-gradient-to-b from-stone-950 via-stone-950 to-transparent flex-shrink-0">
           <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">The Lunar Stack</h2>
           <p className="text-[10px] sm:text-xs font-mono text-stone-600 mt-2 uppercase tracking-widest">
              Scroll to traverse time

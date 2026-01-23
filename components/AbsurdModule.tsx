@@ -52,16 +52,16 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-8 pt-20 cursor-pointer hover:bg-[#0f0d0c] transition-colors relative"
     >
       {/* Consistent Header */}
-      <div className="absolute top-32 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
+      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
         <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">The Absurd Scale</h2>
       </div>
 
-      <div className="text-center select-none w-full max-w-2xl mt-10">
+      <div className="text-center select-none w-full max-w-2xl mt-8 sm:mt-10">
         <div className="my-8 sm:my-12">
-            <div className="text-5xl sm:text-8xl font-mono font-bold text-stone-100 mb-2 sm:mb-4 tabular-nums tracking-tight break-all sm:break-normal">
+            <div className="text-6xl sm:text-8xl font-mono font-bold text-stone-100 mb-3 sm:mb-4 tabular-nums tracking-tight break-all sm:break-normal">
                 {Math.floor(count).toLocaleString()}
             </div>
-            <div className="text-xl sm:text-3xl font-serif text-stone-400 px-4">
+            <div className="text-2xl sm:text-3xl font-serif text-stone-400 px-4">
                 {unit}
             </div>
         </div>

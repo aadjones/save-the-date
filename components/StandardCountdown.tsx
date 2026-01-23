@@ -59,11 +59,11 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
   }, [targetDate]);
 
   const Item = ({ val, label }: { val: number; label: string }) => (
-    <div className="flex flex-col items-center justify-center p-2 sm:p-4">
-      <span className="text-3xl sm:text-6xl md:text-8xl font-mono font-light tracking-tighter tabular-nums text-stone-100">
+    <div className="flex flex-col items-center justify-center p-1 sm:p-4">
+      <span className="text-4xl sm:text-6xl md:text-8xl font-mono font-light tracking-tighter tabular-nums text-stone-100">
         {val.toString().padStart(2, '0')}
       </span>
-      <span className="text-[10px] sm:text-sm uppercase tracking-widest text-stone-500 font-semibold mt-1 sm:mt-2">{label}</span>
+      <span className="text-xs sm:text-sm uppercase tracking-widest text-stone-500 font-semibold mt-1.5 sm:mt-2">{label}</span>
     </div>
   );
 
@@ -75,13 +75,13 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
       </div>
       
       {/* Consistent Header */}
-      <div className="absolute top-32 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
+      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
         <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">
           The Standard Interval
         </h2>
       </div>
       
-      <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-2 gap-y-6 sm:gap-x-4 sm:gap-y-8 z-10 w-full max-w-4xl mt-10 sm:mt-0">
+      <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-1 gap-y-8 sm:gap-x-4 sm:gap-y-8 z-10 w-full max-w-4xl mt-10 sm:mt-0">
         <Item val={timeLeft.years} label="Years" />
         <Item val={timeLeft.months} label="Months" />
         <Item val={timeLeft.days} label="Days" />

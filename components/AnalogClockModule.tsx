@@ -180,11 +180,11 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
       </div>
 
       {/* Consistent Header */}
-      <div className="absolute top-32 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
+      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
         <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">The Relative Clock</h2>
       </div>
 
-      <div className="relative z-10 w-full max-w-xl aspect-square p-8 sm:p-12 mt-10">
+      <div className="relative z-10 w-full max-w-xl aspect-square p-6 sm:p-12 mt-8 sm:mt-10">
         <svg viewBox="-100 -100 200 200" className="w-full h-full drop-shadow-2xl">
             {/* Base Face */}
             <circle cx="0" cy="0" r="98" fill="none" stroke="#292524" strokeWidth="0.5" />
@@ -259,27 +259,27 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         </svg>
 
         {/* Floating Label (Tooltip logic but static for active) */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none mix-blend-plus-lighter mt-32 sm:mt-40">
-            <div className="text-3xl sm:text-5xl font-mono text-amber-100/90 font-light tracking-tighter drop-shadow-lg">
-                {activeHand.id === 'wait' 
-                    ? (activeHand.value * 100).toFixed(4) + '%' 
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none mix-blend-plus-lighter mt-32 sm:mt-40 px-4">
+            <div className="text-4xl sm:text-5xl font-mono text-amber-100/90 font-light tracking-tighter drop-shadow-lg">
+                {activeHand.id === 'wait'
+                    ? (activeHand.value * 100).toFixed(4) + '%'
                     : activeHand.id === 'year' || activeHand.id === 'lunar'
                         ? (activeHand.value * 100).toFixed(1) + '%'
-                        : activeHand.id === 'sec' || activeHand.id === 'min' 
+                        : activeHand.id === 'sec' || activeHand.id === 'min'
                              ? Math.floor(activeHand.value * 60).toString().padStart(2, '0')
                              : (activeHand.value * (activeHand.id === 'hr' ? 12 : 1)).toFixed(2)
                 }
             </div>
-            <div className="text-amber-500 font-serif italic text-lg sm:text-xl mt-1">
+            <div className="text-amber-500 font-serif italic text-xl sm:text-xl mt-2">
                 {activeHand.label}
             </div>
-            <div className="text-stone-500 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest mt-2 max-w-[150px] mx-auto leading-tight">
+            <div className="text-stone-500 font-mono text-[10px] sm:text-[10px] uppercase tracking-widest mt-2 max-w-[180px] sm:max-w-[200px] mx-auto leading-tight">
                 {activeHand.description}
             </div>
         </div>
       </div>
       
-      <div className="absolute bottom-6 text-stone-700 font-mono text-[9px] uppercase tracking-widest animate-pulse">
+      <div className="absolute bottom-6 text-stone-700 font-mono text-[10px] sm:text-xs uppercase tracking-widest animate-pulse">
          Scroll or Tap to Cycle Hands
       </div>
     </div>

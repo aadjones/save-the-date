@@ -74,13 +74,11 @@ const App: React.FC = () => {
       </div>
 
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50 pointer-events-none mix-blend-difference select-none">
-         <h1 className="text-stone-300 font-serif text-lg sm:text-xl tracking-wide font-bold">Save the Date</h1>
+         <div className="flex items-baseline gap-3">
+           <h1 className="text-stone-300 font-serif text-lg sm:text-xl tracking-wide font-bold">Save the Date</h1>
+           <p className="text-stone-500 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest">33°11'52.5"N 117°09'07.0"W</p>
+         </div>
          <p className="text-stone-400 font-mono text-[10px] sm:text-xs uppercase tracking-widest mt-0.5 sm:mt-1">September 20, 2026</p>
-         
-         <div className="h-px w-8 bg-stone-600 my-2 sm:my-3"></div>
-         
-         <p className="text-stone-500 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest">33°11'52.5"N 117°09'07.0"W</p>
-         <p className="text-stone-600 font-mono text-[8px] sm:text-[9px] uppercase tracking-widest mt-0.5">San Marcos, CA</p>
       </div>
 
       <ShuffleButton onClick={handleShuffle} />

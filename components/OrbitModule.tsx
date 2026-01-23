@@ -222,33 +222,33 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       <div ref={containerRef} className="absolute inset-0 z-0" />
       
       {/* Consistent Header */}
-      <div className="absolute top-32 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
+      <div className="absolute top-20 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
         <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">Orbital Dynamics</h2>
       </div>
 
       {/* Overlay Stats */}
-      <div className="absolute bottom-10 sm:bottom-16 left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+      <div className="absolute bottom-8 sm:bottom-16 left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none">
         {/* Mobile: Grid cols 3 (horizontal), Desktop: Grid cols 3 (horizontal) but bigger */}
-        <div className="grid grid-cols-3 gap-2 sm:gap-8 text-center px-2 w-full max-w-4xl">
+        <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full max-w-4xl">
            <div className="flex flex-col items-center justify-start">
-             <div className="text-lg sm:text-4xl font-mono text-stone-200">
+             <div className="text-2xl sm:text-4xl font-mono text-stone-200 tabular-nums">
                {stats.degrees.toFixed(1)}°
              </div>
-             <div className="text-[9px] sm:text-xs text-stone-500 uppercase tracking-widest mt-1">Arc</div>
-           </div>
-           
-           <div className="flex flex-col items-center justify-start">
-             <div className="text-lg sm:text-4xl font-mono text-stone-200">
-               {(stats.km / 1000000).toFixed(1)}M
-             </div>
-             <div className="text-[9px] sm:text-xs text-stone-500 uppercase tracking-widest mt-1">KM</div>
+             <div className="text-[10px] sm:text-xs text-stone-500 uppercase tracking-widest mt-1">Arc</div>
            </div>
 
            <div className="flex flex-col items-center justify-start">
-             <div className="text-lg sm:text-4xl font-mono text-stone-200">
+             <div className="text-2xl sm:text-4xl font-mono text-stone-200 tabular-nums">
+               {(stats.km / 1000000).toFixed(1)}M
+             </div>
+             <div className="text-[10px] sm:text-xs text-stone-500 uppercase tracking-widest mt-1">KM</div>
+           </div>
+
+           <div className="flex flex-col items-center justify-start">
+             <div className="text-2xl sm:text-4xl font-mono text-stone-200 tabular-nums">
                {stats.fraction.toFixed(3)}
              </div>
-             <div className="text-[9px] sm:text-xs text-stone-500 uppercase tracking-widest mt-1">Orbits</div>
+             <div className="text-[10px] sm:text-xs text-stone-500 uppercase tracking-widest mt-1">Orbits</div>
            </div>
         </div>
       </div>
