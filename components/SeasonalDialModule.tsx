@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { TimeModuleProps } from '../types';
+import { Snowflake, Flower2, Sun, Leaf } from 'lucide-react';
+import { createRoot } from 'react-dom/client';
 
 const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -93,8 +95,46 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         .attr('y', d => -Math.cos(d.labelAngle) * (radius * 0.55))
         .attr('text-anchor', 'middle')
         .attr('alignment-baseline', 'middle')
-        .attr('class', 'font-serif text-[10px] sm:text-base md:text-lg text-stone-500 fill-current uppercase tracking-widest font-bold opacity-30 select-none')
+        .attr('class', 'font-serif text-[10px] sm:text-base md:text-lg text-stone-400 fill-current uppercase tracking-widest font-bold opacity-50 select-none')
         .text(d => d.name);
+
+    // Season Icons
+    const seasonIcons = [
+        { name: 'Winter', icon: Snowflake },
+        { name: 'Spring', icon: Flower2 },
+        { name: 'Summer', icon: Sun },
+        { name: 'Fall', icon: Leaf },
+    ];
+
+    const iconSize = isMobile ? 16 : 24;
+    const iconOffset = isMobile ? 0.35 : 0.38; // Position icons closer to center than text
+
+    seasonIcons.forEach((season, i) => {
+        const seasonData = seasons[i];
+        const iconX = Math.sin(seasonData.labelAngle) * (radius * iconOffset);
+        const iconY = -Math.cos(seasonData.labelAngle) * (radius * iconOffset);
+
+        const foreignObject = svg.append('foreignObject')
+            .attr('x', iconX - iconSize / 2)
+            .attr('y', iconY - iconSize / 2)
+            .attr('width', iconSize)
+            .attr('height', iconSize)
+            .style('pointer-events', 'none');
+
+        const div = document.createElement('div');
+        foreignObject.node()?.appendChild(div);
+
+        const Icon = season.icon;
+        const root = createRoot(div);
+        root.render(
+            <Icon
+                size={iconSize}
+                className="text-stone-400"
+                style={{ opacity: 0.6 }}
+                strokeWidth={2}
+            />
+        );
+    });
     
     // --- SOLSTICE / EQUINOX LABELS ---
     // Adjusted offsets for responsiveness
