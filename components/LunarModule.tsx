@@ -77,7 +77,7 @@ const MoonIcon: React.FC<{ phase: number; size: number; className?: string; high
   );
 };
 
-const LunarModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
+const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const [phases, setPhases] = useState<MoonPhaseData[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -211,7 +211,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
   // Scroll to Current
   useLayoutEffect(() => {
-    if (phases.length > 0 && scrollContainerRef.current) {
+    if (isActive && phases.length > 0 && scrollContainerRef.current) {
         // Find 'current' item
         const currentIndex = phases.findIndex(p => p.isCurrent);
         if (currentIndex !== -1) {
@@ -222,7 +222,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
             }
         }
     }
-  }, [phases]);
+  }, [phases, isActive]);
 
 
   return (
