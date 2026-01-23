@@ -114,7 +114,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
                 <button
                     key={btn.id}
                     onClick={() => setSelectedUnit(btn.id)}
-                    className={getButtonClass(active)}
+                    className={`${getButtonClass(active)} flex items-center gap-2 px-4 py-2`}
                 >
                     <Icon size={16} className="sm:w-4 sm:h-4" />
                     <span className={`${typography.label.small} font-bold`}>{btn.label}</span>
