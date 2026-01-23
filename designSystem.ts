@@ -5,6 +5,8 @@
  * to ensure consistency across all modules and make refactoring easier.
  */
 
+import { cn } from './utils/cn';
+
 // ============================================================================
 // COLORS
 // ============================================================================
@@ -153,13 +155,6 @@ export const components = {
 // ============================================================================
 // HELPER FUNCTIONS
 // ============================================================================
-
-/**
- * Combines class strings, useful for building component styles
- */
-export function cn(...classes: (string | undefined | false)[]): string {
-  return classes.filter(Boolean).join(' ');
-}
 
 /**
  * Gets the complete module header className
