@@ -69,10 +69,15 @@ const MoonIcon: React.FC<{ phase: number; size: number; className?: string; high
 
   return (
     <svg width={size} height={size} viewBox={`-${size/2} -${size/2} ${size} ${size}`} className={className}>
+      <defs>
+        <clipPath id={`moon-clip-${phase}`}>
+          <circle cx="0" cy="0" r={radius} />
+        </clipPath>
+      </defs>
       {/* Dark Side / Base */}
       <circle cx="0" cy="0" r={radius} className="fill-stone-900 stroke-stone-800" strokeWidth="1" />
       {/* Lit Side */}
-      <path d={pathD} className={highlight ? "fill-stone-100 drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" : "fill-stone-400 opacity-80"} />
+      <path d={pathD} className={highlight ? "fill-stone-100 drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" : "fill-stone-400 opacity-80"} clipPath={`url(#moon-clip-${phase})`} />
     </svg>
   );
 };
