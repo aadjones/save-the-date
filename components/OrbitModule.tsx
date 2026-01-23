@@ -3,6 +3,8 @@ import * as d3 from 'd3';
 import { EARTH_ORBIT_KM, DAYS_PER_YEAR, ENGAGEMENT_DATE } from '../constants';
 import { TimeModuleProps } from '../types';
 import { getModuleHeaderClass, typography, spacing } from '../designSystem';
+import { Heart, MapPin } from 'lucide-react';
+import { createRoot } from 'react-dom/client';
 
 const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,10 +79,10 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('stroke-width', 1)
       .attr('stroke-dasharray', '4 4');
 
-    // Target Marker (Fixed at top - 90 degrees or -Math.PI/2)
+    // Wedding Marker (Fixed at top - 90 degrees or -Math.PI/2)
     const targetAngle = -Math.PI / 2;
-    
-    // Target Line (Short tick mark)
+
+    // Wedding Line (Short tick mark)
     svg.append('line')
       .attr('x1', Math.cos(targetAngle) * (radius - 15))
       .attr('y1', Math.sin(targetAngle) * (radius - 15))
@@ -89,15 +91,38 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('stroke', '#a8a29e') // stone-400
       .attr('stroke-width', 2);
 
+    // Wedding Icon
+    const weddingIconSize = isMobile ? 12 : 16;
+    const weddingIconY = Math.sin(targetAngle) * (radius + (isMobile ? 30 : 40));
+
+    const weddingIconFO = svg.append('foreignObject')
+      .attr('x', Math.cos(targetAngle) * (radius + (isMobile ? 30 : 40)) - weddingIconSize / 2)
+      .attr('y', weddingIconY - weddingIconSize / 2)
+      .attr('width', weddingIconSize)
+      .attr('height', weddingIconSize)
+      .style('pointer-events', 'none');
+
+    const weddingIconDiv = document.createElement('div');
+    weddingIconFO.node()?.appendChild(weddingIconDiv);
+    const weddingIconRoot = createRoot(weddingIconDiv);
+    weddingIconRoot.render(
+      <Heart
+        size={weddingIconSize}
+        className="text-stone-400"
+        fill="currentColor"
+        strokeWidth={1.5}
+      />
+    );
+
     svg.append('text')
-      .attr('x', Math.cos(targetAngle) * (radius + (isMobile ? 20 : 30)))
-      .attr('y', Math.sin(targetAngle) * (radius + (isMobile ? 20 : 30)))
+      .attr('x', Math.cos(targetAngle) * (radius + (isMobile ? 30 : 40)))
+      .attr('y', Math.sin(targetAngle) * (radius + (isMobile ? 45 : 60)))
       .attr('text-anchor', 'middle')
       .attr('fill', '#a8a29e')
       .attr('class', 'font-mono text-[10px] sm:text-xs tracking-widest')
-      .text('TARGET');
+      .text('WEDDING');
     
-    // --- GHOST EARTH (Engagement Date) ---
+    // --- ENGAGEMENT MARKER ---
     // Calculate position for Engagement Date
     // Earth travels CCW (decreasing angle). Past dates are at "higher" angles (further CCW back).
     const engDiffMs = targetDate.getTime() - ENGAGEMENT_DATE.getTime();
@@ -106,24 +131,41 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     const engRadians = (engTotalDegrees * Math.PI) / 180;
     const engAngle = targetAngle + engRadians;
 
-    const ghostGroup = svg.append('g')
-      .attr('transform', `translate(${Math.cos(engAngle) * radius}, ${Math.sin(engAngle) * radius})`);
-    
-    ghostGroup.append('circle')
-        .attr('r', isMobile ? 5 : 7)
+    const engX = Math.cos(engAngle) * radius;
+    const engY = Math.sin(engAngle) * radius;
+
+    // Engagement marker circle (ring style)
+    svg.append('circle')
+        .attr('cx', engX)
+        .attr('cy', engY)
+        .attr('r', isMobile ? 4 : 5)
         .attr('fill', 'none')
-        .attr('stroke', '#57534e') // stone-600
+        .attr('stroke', '#78716c') // stone-500
         .attr('stroke-width', 1.5)
+        .attr('opacity', 0.7);
+
+    // Label for Engagement with extended positioning
+    const engExtension = isMobile ? 35 : 50;
+    const engLabelR = radius + engExtension;
+    const engLabelX = Math.cos(engAngle) * engLabelR;
+    const engLabelY = Math.sin(engAngle) * engLabelR;
+
+    // Leader line for Engagement
+    svg.append('line')
+        .attr('x1', engX)
+        .attr('y1', engY)
+        .attr('x2', Math.cos(engAngle) * (engLabelR - 10))
+        .attr('y2', Math.sin(engAngle) * (engLabelR - 10))
+        .attr('stroke', '#57534e')
+        .attr('stroke-width', 1)
+        .attr('stroke-dasharray', '2 2')
         .attr('opacity', 0.6);
 
-    // Label for Engagement
-    const labelAngle = engAngle;
-    
-    ghostGroup.append('text')
-        .attr('x', Math.cos(labelAngle) * 20)
-        .attr('y', Math.sin(labelAngle) * 20)
+    svg.append('text')
+        .attr('x', engLabelX)
+        .attr('y', engLabelY)
         .attr('text-anchor', 'middle')
-        .attr('fill', '#57534e') // stone-600
+        .attr('fill', '#78716c') // stone-500
         .attr('class', 'font-mono text-[8px] sm:text-[9px] tracking-widest')
         .text('ENGAGED');
 
@@ -151,11 +193,14 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     earthGroup.append('circle')
       .attr('r', isMobile ? 5 : 7)
       .attr('fill', '#38bdf8'); // sky-400
-      
+
     // Moon Body
     const moon = earthGroup.append('circle')
       .attr('r', isMobile ? 1.5 : 2.5)
       .attr('fill', '#e7e5e4'); // stone-200
+
+    // "You Are Here" Label Group (will be updated in animation)
+    const youAreHereGroup = svg.append('g').attr('class', 'you-are-here-label');
 
     // Animation Loop
     let animationId: number;
@@ -173,17 +218,66 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       const currentAngle = targetAngle + remainingRadians;
 
       // Update Earth Position
-      earthGroup.attr('transform', `translate(${Math.cos(currentAngle) * radius}, ${Math.sin(currentAngle) * radius})`);
+      const earthX = Math.cos(currentAngle) * radius;
+      const earthY = Math.sin(currentAngle) * radius;
+      earthGroup.attr('transform', `translate(${earthX}, ${earthY})`);
 
       // Update Moon Position
       // Approx 29.5 days per cycle
       const moonRadians = (diffDays / 29.53) * 2 * Math.PI;
       const mx = Math.cos(moonRadians) * moonOrbitRadius;
       const my = Math.sin(moonRadians) * moonOrbitRadius;
-      
+
       moon
         .attr('cx', mx)
         .attr('cy', my);
+
+      // Update "You Are Here" Label
+      youAreHereGroup.selectAll('*').remove();
+
+      const youAreHereExtension = isMobile ? 40 : 60;
+      const youAreHereLabelR = radius + youAreHereExtension;
+      const youAreHereLabelX = Math.cos(currentAngle) * youAreHereLabelR;
+      const youAreHereLabelY = Math.sin(currentAngle) * youAreHereLabelR;
+
+      // Leader line for "You Are Here"
+      youAreHereGroup.append('line')
+        .attr('x1', earthX)
+        .attr('y1', earthY)
+        .attr('x2', Math.cos(currentAngle) * (youAreHereLabelR - 10))
+        .attr('y2', Math.sin(currentAngle) * (youAreHereLabelR - 10))
+        .attr('stroke', '#44403c')
+        .attr('stroke-width', 1)
+        .attr('stroke-dasharray', '2 2');
+
+      // MapPin Icon for "You Are Here"
+      const mapPinSize = isMobile ? 10 : 12;
+      const mapPinFO = youAreHereGroup.append('foreignObject')
+        .attr('x', youAreHereLabelX - mapPinSize / 2)
+        .attr('y', youAreHereLabelY - mapPinSize / 2 - (isMobile ? 8 : 10))
+        .attr('width', mapPinSize)
+        .attr('height', mapPinSize)
+        .style('pointer-events', 'none');
+
+      const mapPinDiv = document.createElement('div');
+      mapPinFO.node()?.appendChild(mapPinDiv);
+      const mapPinRoot = createRoot(mapPinDiv);
+      mapPinRoot.render(
+        <MapPin
+          size={mapPinSize}
+          className="text-stone-300"
+          fill="currentColor"
+          strokeWidth={1.5}
+        />
+      );
+
+      youAreHereGroup.append('text')
+        .attr('x', youAreHereLabelX)
+        .attr('y', youAreHereLabelY + (isMobile ? 4 : 6))
+        .attr('text-anchor', 'middle')
+        .attr('fill', '#d6d3d1') // stone-300
+        .attr('class', 'font-mono text-[8px] sm:text-[9px] tracking-widest font-bold')
+        .text('YOU ARE HERE');
 
       // Update Arrow Position
       const arrowStartOffset = 0.15; // rads ~ 8 deg
