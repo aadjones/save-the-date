@@ -98,14 +98,14 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   ];
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-stone-900 text-stone-200 p-6 pt-20 relative">
-      
+    <div className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-6 relative">
+
       {/* Consistent Header */}
       <div className="absolute top-32 sm:top-12 left-0 right-0 z-10 text-center pointer-events-none px-4">
         <h2 className="text-xl sm:text-3xl italic font-serif text-stone-400">Social Constructs</h2>
       </div>
 
-      <div className="flex gap-2 sm:gap-4 mb-8 sm:mb-12 flex-wrap justify-center mt-10">
+      <div className="flex gap-2 sm:gap-4 mb-8 sm:mb-12 flex-wrap justify-center mt-10 sm:mt-0">
         {buttons.map((btn) => {
             const Icon = btn.icon;
             const active = selectedUnit === btn.id;
