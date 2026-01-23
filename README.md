@@ -1,20 +1,72 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Save the Date
 
-# Run and deploy your AI Studio app
+A creative wedding countdown web app featuring multiple unique time visualization modules. Built with React, TypeScript, Vite, and D3.js.
 
-This contains everything you need to run your app locally.
+## Features
 
-View your app in AI Studio: https://ai.studio/apps/drive/1fyM0lHCOVOX9AZTL2UGA3tlu9l9AT2Fu
+- **Multiple Countdown Modules**: 7 different creative ways to visualize time until the wedding
+  - Standard Countdown
+  - Orbital Visualization
+  - Seasonal Dial
+  - Lunar Phase Tracker
+  - Social Time Converter
+  - Absurd Time Units
+  - Analog Clock
+- **Smooth Scrolling**: Snap-scroll through different modules
+- **Shuffle Function**: Randomly jump to different visualizations
+- **Fully Responsive**: Works on desktop and mobile
+
+## Wedding Details
+
+**Date**: September 20, 2026
+**Location**: San Marcos, CA (33°11'52.5"N 117°09'07.0"W)
 
 ## Run Locally
 
-**Prerequisites:**  Node.js
+**Prerequisites:** Node.js
 
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open [http://localhost:3000](http://localhost:3000)
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Build for Production
+
+```bash
+npm run build
+```
+
+The built files will be in the `dist/` directory.
+
+## Deploy to Vercel
+
+This app is ready to deploy to Vercel:
+
+1. Push to GitHub
+2. Import the repository in Vercel
+3. Vercel will auto-detect Vite and configure the build settings
+4. Deploy!
+
+Alternatively, use the Vercel CLI:
+```bash
+vercel
+```
+
+## Tech Stack
+
+- React 19
+- TypeScript
+- Vite
+- D3.js (for visualizations)
+- Tailwind CSS (via CDN)
+- Lucide React (icons)
+
+## License
+
+MIT
