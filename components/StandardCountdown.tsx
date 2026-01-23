@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { TimeModuleProps, CountdownTime } from '../types';
 import { getModuleHeaderClass, getModuleFooterClass, typography, spacing, colors } from '../designSystem';
 
@@ -93,6 +94,11 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
       <p className={getModuleFooterClass()}>
         Local time. Gregorian calendar. The rhythm of bureaucracy.
       </p>
+
+      {/* Scroll hint for first-time visitors */}
+      <div className="absolute bottom-20 left-1/2 -translate-x-1/2 animate-bounce opacity-50 pointer-events-none">
+        <ChevronDown size={24} className="text-stone-600" />
+      </div>
     </div>
   );
 };
