@@ -46,10 +46,13 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     // Clear previous
     d3.select(containerRef.current).selectAll('*').remove();
 
-    const svg = d3.select(containerRef.current)
+    // Keep reference to root SVG for Safari foreignObject fix
+    const rootSvg = d3.select(containerRef.current)
       .append('svg')
       .attr('width', width)
-      .attr('height', height)
+      .attr('height', height);
+
+    const svg = rootSvg
       .append('g')
       .attr('transform', `translate(${width / 2}, ${height / 2 + centerYOffset})`);
 
@@ -112,12 +115,18 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
     seasonIcons.forEach((season, i) => {
         const seasonData = seasons[i];
+        // Calculate relative position
         const iconX = Math.sin(seasonData.labelAngle) * (radius * iconOffset);
         const iconY = -Math.cos(seasonData.labelAngle) * (radius * iconOffset);
 
-        const foreignObject = svg.append('foreignObject')
-            .attr('x', iconX - iconSize / 2)
-            .attr('y', iconY - iconSize / 2)
+        // Safari fix: Append to root SVG with absolute positions instead of transformed group
+        // Calculate absolute position including center transform
+        const absoluteX = (width / 2) + iconX - (iconSize / 2);
+        const absoluteY = (height / 2 + centerYOffset) + iconY - (iconSize / 2);
+
+        const foreignObject = rootSvg.append('foreignObject')
+            .attr('x', absoluteX)
+            .attr('y', absoluteY)
             .attr('width', iconSize)
             .attr('height', iconSize)
             .style('pointer-events', 'none');
@@ -146,7 +155,8 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         { name: 'WINTER SOLSTICE', date: 'DEC 21', angle: 0, align: 'middle', dy: -labelSpacing, dx: 0 },
         { name: 'VERNAL EQUINOX', date: 'MAR 20', angle: Math.PI / 2, align: 'start', dy: 0, dx: labelSpacing },
         { name: 'SUMMER SOLSTICE', date: 'JUN 21', angle: Math.PI, align: 'middle', dy: labelSpacing + 10, dx: 0 },
-        { name: 'AUTUMNAL EQUINOX', date: 'SEP 22', angle: 3 * Math.PI / 2, align: 'end', dy: -labelSpacing, dx: -labelSpacing },
+        // Safari/mobile fix: Reduce negative dx offset to prevent label cutoff on left edge
+        { name: 'AUTUMNAL EQUINOX', date: 'SEP 22', angle: 3 * Math.PI / 2, align: 'end', dy: -labelSpacing, dx: isMobile ? -8 : -labelSpacing },
     ];
     
     const labelsGroup = svg.append('g').attr('class', 'cardinal-labels');
