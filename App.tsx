@@ -62,7 +62,7 @@ const App: React.FC = () => {
   };
 
   const handleLocationClick = () => {
-    openMapsLink(VENUE_ADDRESS);
+    openMapsLink(`${VENUE_NAME}, ${VENUE_ADDRESS}`);
   };
 
   return (
@@ -115,7 +115,7 @@ const App: React.FC = () => {
            className={`${colors.text.tertiary} ${typography.label.mono} mt-0.5 sm:mt-1 pointer-events-auto cursor-pointer hover:text-stone-300 transition-colors underline decoration-dotted underline-offset-2`}
            aria-label="Download calendar event"
          >
-           September 20, 2026
+           October 24, 2026
          </button>
       </div>
 

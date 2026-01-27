@@ -2,7 +2,7 @@
 
 ## What This App Does
 
-A wedding countdown app with 7 different creative ways to visualize time until September 20, 2026. Users scroll vertically through different "modules" (visualizations), each showing the countdown in a unique way.
+A wedding countdown app with 7 different creative ways to visualize time until October 24, 2026. Users scroll vertically through different "modules" (visualizations), each showing the countdown in a unique way.
 
 ## Tech Stack
 
@@ -67,7 +67,7 @@ Every module implements the same interface:
 
 ```tsx
 interface TimeModuleProps {
-  targetDate: Date;  // September 20, 2026
+  targetDate: Date;  // October 24, 2026
   isActive: boolean; // Is this module currently visible?
 }
 ```

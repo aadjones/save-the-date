@@ -18,8 +18,8 @@ A creative wedding countdown web app featuring multiple unique time visualizatio
 
 ## Wedding Details
 
-**Date**: September 20, 2026
-**Location**: San Marcos, CA (33°11'52.5"N 117°09'07.0"W)
+**Date**: October 24, 2026
+**Location**: The Yellow Rose Inn, Escondido, CA (33°11'52.9"N 117°05'20.3"W)
 
 ## Run Locally
 

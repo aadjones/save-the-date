@@ -396,7 +396,17 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       );
 
     // --- WEDDING TARGET MARKER ---
-    const targetAngle = (3 * Math.PI) / 2 - 2 * ((2 * Math.PI) / 365.25);
+    const tYear = targetDate.getFullYear();
+    let targetWS = new Date(tYear, 11, 21);
+    if (targetDate < targetWS) {
+      targetWS = new Date(tYear - 1, 11, 21);
+    }
+    const nextTargetWS = new Date(targetWS.getFullYear() + 1, 11, 21);
+    const targetCycleDays =
+      (nextTargetWS.getTime() - targetWS.getTime()) / (1000 * 60 * 60 * 24);
+    const targetDaysPassed =
+      (targetDate.getTime() - targetWS.getTime()) / (1000 * 60 * 60 * 24);
+    const targetAngle = (targetDaysPassed / targetCycleDays) * 2 * Math.PI;
     const targetX = Math.sin(targetAngle) * radius;
     const targetY = -Math.cos(targetAngle) * radius;
 
