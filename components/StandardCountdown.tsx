@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 import { TimeModuleProps, CountdownTime } from '../types';
 import { getModuleHeaderClass, getModuleFooterClass, typography, spacing, colors } from '../designSystem';
+import { useT } from '../i18n';
 
 const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState<CountdownTime>({ years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const t = useT();
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -78,21 +80,21 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
       
       {/* Consistent Header */}
       <div className={getModuleHeaderClass()}>
-        The Standard Interval
+        {t.standard.header}
       </div>
 
       <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-2 gap-y-8 sm:gap-x-4 sm:gap-y-8 md:gap-x-8 md:gap-y-10 z-10 w-full max-w-4xl mt-10 sm:mt-0">
-        <Item val={timeLeft.years} label="Years" />
-        <Item val={timeLeft.months} label="Months" />
-        <Item val={timeLeft.days} label="Days" />
-        <Item val={timeLeft.hours} label="Hours" />
-        <Item val={timeLeft.minutes} label="Minutes" />
-        <Item val={timeLeft.seconds} label="Seconds" />
+        <Item val={timeLeft.years} label={t.standard.years} />
+        <Item val={timeLeft.months} label={t.standard.months} />
+        <Item val={timeLeft.days} label={t.standard.days} />
+        <Item val={timeLeft.hours} label={t.standard.hours} />
+        <Item val={timeLeft.minutes} label={t.standard.minutes} />
+        <Item val={timeLeft.seconds} label={t.standard.seconds} />
       </div>
 
 
       <p className={getModuleFooterClass()}>
-        Local time. Gregorian calendar. The rhythm of bureaucracy.
+        {t.standard.footer}
       </p>
 
       {/* Scroll hint for first-time visitors */}

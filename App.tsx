@@ -11,10 +11,12 @@ import { TARGET_DATE, VENUE_NAME, VENUE_ADDRESS, VENUE_COORDINATES } from './con
 import { components, colors, typography } from './designSystem';
 import { generateIcsFile } from './utils/calendarUtils';
 import { openMapsLink } from './utils/mapsUtils';
+import { useT, LanguageToggle } from './i18n';
 
 const App: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeModule, setActiveModule] = useState<number>(0);
+  const t = useT();
 
   const modules = [
     { id: 'standard', Component: StandardCountdown },
@@ -54,10 +56,10 @@ const App: React.FC = () => {
 
   const handleDateClick = () => {
     generateIcsFile(
-      'Wedding - Save the Date',
+      t.app.calendarTitle,
       TARGET_DATE,
       `${VENUE_NAME}, ${VENUE_ADDRESS}`,
-      'Join Aaron Demby Jones and Anakaren Santana Gálvez for our wedding celebration!'
+      t.app.calendarDescription
     );
   };
 
@@ -101,11 +103,11 @@ const App: React.FC = () => {
 
       <div className="absolute top-4 left-4 sm:top-6 sm:left-6 z-50 mix-blend-difference select-none">
          <div className="flex items-baseline gap-3">
-           <h1 className={`${colors.text.secondary} font-serif text-lg sm:text-xl tracking-wide font-bold pointer-events-none`}>Save the Date</h1>
+           <h1 className={`${colors.text.secondary} font-serif text-lg sm:text-xl tracking-wide font-bold pointer-events-none`}>{t.app.title}</h1>
            <button
              onClick={handleLocationClick}
              className={`${colors.text.muted} ${typography.label.mono} pointer-events-auto cursor-pointer hover:text-stone-200 transition-colors underline decoration-dotted underline-offset-2`}
-             aria-label="Open venue location in maps"
+             aria-label={t.app.locationAriaLabel}
            >
              {VENUE_COORDINATES}
            </button>
@@ -113,10 +115,14 @@ const App: React.FC = () => {
          <button
            onClick={handleDateClick}
            className={`${colors.text.tertiary} ${typography.label.mono} mt-0.5 sm:mt-1 pointer-events-auto cursor-pointer hover:text-stone-300 transition-colors underline decoration-dotted underline-offset-2`}
-           aria-label="Download calendar event"
+           aria-label={t.app.calendarAriaLabel}
          >
-           October 24, 2026
+           {t.app.date}
          </button>
+      </div>
+
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 mix-blend-difference">
+        <LanguageToggle />
       </div>
 
       <ShuffleButton onClick={handleShuffle} />

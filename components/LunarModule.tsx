@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON, MILLISECONDS_PER_DAY } from '../constants';
 import { TimeModuleProps } from '../types';
 import { typography, colors } from '../designSystem';
+import { useT } from '../i18n';
 
 interface MoonPhaseData {
   date: Date;
@@ -58,12 +59,12 @@ const MoonIcon: React.FC<{ phase: number; size: number; className?: string; high
        // Waning (Lit Left)
        // Limb: Top -> Left -> Bottom
        // Terminator: Bottom -> Top.
-       // For Gibbous (p < 0.75), Terminator bows Right (Sweep 0).
-       // For Crescent (p > 0.75), Terminator bows Left (Sweep 1).
+       // For Gibbous (p < 0.75), Terminator bows Right (Sweep 1).
+       // For Crescent (p > 0.75), Terminator bows Left (Sweep 0).
        pathD = `
          M 0,${radius} 
          A ${radius},${radius} 0 0,1 0,${-radius} 
-         A ${Math.abs(terminatorX)},${radius} 0 0,${p < 0.75 ? 0 : 1} 0,${radius}
+         A ${Math.abs(terminatorX)},${radius} 0 0,${p < 0.75 ? 1 : 0} 0,${radius}
        `;
     }
   }
@@ -87,6 +88,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const [phases, setPhases] = useState<MoonPhaseData[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const t = useT();
 
   // Generate Phases
   useEffect(() => {
@@ -128,26 +130,21 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     // Iterate until we pass the end date
     // Note: We might start loop before startMs, but addPhase filters.
     while (currentMs <= endMs) {
-        // New Moon
-        addPhase(currentMs, 'NEW', 0, 'New Moon');
-        // First Quarter
-        addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.25), 'FIRST_QUARTER', 0.25, 'First Quarter');
-        // Full Moon
-        addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.5), 'FULL', 0.5, 'Full Moon');
-        // Last Quarter
-        addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.75), 'LAST_QUARTER', 0.75, 'Last Quarter');
-        
+        addPhase(currentMs, 'NEW', 0, t.lunar.newMoon);
+        addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.25), 'FIRST_QUARTER', 0.25, t.lunar.firstQuarter);
+        addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.5), 'FULL', 0.5, t.lunar.fullMoon);
+        addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.75), 'LAST_QUARTER', 0.75, t.lunar.lastQuarter);
+
         currentMs += (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY);
     }
 
     // Insert "Current" (Right Now)
     const nowPhaseVal = ((now.getTime() - REFERENCE_NEW_MOON.getTime()) / (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY)) % 1;
-    // Helper to get descriptive label for intermediate
     const getPhaseLabel = (p: number) => {
-        if (p < 0.25) return 'Waxing Crescent';
-        if (p < 0.5) return 'Waxing Gibbous';
-        if (p < 0.75) return 'Waning Gibbous';
-        return 'Waning Crescent';
+        if (p < 0.25) return t.lunar.waxingCrescent;
+        if (p < 0.5) return t.lunar.waxingGibbous;
+        if (p < 0.75) return t.lunar.waningGibbous;
+        return t.lunar.waningCrescent;
     };
 
     data.push({
@@ -164,7 +161,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
         date: targetDate,
         phase: targetPhaseVal,
         type: 'INTERMEDIATE',
-        label: "The Wedding", // Override label
+        label: t.lunar.theWedding,
         isWedding: true
     });
 
@@ -213,7 +210,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     }
 
     setPhases(finalData);
-  }, [targetDate]);
+  }, [targetDate, t]);
 
   // Scroll to Current
   useLayoutEffect(() => {
@@ -235,9 +232,9 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     <div className="h-full w-full bg-stone-950 text-stone-200 relative overflow-hidden flex flex-col">
        {/* Header - Fixed - Increased Top Padding for Mobile to clear global header */}
        <div className="pt-20 sm:pt-16 pb-4 text-center z-20 bg-gradient-to-b from-stone-950 via-stone-950 to-transparent flex-shrink-0">
-          <h2 className={typography.header.module}>The Lunar Stack</h2>
+          <h2 className={typography.header.module}>{t.lunar.header}</h2>
           <p className={`${colors.text.muted} ${typography.label.mono} mt-2 animate-pulse`}>
-             Scroll to Traverse Time
+             {t.lunar.scrollHint}
           </p>
        </div>
 
@@ -294,7 +291,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
                         <div className={`flex-1 text-left pl-3 sm:pl-10 ${p.isWedding ? 'text-amber-200' : 'text-stone-400'}`}>
                             {p.isCurrent && (
                                 <div className="mb-1 sm:mb-2">
-                                    <span className="text-[9px] sm:text-[10px] text-stone-100 font-mono tracking-widest bg-stone-800 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full border border-stone-700 whitespace-nowrap">YOU ARE HERE</span>
+                                    <span className="text-[9px] sm:text-[10px] text-stone-100 font-mono tracking-widest bg-stone-800 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full border border-stone-700 whitespace-nowrap">{t.lunar.youAreHere}</span>
                                 </div>
                             )}
                             <div className={`font-serif italic leading-tight ${p.isCurrent || p.isWedding ? 'text-lg sm:text-xl' : 'text-sm sm:text-base'}`}>
@@ -302,7 +299,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
                             </div>
                             {p.isWedding && (
                                 <div className="font-mono text-[9px] sm:text-[10px] text-amber-500/50 uppercase tracking-widest mt-1">
-                                    The Big Day
+                                    {t.lunar.theBigDay}
                                 </div>
                             )}
                         </div>
