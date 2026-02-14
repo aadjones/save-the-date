@@ -34,7 +34,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     // 1. Center Shift
     // Mobile: Shift down to make room for the header
     // Desktop: Centered
-    const centerYOffset = isMobile ? 30 : 0;
+    const centerYOffset = isMobile ? 30 : 20;
 
     // 2. Radius configuration
     // Mobile: Increased size for better visibility
@@ -188,7 +188,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     // --- SOLSTICE / EQUINOX LABELS ---
     // Adjusted offsets for responsiveness
     // dy/dx now conditional on isMobile vs Desktop for better spacing
-    const labelSpacing = isMobile ? 15 : 25;
+    const labelSpacing = isMobile ? 10 : 25;
 
     const dateLocale = locale === 'es' ? 'es-MX' : 'en-US';
     const fmtDate = (m: number, d: number) =>
@@ -245,15 +245,24 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         let textX = x + (d.dx || 0);
         let textY = y + (d.dy || 0);
 
-        g.append("text")
+        const nameEl = g.append("text")
           .attr("x", textX)
           .attr("y", textY)
           .attr("text-anchor", d.align)
           .attr(
             "class",
             "font-mono text-[8px] sm:text-[10px] md:text-xs text-stone-500 fill-current font-bold uppercase tracking-wider",
-          )
-          .text(d.name);
+          );
+
+        // On mobile, split long labels (e.g. "EQUINOCCIO DE PRIMAVERA") into two lines
+        if (isMobile && d.name.length > 16) {
+          const words = d.name.split(' ');
+          const mid = Math.ceil(words.length / 2);
+          nameEl.append("tspan").attr("x", textX).text(words.slice(0, mid).join(' '));
+          nameEl.append("tspan").attr("x", textX).attr("dy", "1.2em").text(words.slice(mid).join(' '));
+        } else {
+          nameEl.text(d.name);
+        }
 
         g.append("text")
           .attr("x", textX)

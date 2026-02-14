@@ -12,6 +12,7 @@ A creative wedding countdown web app featuring multiple unique time visualizatio
   - Social Time Converter
   - Absurd Time Units
   - Analog Clock
+- **Bilingual (EN/ES)**: Full English and Spanish support with a toggle — includes Mexican holidays and locale-aware date formatting
 - **Smooth Scrolling**: Snap-scroll through different modules
 - **Shuffle Function**: Randomly jump to different visualizations
 - **Fully Responsive**: Works on desktop and mobile
