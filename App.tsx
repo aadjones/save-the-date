@@ -99,8 +99,8 @@ const App: React.FC = () => {
                ))}
             </div>
 
-            {/* Scroll down arrow — all modules except the last */}
-            {index < modules.length - 1 && (
+            {/* Scroll down arrow — all modules except the last and lunar (which has its own) */}
+            {index < modules.length - 1 && Module.id !== 'lunar' && (
               <div className="absolute bottom-16 left-1/2 -translate-x-1/2 animate-bounce pointer-events-none z-20 opacity-80">
                 <ChevronDown size={36} className="text-stone-300" />
               </div>

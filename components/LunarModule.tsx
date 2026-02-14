@@ -3,6 +3,7 @@ import { SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON, MILLISECONDS_PER_DAY } from '..
 import { TimeModuleProps } from '../types';
 import { typography, colors } from '../designSystem';
 import { useT, useLocale } from '../i18n';
+import { ChevronDown } from 'lucide-react';
 
 interface MoonPhaseData {
   date: Date;
@@ -307,6 +308,11 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
                     </div>
                 );
             })}
+
+            {/* Scroll arrow at bottom of lunar timeline */}
+            <div className="animate-bounce opacity-80 py-8">
+              <ChevronDown size={36} className="text-stone-300" />
+            </div>
          </div>
        </div>
     </div>

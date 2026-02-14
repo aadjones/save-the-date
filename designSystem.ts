@@ -106,7 +106,7 @@ export const spacing = {
 
   // Footer/caption positioning
   footer: {
-    bottom: 'bottom-12',
+    bottom: 'bottom-28 sm:bottom-12',
     position: 'absolute left-0 right-0 text-center px-4 z-10',
   },
 
