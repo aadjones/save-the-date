@@ -30,7 +30,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
     // Adjust Center Y
     // Shift slightly upwards on both to leave ample room for the bottom stats block
-    const centerYOffset = isMobile ? -50 : -20;
+    const centerYOffset = isMobile ? -20 : -20;
 
     // Adjust Radius
     // Significantly reduced to prevent the orbit path or labels from overlapping 
@@ -324,7 +324,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       </div>
 
       {/* Overlay Stats */}
-      <div className="absolute bottom-8 sm:bottom-16 left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+      <div className="absolute bottom-28 sm:bottom-16 left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none">
         {/* Mobile: Grid cols 3 (horizontal), Desktop: Grid cols 3 (horizontal) but bigger */}
         <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full max-w-4xl">
            <div className="flex flex-col items-center justify-start">
