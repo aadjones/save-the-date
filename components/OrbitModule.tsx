@@ -5,9 +5,11 @@ import { TimeModuleProps } from '../types';
 import { getModuleHeaderClass, typography, spacing } from '../designSystem';
 import { Heart, MapPin } from 'lucide-react';
 import { createRoot } from 'react-dom/client';
+import { useT } from '../i18n';
 
 const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const t = useT();
   const [stats, setStats] = useState({ degrees: 0, km: 0, fraction: 0 });
   const [resizeTrigger, setResizeTrigger] = useState(0);
 
@@ -120,7 +122,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('text-anchor', 'middle')
       .attr('fill', '#a8a29e')
       .attr('class', 'font-mono text-[10px] sm:text-xs tracking-widest')
-      .text('WEDDING');
+      .text(t.orbit.wedding);
     
     // --- ENGAGEMENT MARKER ---
     // Calculate position for Engagement Date
@@ -167,7 +169,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
         .attr('text-anchor', 'middle')
         .attr('fill', '#78716c') // stone-500
         .attr('class', 'font-mono text-[8px] sm:text-[9px] tracking-widest')
-        .text('ENGAGED');
+        .text(t.orbit.engaged);
 
     // Dynamic Arrow Path (Initialized empty)
     const arrowPath = svg.append('path')
@@ -277,7 +279,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
         .attr('text-anchor', 'middle')
         .attr('fill', '#d6d3d1') // stone-300
         .attr('class', 'font-mono text-[8px] sm:text-[9px] tracking-widest font-bold')
-        .text('YOU ARE HERE');
+        .text(t.orbit.youAreHere);
 
       // Update Arrow Position
       const arrowStartOffset = 0.15; // rads ~ 8 deg
@@ -309,7 +311,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     return () => {
       cancelAnimationFrame(animationId);
     };
-  }, [targetDate, isActive, resizeTrigger]);
+  }, [targetDate, isActive, resizeTrigger, t]);
 
   return (
     <div className="h-full w-full relative bg-stone-950 overflow-hidden">
@@ -318,7 +320,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       
       {/* Consistent Header */}
       <div className={getModuleHeaderClass()}>
-        Orbital Dynamics
+        {t.orbit.header}
       </div>
 
       {/* Overlay Stats */}
@@ -329,21 +331,21 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
              <div className={typography.number.small}>
                {stats.degrees.toFixed(1)}°
              </div>
-             <div className={`${typography.label.small} mt-1`}>Arc</div>
+             <div className={`${typography.label.small} mt-1`}>{t.orbit.arc}</div>
            </div>
 
            <div className="flex flex-col items-center justify-start">
              <div className={typography.number.small}>
                {(stats.km / 1000000).toFixed(1)}M
              </div>
-             <div className={`${typography.label.small} mt-1`}>KM</div>
+             <div className={`${typography.label.small} mt-1`}>{t.orbit.km}</div>
            </div>
 
            <div className="flex flex-col items-center justify-start">
              <div className={typography.number.small}>
                {stats.fraction.toFixed(3)}
              </div>
-             <div className={`${typography.label.small} mt-1`}>Orbits</div>
+             <div className={`${typography.label.small} mt-1`}>{t.orbit.orbits}</div>
            </div>
         </div>
       </div>

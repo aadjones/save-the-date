@@ -106,22 +106,27 @@ const App: React.FC = () => {
            <h1 className={`${colors.text.secondary} font-serif text-lg sm:text-xl tracking-wide font-bold pointer-events-none`}>{t.app.title}</h1>
            <button
              onClick={handleLocationClick}
-             className={`${colors.text.muted} ${typography.label.mono} pointer-events-auto cursor-pointer hover:text-stone-200 transition-colors underline decoration-dotted underline-offset-2`}
+             className={`${colors.text.muted} ${typography.label.mono} pointer-events-auto cursor-pointer hover:text-stone-200 transition-colors underline decoration-dotted underline-offset-2 hidden sm:inline`}
              aria-label={t.app.locationAriaLabel}
            >
              {VENUE_COORDINATES}
            </button>
          </div>
-         <button
-           onClick={handleDateClick}
-           className={`${colors.text.tertiary} ${typography.label.mono} mt-0.5 sm:mt-1 pointer-events-auto cursor-pointer hover:text-stone-300 transition-colors underline decoration-dotted underline-offset-2`}
-           aria-label={t.app.calendarAriaLabel}
-         >
-           {t.app.date}
-         </button>
+         <div className="flex items-center gap-3 mt-0.5 sm:mt-1">
+           <button
+             onClick={handleDateClick}
+             className={`${colors.text.tertiary} ${typography.label.mono} pointer-events-auto cursor-pointer hover:text-stone-300 transition-colors underline decoration-dotted underline-offset-2`}
+             aria-label={t.app.calendarAriaLabel}
+           >
+             {t.app.date}
+           </button>
+           <div className="sm:hidden pointer-events-auto">
+             <LanguageToggle />
+           </div>
+         </div>
       </div>
 
-      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 mix-blend-difference">
+      <div className="absolute top-4 right-4 sm:top-6 sm:right-6 z-50 mix-blend-difference hidden sm:block">
         <LanguageToggle />
       </div>
 

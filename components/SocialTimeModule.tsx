@@ -4,48 +4,69 @@ import { MILLISECONDS_PER_DAY } from '../constants';
 import { Coffee, Calendar, Flag } from 'lucide-react';
 import { getModuleHeaderClass, getModuleFooterClass, getButtonClass, typography, colors } from '../designSystem';
 import Tooltip from './Tooltip';
+import { useT, useLocale } from '../i18n';
 
 const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [selectedUnit, setSelectedUnit] = useState<SocialUnit>(SocialUnit.WEEKENDS);
   const [count, setCount] = useState<number>(0);
+  const t = useT();
+  const [locale] = useLocale();
 
   useEffect(() => {
-    // Helper to generate US Federal Holidays for a given year
+    // US Federal Holidays
     const getFederalHolidays = (year: number) => {
         const holidays: Date[] = [];
-        
-        // Fixed Date Holidays
+
         holidays.push(new Date(year, 0, 1)); // New Year's Day
         holidays.push(new Date(year, 5, 19)); // Juneteenth
         holidays.push(new Date(year, 6, 4)); // Independence Day
         holidays.push(new Date(year, 10, 11)); // Veterans Day
         holidays.push(new Date(year, 11, 25)); // Christmas Day
 
-        // Floating Date Holidays
-        const addFloating = (month: number, dayOfWeek: number, n: number) => { 
-            // n=0 implies last occurrence
+        const addFloating = (month: number, dayOfWeek: number, n: number) => {
             const date = new Date(year, month, 1);
-            // Find first occurrence of dayOfWeek in the month
             while (date.getDay() !== dayOfWeek) date.setDate(date.getDate() + 1);
-            
+
             if (n === 0) {
-                // Find last: Start at next month 0th day and go back
                 const last = new Date(year, month + 1, 0);
                 while (last.getDay() !== dayOfWeek) last.setDate(last.getDate() - 1);
                 holidays.push(last);
             } else {
-                // Add n-1 weeks to the first occurrence
                 date.setDate(date.getDate() + (n - 1) * 7);
                 holidays.push(date);
             }
         };
 
-        addFloating(0, 1, 3); // MLK Day - Jan, 3rd Mon
-        addFloating(1, 1, 3); // Presidents Day - Feb, 3rd Mon
-        addFloating(4, 1, 0); // Memorial Day - May, Last Mon
-        addFloating(8, 1, 1); // Labor Day - Sep, 1st Mon
-        addFloating(9, 1, 2); // Columbus/Indigenous Peoples' Day - Oct, 2nd Mon
-        addFloating(10, 4, 4); // Thanksgiving - Nov, 4th Thu
+        addFloating(0, 1, 3); // MLK Day
+        addFloating(1, 1, 3); // Presidents Day
+        addFloating(4, 1, 0); // Memorial Day
+        addFloating(8, 1, 1); // Labor Day
+        addFloating(9, 1, 2); // Columbus Day
+        addFloating(10, 4, 4); // Thanksgiving
+
+        return holidays;
+    };
+
+    // Mexican Holidays (Días Festivos Oficiales)
+    const getMexicanHolidays = (year: number) => {
+        const holidays: Date[] = [];
+
+        // Fixed
+        holidays.push(new Date(year, 0, 1));  // Año Nuevo
+        holidays.push(new Date(year, 4, 1));  // Día del Trabajo
+        holidays.push(new Date(year, 8, 16)); // Día de la Independencia
+        holidays.push(new Date(year, 10, 20)); // Revolución Mexicana (observed)
+        holidays.push(new Date(year, 11, 25)); // Navidad
+
+        const addFloating = (month: number, dayOfWeek: number, n: number) => {
+            const date = new Date(year, month, 1);
+            while (date.getDay() !== dayOfWeek) date.setDate(date.getDate() + 1);
+            date.setDate(date.getDate() + (n - 1) * 7);
+            holidays.push(date);
+        };
+
+        addFloating(1, 1, 1); // Día de la Constitución - Feb, 1st Mon
+        addFloating(2, 1, 3); // Natalicio de Benito Juárez - Mar, 3rd Mon
 
         return holidays;
     };
@@ -62,8 +83,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
       switch (selectedUnit) {
         case SocialUnit.WEEKENDS:
-          // Rough approximation: weeks remaining
-          setCount(Math.floor(diffDays / 7)); 
+          setCount(Math.floor(diffDays / 7));
           break;
         case SocialUnit.MEALS:
           setCount(Math.floor(diffDays * 3));
@@ -72,11 +92,11 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
           let holidayCount = 0;
           const startYear = now.getFullYear();
           const endYear = targetDate.getFullYear();
-          
+          const getHolidays = locale === 'es' ? getMexicanHolidays : getFederalHolidays;
+
           for (let y = startYear; y <= endYear; y++) {
-             const holidays = getFederalHolidays(y);
+             const holidays = getHolidays(y);
              for (const h of holidays) {
-                 // Check if holiday is strictly within the remaining window
                  if (h.getTime() > now.getTime() && h.getTime() < targetDate.getTime()) {
                      holidayCount++;
                  }
@@ -86,40 +106,45 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
           break;
       }
     };
-    
+
     calculate();
-    // Re-calculate less frequently for holidays, but keeping 1s for consistency across units
     const interval = setInterval(calculate, 1000);
     return () => clearInterval(interval);
-  }, [targetDate, selectedUnit]);
+  }, [targetDate, selectedUnit, locale]);
+
+  // Map SocialUnit enum to translated label for the "X remaining" display
+  const unitDisplayLabel: Record<SocialUnit, string> = {
+    [SocialUnit.WEEKENDS]: t.social.weekends.toLowerCase(),
+    [SocialUnit.MEALS]: t.social.meals.toLowerCase(),
+    [SocialUnit.HOLIDAYS]: t.social.holidays.toLowerCase(),
+  };
 
   const buttons = [
     {
       id: SocialUnit.WEEKENDS,
       icon: Calendar,
-      label: 'Weekends',
-      tooltip: 'Estimated Saturdays and Sundays remaining'
+      label: t.social.weekends,
+      tooltip: t.social.weekendsTooltip,
     },
     {
       id: SocialUnit.MEALS,
       icon: Coffee,
-      label: 'Meals',
-      tooltip: 'Assumes 3 meals per day (breakfast, lunch, dinner)'
+      label: t.social.meals,
+      tooltip: t.social.mealsTooltip,
     },
     {
       id: SocialUnit.HOLIDAYS,
       icon: Flag,
-      label: 'Holidays',
-      tooltip: 'U.S. Federal Holidays between now and the wedding'
+      label: t.social.holidays,
+      tooltip: t.social.holidaysTooltip,
     },
   ];
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-6 relative">
 
-      {/* Consistent Header */}
       <div className={getModuleHeaderClass()}>
-        Social Constructs
+        {t.social.header}
       </div>
 
       <div className="flex gap-3 sm:gap-4 mb-8 sm:mb-12 flex-col min-[400px]:flex-row justify-center mt-10 sm:mt-0">
@@ -145,12 +170,12 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
             {Math.floor(count).toLocaleString()}
         </span>
         <span className="text-lg sm:text-xl md:text-2xl font-serif italic text-stone-500">
-            {selectedUnit.toLowerCase()} remaining
+            {unitDisplayLabel[selectedUnit]} {t.social.remaining}
         </span>
       </div>
-      
+
       <p className={getModuleFooterClass()}>
-          *Estimates based on standard calendar weeks, 3 meals/day, and U.S. Federal Holidays.
+          {t.social.footer}
       </p>
     </div>
   );

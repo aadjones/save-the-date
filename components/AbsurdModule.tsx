@@ -2,10 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, AbsurdUnit } from '../types';
 import { ABSURD_CONVERSIONS, MILLISECONDS_PER_DAY } from '../constants';
 import { getModuleHeaderClass, typography, colors } from '../designSystem';
+import { useT } from '../i18n';
 
 const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [unit, setUnit] = useState<AbsurdUnit>(AbsurdUnit.OH_SHIT);
   const [count, setCount] = useState<number>(0);
+  const t = useT();
+
+  const unitLabels: Record<AbsurdUnit, string> = {
+    [AbsurdUnit.NETFLIX]: t.absurd.netflix,
+    [AbsurdUnit.CAT_NAPS]: t.absurd.catNaps,
+    [AbsurdUnit.OH_SHIT]: t.absurd.existentialPanics,
+    [AbsurdUnit.HEARTBEATS]: t.absurd.heartbeats,
+  };
 
   useEffect(() => {
      // Initial setup
@@ -54,7 +63,7 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     >
       {/* Consistent Header */}
       <div className={getModuleHeaderClass()}>
-        The Absurd Scale
+        {t.absurd.header}
       </div>
 
       <div className="text-center select-none w-full max-w-2xl mt-8 sm:mt-10">
@@ -63,20 +72,20 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
                 {Math.floor(count).toLocaleString()}
             </div>
             <div className={`text-2xl sm:text-3xl md:text-4xl font-serif ${colors.text.tertiary} px-4`}>
-                {unit}
+                {unitLabels[unit]}
             </div>
         </div>
 
-        <p className={typography.hint.standard}>Tap to change perspective</p>
+        <p className={typography.hint.standard}>{t.absurd.tapHint}</p>
 
         {unit === AbsurdUnit.OH_SHIT && (
              <p className={`${typography.caption.standard} ${colors.text.subtle} mt-4 px-4`}>
-                 *Calculated based on a stress coefficient of 0.2 panics/day.
+                 {t.absurd.stressNote}
              </p>
         )}
          {unit === AbsurdUnit.HEARTBEATS && (
              <p className={`${typography.caption.standard} mt-4 px-4 opacity-70`}>
-                 Based on 70 BPM resting rate.
+                 {t.absurd.bpmNote}
              </p>
         )}
       </div>

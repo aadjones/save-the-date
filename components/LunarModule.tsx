@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON, MILLISECONDS_PER_DAY } from '../constants';
 import { TimeModuleProps } from '../types';
 import { typography, colors } from '../designSystem';
-import { useT } from '../i18n';
+import { useT, useLocale } from '../i18n';
 
 interface MoonPhaseData {
   date: Date;
@@ -89,6 +89,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const t = useT();
+  const [locale] = useLocale();
 
   // Generate Phases
   useEffect(() => {
@@ -231,7 +232,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   return (
     <div className="h-full w-full bg-stone-950 text-stone-200 relative overflow-hidden flex flex-col">
        {/* Header - Fixed - Increased Top Padding for Mobile to clear global header */}
-       <div className="pt-20 sm:pt-16 pb-4 text-center z-20 bg-gradient-to-b from-stone-950 via-stone-950 to-transparent flex-shrink-0">
+       <div className="pt-28 sm:pt-16 pb-4 text-center z-20 bg-gradient-to-b from-stone-950 via-stone-950 to-transparent flex-shrink-0">
           <h2 className={typography.header.module}>{t.lunar.header}</h2>
           <p className={`${colors.text.muted} ${typography.label.mono} mt-2 animate-pulse`}>
              {t.lunar.scrollHint}
@@ -270,7 +271,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
                         {/* Left: Date - Reduced padding on mobile */}
                         <div className={`flex-1 text-right pr-3 sm:pr-10 ${p.isCurrent ? 'text-stone-100' : 'text-stone-500'}`}>
                             <div className="font-mono text-[10px] sm:text-xs tracking-widest uppercase font-bold">
-                                {p.date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                                {p.date.toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: 'short', day: 'numeric' })}
                             </div>
                             <div className="font-mono text-[9px] sm:text-[10px] text-stone-600 uppercase">
                                 {p.date.getFullYear()}

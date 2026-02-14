@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { TimeModuleProps } from '../types';
 import { ENGAGEMENT_DATE, MILLISECONDS_PER_DAY, SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON } from '../constants';
 import { getModuleHeaderClass, typography } from '../designSystem';
+import { useT } from '../i18n';
 
 const TWO_PI = Math.PI * 2;
 
@@ -18,8 +19,9 @@ interface HandData {
 const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [now, setNow] = useState(new Date());
-  const [activeIndex, setActiveIndex] = useState(0); // Start with Seconds
+  const [activeIndex, setActiveIndex] = useState(0);
   const lastScrollTime = useRef(0);
+  const t = useT();
 
   // Update time loop
   useEffect(() => {
@@ -120,17 +122,17 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
     const weekVal = (dayOfWeek + h / 24) / 7;
 
     return [
-        { id: 'sec', label: 'Seconds', value: secVal, color: '#a8a29e', lengthScale: 0.95, width: 1, description: 'The fleeing moment.' },
-        { id: 'min', label: 'Minutes', value: minVal, color: '#a8a29e', lengthScale: 0.85, width: 2, description: 'The mundane increment.' },
-        { id: 'hr', label: 'Hours', value: hourVal, color: '#a8a29e', lengthScale: 0.6, width: 4, description: 'The solar cycle.' },
-        { id: 'week', label: 'Week', value: weekVal, color: '#a8a29e', lengthScale: 0.5, width: 6, description: 'The working rhythm.' },
-        { id: 'lunar', label: 'Lunar Phase', value: lunarPhase, color: '#e7e5e4', lengthScale: 0.45, width: 2, description: 'The synodic month (29.53 days).' },
-        { id: 'month', label: 'Month', value: dayVal, color: '#a8a29e', lengthScale: 0.75, width: 1, description: 'Gregorian progress.' },
-        { id: 'year', label: 'Solar Year', value: yearProgress, color: '#fbbf24', lengthScale: 0.9, width: 1.5, description: 'One orbit around the Sun.' },
-        { id: 'sidereal', label: 'Sidereal Day', value: siderealVal, color: '#78716c', lengthScale: 0.6, width: 1, description: 'Rotation relative to distant stars.' },
-        { id: 'wait', label: 'The Countdown', value: waitProgress, color: '#f59e0b', lengthScale: 1.0, width: 3, description: 'Engagement to Wedding.' },
+        { id: 'sec', label: t.clock.seconds, value: secVal, color: '#a8a29e', lengthScale: 0.95, width: 1, description: t.clock.descSeconds },
+        { id: 'min', label: t.clock.minutes, value: minVal, color: '#a8a29e', lengthScale: 0.85, width: 2, description: t.clock.descMinutes },
+        { id: 'hr', label: t.clock.hours, value: hourVal, color: '#a8a29e', lengthScale: 0.6, width: 4, description: t.clock.descHours },
+        { id: 'week', label: t.clock.week, value: weekVal, color: '#a8a29e', lengthScale: 0.5, width: 6, description: t.clock.descWeek },
+        { id: 'lunar', label: t.clock.lunarPhase, value: lunarPhase, color: '#e7e5e4', lengthScale: 0.45, width: 2, description: t.clock.descLunarPhase },
+        { id: 'month', label: t.clock.month, value: dayVal, color: '#a8a29e', lengthScale: 0.75, width: 1, description: t.clock.descMonth },
+        { id: 'year', label: t.clock.solarYear, value: yearProgress, color: '#fbbf24', lengthScale: 0.9, width: 1.5, description: t.clock.descSolarYear },
+        { id: 'sidereal', label: t.clock.siderealDay, value: siderealVal, color: '#78716c', lengthScale: 0.6, width: 1, description: t.clock.descSiderealDay },
+        { id: 'wait', label: t.clock.theCountdown, value: waitProgress, color: '#f59e0b', lengthScale: 1.0, width: 3, description: t.clock.descCountdown },
     ];
-  }, [now, targetDate]);
+  }, [now, targetDate, t]);
 
   const activeHand = hands[activeIndex];
 
@@ -182,7 +184,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
 
       {/* Consistent Header */}
       <div className={getModuleHeaderClass()}>
-        The Relative Clock
+        {t.clock.header}
       </div>
 
       <div className="relative z-10 w-full max-w-xl aspect-square p-6 sm:p-12 mt-8 sm:mt-10">
@@ -283,7 +285,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
       </div>
       
       <div className={`absolute bottom-6 ${typography.hint.animated}`}>
-         Scroll or Tap to Cycle Hands
+         {t.clock.scrollHint}
       </div>
     </div>
   );

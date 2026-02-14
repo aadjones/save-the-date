@@ -4,10 +4,13 @@ import { TimeModuleProps } from "../types";
 import { Snowflake, Flower2, Sun, Leaf } from "lucide-react";
 import { createRoot } from "react-dom/client";
 import { getModuleHeaderClass } from "../designSystem";
+import { useT, useLocale } from "../i18n";
 
 const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [resizeTrigger, setResizeTrigger] = useState(0);
+  const t = useT();
+  const [locale] = useLocale();
 
   // Handle Resize
   useEffect(() => {
@@ -63,25 +66,25 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     // --- SEASONS CONFIG ---
     const seasons = [
       {
-        name: "Winter",
+        name: t.seasonal.winter,
         startAngle: 0,
         endAngle: Math.PI / 2,
         labelAngle: Math.PI / 4,
       },
       {
-        name: "Spring",
+        name: t.seasonal.spring,
         startAngle: Math.PI / 2,
         endAngle: Math.PI,
         labelAngle: (3 * Math.PI) / 4,
       },
       {
-        name: "Summer",
+        name: t.seasonal.summer,
         startAngle: Math.PI,
         endAngle: (3 * Math.PI) / 2,
         labelAngle: (5 * Math.PI) / 4,
       },
       {
-        name: "Fall",
+        name: t.seasonal.fall,
         startAngle: (3 * Math.PI) / 2,
         endAngle: 2 * Math.PI,
         labelAngle: (7 * Math.PI) / 4,
@@ -187,26 +190,30 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     // dy/dx now conditional on isMobile vs Desktop for better spacing
     const labelSpacing = isMobile ? 15 : 25;
 
+    const dateLocale = locale === 'es' ? 'es-MX' : 'en-US';
+    const fmtDate = (m: number, d: number) =>
+      new Date(2026, m, d).toLocaleDateString(dateLocale, { month: 'short', day: 'numeric' }).toUpperCase();
+
     const cardinalLabels = [
       {
-        name: "WINTER SOLSTICE",
-        date: "DEC 21",
+        name: t.seasonal.winterSolstice,
+        date: fmtDate(11, 21),
         angle: 0,
         align: "middle",
         dy: -labelSpacing,
         dx: 0,
       },
       {
-        name: "VERNAL EQUINOX",
-        date: "MAR 20",
+        name: t.seasonal.vernalEquinox,
+        date: fmtDate(2, 20),
         angle: Math.PI / 2,
         align: "start",
         dy: 0,
         dx: labelSpacing,
       },
       {
-        name: "SUMMER SOLSTICE",
-        date: "JUN 21",
+        name: t.seasonal.summerSolstice,
+        date: fmtDate(5, 21),
         angle: Math.PI,
         align: "middle",
         dy: labelSpacing + 10,
@@ -214,8 +221,8 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       },
       // Safari/mobile fix: Reduce negative dx offset to prevent label cutoff on left edge
       {
-        name: "AUTUMNAL EQUINOX",
-        date: "SEP 22",
+        name: t.seasonal.autumnalEquinox,
+        date: fmtDate(8, 22),
         angle: (3 * Math.PI) / 2,
         align: "end",
         dy: -labelSpacing,
@@ -378,7 +385,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         "class",
         "font-mono text-[9px] sm:text-[10px] md:text-xs font-bold text-stone-100 fill-current tracking-widest",
       )
-      .text("YOU ARE HERE");
+      .text(t.seasonal.youAreHere);
 
     curGroup
       .append("text")
@@ -391,7 +398,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       )
       .text(
         now
-          .toLocaleDateString("en-US", { month: "short", day: "numeric" })
+          .toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: "short", day: "numeric" })
           .toUpperCase(),
       );
 
@@ -462,7 +469,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         "class",
         "font-mono text-[9px] sm:text-[10px] md:text-xs font-bold text-stone-300 fill-current tracking-widest",
       )
-      .text("WEDDING");
+      .text(t.seasonal.wedding);
 
     tarGroup
       .append("text")
@@ -475,10 +482,10 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       )
       .text(
         targetDate
-          .toLocaleDateString("en-US", { month: "short", day: "numeric" })
+          .toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: "short", day: "numeric" })
           .toUpperCase(),
       );
-  }, [targetDate, resizeTrigger]);
+  }, [targetDate, resizeTrigger, t, locale]);
 
   return (
     <div className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-6 relative overflow-hidden">
@@ -486,7 +493,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       <div ref={containerRef} className="absolute inset-0 z-0" />
 
       {/* Consistent Header */}
-      <div className={getModuleHeaderClass()}>The Annual Cycle</div>
+      <div className={getModuleHeaderClass()}>{t.seasonal.header}</div>
     </div>
   );
 };

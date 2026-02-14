@@ -100,7 +100,7 @@ export const spacing = {
 
   // Header positioning (consistent across all modules)
   header: {
-    top: 'top-16 sm:top-12',
+    top: 'top-24 sm:top-12',
     position: 'absolute left-0 right-0 z-10 text-center pointer-events-none px-4',
   },
 
