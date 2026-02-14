@@ -11,7 +11,7 @@ export const es: Translations = {
     shuffleAriaLabel: 'Reloj Aleatorio',
   },
   standard: {
-    header: 'El Intervalo Estándar',
+    header: '¡La Boda de Aaron y Anakaren!',
     years: 'Años',
     months: 'Meses',
     days: 'Días',
@@ -71,7 +71,7 @@ export const es: Translations = {
   absurd: {
     header: 'La Escala Absurda',
     netflix: 'Miniseries de Netflix',
-    catNaps: 'Siestas de Gato',
+    catNaps: 'Siestas',
     existentialPanics: 'Pánicos Existenciales',
     heartbeats: 'Latidos del Corazón',
     tapHint: 'Toca para cambiar perspectiva',

@@ -185,9 +185,12 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
       {/* Consistent Header */}
       <div className={getModuleHeaderClass()}>
         {t.clock.header}
+        <p className={`${typography.hint.animated} mt-2`}>
+          {t.clock.scrollHint}
+        </p>
       </div>
 
-      <div className="relative z-10 w-full max-w-xl aspect-square p-6 sm:p-12 mt-8 sm:mt-10">
+      <div className="relative z-10 w-full max-w-xl aspect-square p-6 sm:p-12 mt-16 sm:mt-14 max-h-[60vh] sm:max-h-none">
         <svg viewBox="-100 -100 200 200" className="w-full h-full drop-shadow-2xl">
             {/* Base Face */}
             <circle cx="0" cy="0" r="98" fill="none" stroke="#292524" strokeWidth="0.5" />
@@ -284,9 +287,6 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         </div>
       </div>
       
-      <div className={`absolute bottom-6 ${typography.hint.animated}`}>
-         {t.clock.scrollHint}
-      </div>
     </div>
   );
 };

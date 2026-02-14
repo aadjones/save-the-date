@@ -7,6 +7,7 @@ import SocialTimeModule from './components/SocialTimeModule';
 import AbsurdModule from './components/AbsurdModule';
 import AnalogClockModule from './components/AnalogClockModule';
 import ShuffleButton from './components/ShuffleButton';
+import { ChevronDown } from 'lucide-react';
 import { TARGET_DATE, VENUE_NAME, VENUE_ADDRESS, VENUE_COORDINATES } from './constants';
 import { components, colors, typography } from './designSystem';
 import { generateIcsFile } from './utils/calendarUtils';
@@ -97,6 +98,13 @@ const App: React.FC = () => {
                  />
                ))}
             </div>
+
+            {/* Scroll down arrow — all modules except the last */}
+            {index < modules.length - 1 && (
+              <div className="absolute bottom-16 left-1/2 -translate-x-1/2 animate-bounce pointer-events-none z-20 opacity-80">
+                <ChevronDown size={36} className="text-stone-300" />
+              </div>
+            )}
           </div>
         ))}
       </div>

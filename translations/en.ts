@@ -11,7 +11,7 @@ export const en: Translations = {
     shuffleAriaLabel: 'Random Clock',
   },
   standard: {
-    header: 'The Standard Interval',
+    header: 'Aaron & Anakaren\'s Wedding!',
     years: 'Years',
     months: 'Months',
     days: 'Days',
