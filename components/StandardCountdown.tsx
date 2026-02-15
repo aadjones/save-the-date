@@ -75,26 +75,31 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-stone-200 rounded-full blur-[120px]"></div>
       </div>
 
-      <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl text-center mb-4 sm:mb-10 z-10 font-bold`}>
+      <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl text-center z-10 font-bold flex-shrink-0 mb-2 sm:mb-4`}>
         {t.standard.header}
       </h2>
 
-      {/* Image container - flexible space */}
-      <div className="flex-1 flex items-center justify-center w-full min-h-0 py-2">
-        <img
-          src="/potatoes-transparent.png"
-          alt="Aaron & Anakaren"
-          className="z-10 max-h-[120px] sm:max-h-[180px] w-auto object-contain drop-shadow-xl"
-        />
+      {/* 2. Main Visualization Area (Potato) */}
+      <div className="flex-1 w-full flex items-center justify-center min-h-0 py-4 z-10 overflow-hidden">
+        <div className="relative w-full h-full max-h-[160px] sm:max-h-[200px] md:max-h-[240px] flex items-center justify-center">
+          <img
+            src="/potatoes-transparent.png"
+            alt="Aaron & Anakaren"
+            className="h-full w-auto object-contain drop-shadow-xl"
+          />
+        </div>
       </div>
 
-      <div className="grid grid-cols-3 gap-x-2 gap-y-2 sm:gap-x-4 sm:gap-y-8 md:gap-x-8 md:gap-y-10 z-10 w-full max-w-4xl px-2 sm:px-6 mb-2 sm:mb-8 mt-auto">
-        <Item val={timeLeft.years} label={t.standard.years} />
-        <Item val={timeLeft.months} label={t.standard.months} />
-        <Item val={timeLeft.days} label={t.standard.days} />
-        <Item val={timeLeft.hours} label={t.standard.hours} />
-        <Item val={timeLeft.minutes} label={t.standard.minutes} />
-        <Item val={timeLeft.seconds} label={t.standard.seconds} />
+      {/* 3. Stats Area */}
+      <div className="w-full max-w-4xl z-10 flex flex-col justify-center mb-8 px-2 sm:px-6 flex-shrink-0">
+        <div className="grid grid-cols-3 gap-x-2 gap-y-2 sm:gap-x-4 sm:gap-y-6 md:gap-x-8 md:gap-y-8">
+          <Item val={timeLeft.years} label={t.standard.years} />
+          <Item val={timeLeft.months} label={t.standard.months} />
+          <Item val={timeLeft.days} label={t.standard.days} />
+          <Item val={timeLeft.hours} label={t.standard.hours} />
+          <Item val={timeLeft.minutes} label={t.standard.minutes} />
+          <Item val={timeLeft.seconds} label={t.standard.seconds} />
+        </div>
       </div>
 
       <p className={`${getVibeClass(vibe, 'footer')} text-[10px] sm:text-xs text-center uppercase tracking-widest pb-14 sm:pb-32 px-4`}>
