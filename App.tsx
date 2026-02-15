@@ -97,7 +97,7 @@ const App: React.FC = () => {
                   className="animate-bounce opacity-80 hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
                   aria-label="Scroll to next section"
                 >
-                  <ChevronDown size={28} className="text-stone-300 sm:w-9 sm:h-9" />
+                  <ChevronDown size={28} className={`${getVibeClass(modules[index].vibe, 'branding')} sm:w-9 sm:h-9`} />
                 </button>
               </div>
             )}
@@ -109,7 +109,7 @@ const App: React.FC = () => {
                   className="animate-bounce hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
                   aria-label="Scroll to next section"
                 >
-                  <ChevronDown size={28} className="text-stone-300 sm:w-9 sm:h-9" />
+                  <ChevronDown size={28} className={`${getVibeClass(modules[index].vibe, 'branding')} sm:w-9 sm:h-9`} />
                 </button>
               </div>
             )}
