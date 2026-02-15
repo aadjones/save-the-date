@@ -214,6 +214,30 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     setPhases(finalData);
   }, [targetDate, t]);
 
+  // Allow scroll-through to parent snap container when at top/bottom of lunar timeline
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    const handleWheel = (e: WheelEvent) => {
+      const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 2;
+      const atTop = el.scrollTop < 2;
+      const scrollingDown = e.deltaY > 0;
+      const scrollingUp = e.deltaY < 0;
+
+      // At boundary and scrolling further — let event pass to parent
+      if ((atBottom && scrollingDown) || (atTop && scrollingUp)) {
+        el.style.overflowY = 'hidden';
+        requestAnimationFrame(() => {
+          el.style.overflowY = 'auto';
+        });
+      }
+    };
+
+    el.addEventListener('wheel', handleWheel, { passive: true });
+    return () => el.removeEventListener('wheel', handleWheel);
+  }, []);
+
   // Scroll to Current
   useLayoutEffect(() => {
     if (isActive && phases.length > 0 && scrollContainerRef.current) {
