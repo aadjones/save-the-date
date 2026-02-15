@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, SocialUnit } from '../types';
 import { MILLISECONDS_PER_DAY } from '../constants';
 import { Coffee, Calendar, Flag } from 'lucide-react';
-import { getModuleHeaderClass, getModuleFooterClass, getButtonClass, typography, colors } from '../designSystem';
+import { getModuleHeaderClass, getModuleFooterClass, getButtonClass, typography, colors, vibes, getVibeClass } from '../designSystem';
 import Tooltip from './Tooltip';
 import { useT, useLocale } from '../i18n';
 
@@ -11,6 +11,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [count, setCount] = useState<number>(0);
   const t = useT();
   const [locale] = useLocale();
+  const vibe = 'corporate';
 
   useEffect(() => {
     // US Federal Holidays
@@ -141,8 +142,8 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   ];
 
   return (
-    <div className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4">
-      <h2 className={`${typography.header.module} text-center mb-6`}>
+    <div className={`h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4`}>
+      <h2 className={`${getVibeClass(vibe, 'header')} text-center mb-6 z-10`}>
         {t.social.header}
       </h2>
 
@@ -157,23 +158,23 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
                 className={`${getButtonClass(active)} flex items-center gap-2 px-4 py-2 pointer-events-auto`}
               >
                 <Icon size={16} className="sm:w-4 sm:h-4" />
-                <span className={`${typography.label.small} font-bold`}>{btn.label}</span>
+                <span className={`${getVibeClass(vibe, 'label')} !text-[10px] sm:!text-xs font-bold`}>{btn.label}</span>
               </button>
             </Tooltip>
           )
         })}
       </div>
 
-      <div className="flex-1 flex flex-col items-center justify-center text-center animate-in fade-in duration-500 w-full min-h-0">
-        <span className="text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] font-mono font-light tracking-tighter text-stone-100 block mb-2 sm:mb-4">
+      <div className="flex-1 flex flex-col items-center justify-center text-center animate-in fade-in duration-500 w-full min-h-0 z-10">
+        <span className={`${getVibeClass(vibe, 'number')} text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] block mb-2 sm:mb-4 tracking-tighter`}>
           {Math.floor(count).toLocaleString()}
         </span>
-        <span className="text-lg sm:text-xl md:text-2xl font-serif italic text-stone-500">
+        <span className={`${getVibeClass(vibe, 'header')} text-lg sm:text-xl md:text-2xl lowercase opacity-40 italic`}>
           {unitDisplayLabel[selectedUnit]} {t.social.remaining}
         </span>
       </div>
 
-      <p className={`${typography.label.mono} text-[10px] sm:text-xs text-stone-500 text-center uppercase tracking-widest pb-14 sm:pb-32 px-4`}>
+      <p className={`${getVibeClass(vibe, 'footer')} text-[10px] sm:text-xs text-center uppercase tracking-widest pb-14 sm:pb-32 px-4 z-10`}>
         {t.social.footer}
       </p>
     </div>
