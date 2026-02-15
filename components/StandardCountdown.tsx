@@ -71,18 +71,27 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
   );
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-6 relative overflow-hidden">
+    <div className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden">
       <div className="absolute inset-0 opacity-10 pointer-events-none">
          <div className="absolute top-10 left-10 w-64 h-64 bg-stone-700 rounded-full blur-[100px]"></div>
          <div className="absolute bottom-10 right-10 w-96 h-96 bg-stone-800 rounded-full blur-[120px]"></div>
       </div>
-      
+
       {/* Consistent Header */}
       <div className={getModuleHeaderClass()}>
         {t.standard.header}
       </div>
 
-      <div className="grid grid-cols-3 sm:grid-cols-3 gap-x-2 gap-y-8 sm:gap-x-4 sm:gap-y-8 md:gap-x-8 md:gap-y-10 z-10 w-full max-w-4xl mt-10 sm:mt-0">
+      {/* Image fills all space between header and countdown, centered within it */}
+      <div className="flex-1 flex items-center justify-center w-full pt-32 sm:pt-20">
+        <img
+          src="/potatoes-transparent.png"
+          alt="Aaron & Anakaren"
+          className="z-10 max-h-[225px] sm:max-h-[285px] w-auto object-contain drop-shadow-2xl"
+        />
+      </div>
+
+      <div className="grid grid-cols-3 gap-x-2 gap-y-8 sm:gap-x-4 sm:gap-y-8 md:gap-x-8 md:gap-y-10 z-10 w-full max-w-4xl px-6 pb-44 sm:pb-28">
         <Item val={timeLeft.years} label={t.standard.years} />
         <Item val={timeLeft.months} label={t.standard.months} />
         <Item val={timeLeft.days} label={t.standard.days} />
@@ -90,7 +99,6 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <Item val={timeLeft.minutes} label={t.standard.minutes} />
         <Item val={timeLeft.seconds} label={t.standard.seconds} />
       </div>
-
 
       <p className={getModuleFooterClass()}>
         {t.standard.footer}

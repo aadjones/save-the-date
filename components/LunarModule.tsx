@@ -3,7 +3,7 @@ import { SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON, MILLISECONDS_PER_DAY } from '..
 import { TimeModuleProps } from '../types';
 import { typography, colors } from '../designSystem';
 import { useT, useLocale } from '../i18n';
-import { ChevronDown } from 'lucide-react';
+
 
 interface MoonPhaseData {
   date: Date;
@@ -85,7 +85,7 @@ const MoonIcon: React.FC<{ phase: number; size: number; className?: string; high
   );
 };
 
-const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
+const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScrolledToBottom }) => {
   const [phases, setPhases] = useState<MoonPhaseData[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -234,9 +234,18 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       }
     };
 
+    const handleScroll = () => {
+      const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 2;
+      onScrolledToBottom?.(atBottom);
+    };
+
     el.addEventListener('wheel', handleWheel, { passive: true });
-    return () => el.removeEventListener('wheel', handleWheel);
-  }, []);
+    el.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      el.removeEventListener('wheel', handleWheel);
+      el.removeEventListener('scroll', handleScroll);
+    };
+  }, [onScrolledToBottom]);
 
   // Scroll to Current
   useLayoutEffect(() => {
@@ -333,10 +342,8 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
                 );
             })}
 
-            {/* Scroll arrow at bottom of lunar timeline */}
-            <div className="animate-bounce opacity-80 py-8">
-              <ChevronDown size={36} className="text-stone-300" />
-            </div>
+            {/* Bottom spacer so last items aren't flush with edge */}
+            <div className="py-8" />
          </div>
        </div>
     </div>

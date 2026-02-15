@@ -16,6 +16,7 @@ import { useT, LanguageToggle } from './i18n';
 const App: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeModule, setActiveModule] = useState<number>(0);
+  const [lunarAtBottom, setLunarAtBottom] = useState(false);
   const t = useT();
 
   const modules = [
@@ -69,9 +70,10 @@ const App: React.FC = () => {
             key={Module.id} 
             className="w-full h-full snap-start relative flex-shrink-0"
           >
-            <Module.Component 
-              targetDate={TARGET_DATE} 
-              isActive={index === activeModule} 
+            <Module.Component
+              targetDate={TARGET_DATE}
+              isActive={index === activeModule}
+              {...(Module.id === 'lunar' && { onScrolledToBottom: setLunarAtBottom })}
             />
             
             {/* Pagination indicator */}
@@ -88,12 +90,24 @@ const App: React.FC = () => {
                ))}
             </div>
 
-            {/* Scroll down arrow — all modules except the last and lunar (which has its own) */}
+            {/* Scroll down arrow */}
             {index < modules.length - 1 && Module.id !== 'lunar' && (
               <div className="absolute bottom-16 inset-x-0 flex justify-center z-20">
                 <button
                   onClick={() => scrollToModule(index + 1)}
                   className="animate-bounce opacity-80 hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
+                  aria-label="Scroll to next section"
+                >
+                  <ChevronDown size={36} className="text-stone-300" />
+                </button>
+              </div>
+            )}
+            {/* Lunar: arrow appears only once scrolled to the bottom of the timeline */}
+            {Module.id === 'lunar' && index < modules.length - 1 && (
+              <div className={`absolute bottom-16 inset-x-0 flex justify-center z-20 transition-opacity duration-500 ${lunarAtBottom ? 'opacity-80' : 'opacity-0 pointer-events-none'}`}>
+                <button
+                  onClick={() => scrollToModule(index + 1)}
+                  className="animate-bounce hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
                   aria-label="Scroll to next section"
                 >
                   <ChevronDown size={36} className="text-stone-300" />

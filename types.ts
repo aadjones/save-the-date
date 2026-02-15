@@ -1,6 +1,7 @@
 export interface TimeModuleProps {
   targetDate: Date;
   isActive: boolean;
+  onScrolledToBottom?: (atBottom: boolean) => void;
 }
 
 export interface CountdownTime {
