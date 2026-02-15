@@ -38,6 +38,12 @@ const App: React.FC = () => {
     }
   };
 
+  const scrollToModule = (index: number) => {
+    if (!containerRef.current) return;
+    const height = containerRef.current.clientHeight;
+    containerRef.current.scrollTo({ top: index * height, behavior: 'smooth' });
+  };
+
   const handleDateClick = () => {
     generateIcsFile(
       t.app.calendarTitle,
@@ -84,8 +90,14 @@ const App: React.FC = () => {
 
             {/* Scroll down arrow — all modules except the last and lunar (which has its own) */}
             {index < modules.length - 1 && Module.id !== 'lunar' && (
-              <div className="absolute bottom-16 left-1/2 -translate-x-1/2 animate-bounce pointer-events-none z-20 opacity-80">
-                <ChevronDown size={36} className="text-stone-300" />
+              <div className="absolute bottom-16 inset-x-0 flex justify-center z-20">
+                <button
+                  onClick={() => scrollToModule(index + 1)}
+                  className="animate-bounce opacity-80 hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
+                  aria-label="Scroll to next section"
+                >
+                  <ChevronDown size={36} className="text-stone-300" />
+                </button>
               </div>
             )}
           </div>
