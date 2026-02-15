@@ -230,7 +230,7 @@ export const vibes: Record<Vibe, {
   };
 }> = {
   wedding: {
-    container: 'bg-[#e2eeeb] text-stone-900', // Soft Sage/Teal (less white)
+    container: 'bg-[#dbe9e6] text-stone-900', // Deeper sage for better blending
     header: 'font-serif italic text-stone-600 tracking-wide',
     number: 'font-serif font-light text-stone-900',
     label: 'font-serif uppercase tracking-widest text-stone-500',
@@ -268,7 +268,7 @@ export const vibes: Record<Vibe, {
     pagination: { active: 'bg-violet-400', inactive: 'bg-[#0a0512]' }
   },
   corporate: {
-    container: 'bg-slate-50 text-slate-900',
+    container: 'bg-[#f1f5f9] text-slate-900', // Soft professional off-white
     header: 'font-sans font-black uppercase text-slate-500 tracking-tight',
     number: 'font-sans font-bold text-slate-900',
     label: 'font-sans font-bold uppercase text-blue-600',

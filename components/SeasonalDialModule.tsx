@@ -95,35 +95,21 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       .attr("stroke", "#334155") // slate-700
       .attr("stroke-width", 1);
 
-    // Crosshairs
+    // axes (North/South, East/West)
     svg
       .selectAll(".crosshair")
       .data([0, Math.PI / 2])
       .enter()
       .append("line")
-      .attr("x1", (d) => Math.sin(d) * -radius)
-      .attr("y1", (d) => -Math.cos(d) * -radius)
-      .attr("x2", (d) => Math.sin(d) * radius)
-      .attr("y2", (d) => -Math.cos(d) * radius)
-      .attr("stroke", "#1e293b") // slate-800
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "2 6");
+      .attr("x1", (d) => Math.sin(d) * -radius * 1.05)
+      .attr("y1", (d) => -Math.cos(d) * -radius * 1.05)
+      .attr("x2", (d) => Math.sin(d) * radius * 1.05)
+      .attr("y2", (d) => -Math.cos(d) * radius * 1.05)
+      .attr("stroke", "#334155") // slate-700
+      .attr("stroke-width", 1.5)
+      .attr("stroke-dasharray", "none"); // Solid lines for clearer quadrants
 
-    // Season Labels
-    svg
-      .selectAll(".season-label")
-      .data(seasons)
-      .enter()
-      .append("text")
-      .attr("x", (d) => Math.sin(d.labelAngle) * (radius * 0.55))
-      .attr("y", (d) => -Math.cos(d.labelAngle) * (radius * 0.55))
-      .attr("text-anchor", "middle")
-      .attr("alignment-baseline", "middle")
-      .attr(
-        "class",
-        "font-serif text-[10px] sm:text-base md:text-lg text-emerald-100/30 fill-current uppercase tracking-[0.3em] italic select-none",
-      )
-      .text((d) => d.name);
+    // Season Labels REMOVED as per user request
 
     // Season Icons
     const seasonIcons = [
@@ -161,7 +147,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <Icon
           size={iconSize}
           color={season.color}
-          style={{ opacity: 0.8 }}
+          style={{ opacity: 0.9 }}
           strokeWidth={1.5}
         />,
       );
