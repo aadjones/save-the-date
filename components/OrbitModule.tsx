@@ -30,9 +30,9 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     const isMobile = width < 640;
 
     // Header Safe Area (branding + toggle) - Increase to move diagram down
-    const headerSafety = isMobile ? 140 : 180;
-    // Bottom Stats Safe Area - Decrease to tighten gap
-    const footerSafety = isMobile ? 120 : 140;
+    const headerSafety = isMobile ? 160 : 200;
+    // Bottom Stats Safe Area - Decrease to tighten huge gap
+    const footerSafety = isMobile ? 60 : 80;
 
     const availableHeightForOrbit = height - headerSafety - footerSafety;
     const centerY = headerSafety + (availableHeightForOrbit / 2);
