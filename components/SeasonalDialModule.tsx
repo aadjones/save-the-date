@@ -200,7 +200,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         date: fmtDate(11, 21),
         angle: 0,
         align: "middle",
-        dy: -labelSpacing,
+        dy: -labelSpacing - 12, // Raised specifically for clearance
         dx: 0,
       },
       {
@@ -251,9 +251,15 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
         // Logical split for better two-line balance
         if (words.length > 1) {
-          const mid = Math.ceil(words.length / 2);
-          lines.push(words.slice(0, mid).join(' '));
-          lines.push(words.slice(mid).join(' '));
+          // If 3 words (like "Solsticio de Invierno"), put 'de' on the second line
+          if (words.length === 3 && words[1].toLowerCase() === 'de') {
+            lines.push(words[0]);
+            lines.push(words.slice(1).join(' '));
+          } else {
+            const mid = Math.ceil(words.length / 2);
+            lines.push(words.slice(0, mid).join(' '));
+            lines.push(words.slice(mid).join(' '));
+          }
         } else {
           lines.push(d.name);
         }
