@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { TimeModuleProps } from '../types';
 import { ENGAGEMENT_DATE, MILLISECONDS_PER_DAY, SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON } from '../constants';
-import { getModuleHeaderClass, typography } from '../designSystem';
-import { useT } from '../i18n';
+import { getModuleHeaderClass, getModuleFooterClass, typography, vibes, getVibeClass } from '../designSystem';
+import { useT, useLocale } from '../i18n';
 
 const TWO_PI = Math.PI * 2;
 
@@ -22,6 +22,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
     const [activeIndex, setActiveIndex] = useState(0);
     const lastScrollTime = useRef(0);
     const t = useT();
+    const vibe = 'steampunk';
 
     // Update time loop
     useEffect(() => {
@@ -92,15 +93,15 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         const weekVal = (dayOfWeek + h / 24) / 7;
 
         return [
-            { id: 'sec', label: t.clock.seconds, value: secVal, color: '#a8a29e', lengthScale: 0.95, width: 1, description: t.clock.descSeconds },
-            { id: 'min', label: t.clock.minutes, value: minVal, color: '#a8a29e', lengthScale: 0.85, width: 2, description: t.clock.descMinutes },
-            { id: 'hr', label: t.clock.hours, value: hourVal, color: '#a8a29e', lengthScale: 0.6, width: 4, description: t.clock.descHours },
-            { id: 'week', label: t.clock.week, value: weekVal, color: '#a8a29e', lengthScale: 0.5, width: 6, description: t.clock.descWeek },
-            { id: 'lunar', label: t.clock.lunarPhase, value: lunarPhase, color: '#e7e5e4', lengthScale: 0.45, width: 2, description: t.clock.descLunarPhase },
-            { id: 'month', label: t.clock.month, value: dayVal, color: '#a8a29e', lengthScale: 0.75, width: 1, description: t.clock.descMonth },
-            { id: 'year', label: t.clock.solarYear, value: yearProgress, color: '#fbbf24', lengthScale: 0.9, width: 1.5, description: t.clock.descSolarYear },
-            { id: 'sidereal', label: t.clock.siderealDay, value: siderealVal, color: '#78716c', lengthScale: 0.6, width: 1, description: t.clock.descSiderealDay },
-            { id: 'wait', label: t.clock.theCountdown, value: waitProgress, color: '#f59e0b', lengthScale: 1.0, width: 3, description: t.clock.descCountdown },
+            { id: 'sec', label: t.clock.seconds, value: secVal, color: '#d4af37', lengthScale: 0.95, width: 1, description: t.clock.descSeconds }, // Gold
+            { id: 'min', label: t.clock.minutes, value: minVal, color: '#cd7f32', lengthScale: 0.85, width: 2, description: t.clock.descMinutes }, // Bronze
+            { id: 'hr', label: t.clock.hours, value: hourVal, color: '#b87333', lengthScale: 0.6, width: 4, description: t.clock.descHours }, // Copper
+            { id: 'week', label: t.clock.week, value: weekVal, color: '#8b4513', lengthScale: 0.5, width: 6, description: t.clock.descWeek }, // Saddle Brown
+            { id: 'lunar', label: t.clock.lunarPhase, value: lunarPhase, color: '#a0522d', lengthScale: 0.45, width: 2, description: t.clock.descLunarPhase }, // Sienna
+            { id: 'month', label: t.clock.month, value: dayVal, color: '#800000', lengthScale: 0.75, width: 1, description: t.clock.descMonth }, // Maroon
+            { id: 'year', label: t.clock.solarYear, value: yearProgress, color: '#daa520', lengthScale: 0.9, width: 1.5, description: t.clock.descSolarYear }, // Goldenrod
+            { id: 'sidereal', label: t.clock.siderealDay, value: siderealVal, color: '#556b2f', lengthScale: 0.6, width: 1, description: t.clock.descSiderealDay }, // Dark Olive Green
+            { id: 'wait', label: t.clock.theCountdown, value: waitProgress, color: '#8b0000', lengthScale: 1.0, width: 3, description: t.clock.descCountdown }, // Dark Red
         ];
     }, [now, targetDate, t]);
 
@@ -145,7 +146,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         <div
             ref={containerRef}
             onClick={handleTap}
-            className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4 select-none cursor-pointer"
+            className={`h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4 select-none cursor-pointer`}
         >
             {/* 0. Background Ambience */}
             <div className="absolute inset-0 opacity-20 pointer-events-none">
@@ -154,7 +155,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
 
             {/* 1. Module Title & Subtitle */}
             <div className="text-center z-20 flex-shrink-0 mb-8 sm:mb-12">
-                <h2 className={typography.header.module}>{t.clock.header}</h2>
+                <h2 className={getVibeClass(vibe, 'header')}>{t.clock.header}</h2>
                 <p className={`${typography.hint.animated} text-stone-400 mt-1`}>
                     {t.clock.scrollHint}
                 </p>
