@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, CountdownTime } from '../types';
-import { getModuleHeaderClass, getModuleFooterClass, typography, spacing, colors } from '../designSystem';
+import { getModuleHeaderClass, getModuleFooterClass, typography, spacing, colors, vibes, getVibeClass } from '../designSystem';
 import { useT } from '../i18n';
 
 const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState<CountdownTime>({ years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 });
   const t = useT();
+  const vibe = 'wedding';
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -13,8 +14,6 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
       let timeLeft: CountdownTime = { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
 
       if (difference > 0) {
-        // Simple approximation for UI purposes, or use precise date libraries.
-        // Doing a precise diff without library for "Standard" feel.
         const now = new Date();
         const target = new Date(targetDate);
 
@@ -38,7 +37,6 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
           days--;
         }
         if (days < 0) {
-          // Days in previous month
           const prevMonth = new Date(target.getFullYear(), target.getMonth(), 0);
           days += prevMonth.getDate();
           months--;
@@ -63,21 +61,21 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
   const Item = ({ val, label }: { val: number; label: string }) => (
     <div className="flex flex-col items-center justify-center p-1 sm:p-4">
-      <span className={typography.number.medium}>
+      <span className={`${getVibeClass(vibe, 'number')} text-4xl sm:text-5xl md:text-6xl lg:text-8xl tabular-nums`}>
         {val.toString().padStart(2, '0')}
       </span>
-      <span className={`${typography.label.uppercase} mt-1.5 sm:mt-2`}>{label}</span>
+      <span className={`${getVibeClass(vibe, 'label')} mt-1.5 sm:mt-2`}>{label}</span>
     </div>
   );
 
   return (
-    <div className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4">
+    <div className={`h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4`}>
       <div className="absolute inset-0 opacity-10 pointer-events-none">
-        <div className="absolute top-10 left-10 w-64 h-64 bg-stone-700 rounded-full blur-[100px]"></div>
-        <div className="absolute bottom-10 right-10 w-96 h-96 bg-stone-800 rounded-full blur-[120px]"></div>
+        <div className="absolute top-10 left-10 w-64 h-64 bg-amber-100 rounded-full blur-[100px]"></div>
+        <div className="absolute bottom-10 right-10 w-96 h-96 bg-stone-200 rounded-full blur-[120px]"></div>
       </div>
 
-      <h2 className={`${typography.header.module} text-center mb-4 sm:mb-10`}>
+      <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl text-center mb-4 sm:mb-10 z-10 font-bold`}>
         {t.standard.header}
       </h2>
 
@@ -86,7 +84,7 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <img
           src="/potatoes-transparent.png"
           alt="Aaron & Anakaren"
-          className="z-10 max-h-[120px] sm:max-h-[180px] w-auto object-contain drop-shadow-2xl"
+          className="z-10 max-h-[120px] sm:max-h-[180px] w-auto object-contain drop-shadow-xl"
         />
       </div>
 
@@ -99,7 +97,7 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <Item val={timeLeft.seconds} label={t.standard.seconds} />
       </div>
 
-      <p className={`${typography.label.mono} text-[10px] sm:text-xs text-stone-500 text-center uppercase tracking-widest pb-14 sm:pb-32 px-4`}>
+      <p className={`${getVibeClass(vibe, 'footer')} text-[10px] sm:text-xs text-center uppercase tracking-widest pb-14 sm:pb-32 px-4`}>
         {t.standard.footer}
       </p>
 
