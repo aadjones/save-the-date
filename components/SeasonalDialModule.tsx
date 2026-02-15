@@ -245,6 +245,19 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         let textX = x + (d.dx || 0);
         let textY = y + (d.dy || 0);
 
+        // Render multi-line labels (Name + Date)
+        const words = d.name.split(' ');
+        let lines = [];
+
+        // Logical split for better two-line balance
+        if (words.length > 1) {
+          const mid = Math.ceil(words.length / 2);
+          lines.push(words.slice(0, mid).join(' '));
+          lines.push(words.slice(mid).join(' '));
+        } else {
+          lines.push(d.name);
+        }
+
         const nameEl = g.append("text")
           .attr("x", textX)
           .attr("y", textY)
@@ -254,19 +267,18 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
             "font-mono text-[8px] sm:text-[10px] md:text-xs text-stone-500 fill-current font-bold uppercase tracking-wider",
           );
 
-        // On mobile, split long labels (e.g. "EQUINOCCIO DE PRIMAVERA") into two lines
-        if (isMobile && d.name.length > 16) {
-          const words = d.name.split(' ');
-          const mid = Math.ceil(words.length / 2);
-          nameEl.append("tspan").attr("x", textX).text(words.slice(0, mid).join(' '));
-          nameEl.append("tspan").attr("x", textX).attr("dy", "1.2em").text(words.slice(mid).join(' '));
-        } else {
-          nameEl.text(d.name);
-        }
+        // Append Label Lines
+        lines.forEach((line, i) => {
+          nameEl.append("tspan")
+            .attr("x", textX)
+            .attr("dy", i === 0 ? 0 : "1.2em")
+            .text(line);
+        });
 
+        // Append Date Line (always separate)
         g.append("text")
           .attr("x", textX)
-          .attr("y", textY + (isMobile ? 10 : 14))
+          .attr("y", textY + (lines.length * (isMobile ? 10 : 14)))
           .attr("text-anchor", d.align)
           .attr(
             "class",
