@@ -29,15 +29,24 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
     const isMobile = width < 640;
 
-    // Adjust Center Y
-    // Shift slightly upwards on both to leave ample room for the bottom stats block
-    const centerYOffset = isMobile ? 0 : -20;
+    // Header Safe Area (branding + toggle)
+    const headerSafety = isMobile ? 120 : 140;
+    // Bottom Stats Safe Area
+    const footerSafety = isMobile ? 180 : 220;
 
-    // Adjust Radius
-    // Significantly reduced to prevent the orbit path or labels from overlapping 
-    // with the top header or bottom stats area.
-    const radiusScale = isMobile ? 0.23 : 0.32;
-    const radius = Math.min(width, height) * radiusScale;
+    const availableHeightForOrbit = height - headerSafety - footerSafety;
+    const centerY = headerSafety + (availableHeightForOrbit / 2);
+
+    // Radius must fit:
+    // 1. Horizontally: radius + padding < width / 2
+    // 2. Vertically: radius + labelOffset < availableHeightForOrbit / 2
+    const labelPadding = isMobile ? 50 : 70;
+    const horizontalMaxRadius = (width / 2) - 40;
+    const verticalMaxRadius = (availableHeightForOrbit / 2) - labelPadding;
+
+    const radius = Math.max(100, Math.min(horizontalMaxRadius, verticalMaxRadius));
+
+    const centerYOffset = centerY - (height / 2);
 
     // Clear previous
     d3.select(containerRef.current).selectAll('*').remove();
