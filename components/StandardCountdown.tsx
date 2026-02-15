@@ -77,16 +77,16 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-stone-800 rounded-full blur-[120px]"></div>
       </div>
 
-      <h2 className={`${typography.header.module} text-center mb-2 sm:mb-8`}>
+      <h2 className={`${typography.header.module} text-center mb-4 sm:mb-10`}>
         {t.standard.header}
       </h2>
 
       {/* Image container - flexible space */}
-      <div className="flex-1 flex items-center justify-center w-full min-h-0">
+      <div className="flex-1 flex items-center justify-center w-full min-h-0 py-2">
         <img
           src="/potatoes-transparent.png"
           alt="Aaron & Anakaren"
-          className="z-10 max-h-[120px] sm:max-h-[220px] w-auto object-contain drop-shadow-2xl"
+          className="z-10 max-h-[120px] sm:max-h-[180px] w-auto object-contain drop-shadow-2xl"
         />
       </div>
 
