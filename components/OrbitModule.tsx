@@ -322,7 +322,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
 
       {/* 3. Overlay Stats (Stacked in flow) */}
-      <div className="w-full max-w-4xl z-10 flex flex-col items-center mb-2">
+      <div className="w-full max-w-4xl z-10 flex flex-col items-center -mt-8 sm:-mt-12 mb-2">
         <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full">
           <div className="flex flex-col items-center justify-start">
             <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
@@ -348,7 +348,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       </div>
 
       {/* 4. Caption / Footer Spacer */}
-      <div className="pb-8 sm:pb-24 px-4 z-10" />
+      <div className="pb-4 sm:pb-8 px-4 z-10" />
     </div>
   );
 };
