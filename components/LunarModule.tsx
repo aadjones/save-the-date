@@ -1,9 +1,8 @@
 import React, { useState, useEffect, useRef, useLayoutEffect } from 'react';
 import { SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON, MILLISECONDS_PER_DAY } from '../constants';
 import { TimeModuleProps } from '../types';
-import { typography, colors } from '../designSystem';
+import { vibes, getVibeClass } from '../designSystem';
 import { useT, useLocale } from '../i18n';
-
 
 interface MoonPhaseData {
   date: Date;
@@ -16,9 +15,6 @@ interface MoonPhaseData {
 
 const MoonIcon: React.FC<{ phase: number; size: number; className?: string; highlight?: boolean }> = ({ phase, size, className, highlight }) => {
   const radius = size / 2;
-
-  // Create path for the lit portion
-  // Based on simplified projection: Terminator is an elliptical arc
   const p = phase % 1;
 
   // Determine lit path
@@ -31,37 +27,16 @@ const MoonIcon: React.FC<{ phase: number; size: number; className?: string; high
     // New Moon
     pathD = ""; // No light
   } else {
-    // Calculate terminator curve
-    // The terminator is a semi-ellipse with vertical axis R and horizontal axis R * cos(angle)
-
     const isWaxing = p < 0.5;
-
-    // Outer arc (the limb)
-    // Waxing: Lit on Right (Sweep 1 from Top to Bottom)
-    // Waning: Lit on Left (Sweep 0 from Top to Bottom)
-
-    // Terminator offset x. 
-    // p=0 -> cos(0)=1. p=0.25 -> cos(PI/2)=0. p=0.5 -> cos(PI)=-1.
     const terminatorX = -Math.cos(p * 2 * Math.PI) * radius;
 
-    // Path construction
     if (isWaxing) {
-      // Lit Right
-      // Limb: Top -> Right -> Bottom
-      // Terminator: Bottom -> Top. 
-      // For Crescent (p < 0.25), Terminator bows Right (Sweep 0).
-      // For Gibbous (p > 0.25), Terminator bows Left (Sweep 1).
       pathD = `
          M 0,${-radius} 
          A ${radius},${radius} 0 0,1 0,${radius} 
          A ${Math.abs(terminatorX)},${radius} 0 0,${p < 0.25 ? 0 : 1} 0,${-radius}
        `;
     } else {
-      // Waning (Lit Left)
-      // Limb: Top -> Left -> Bottom
-      // Terminator: Bottom -> Top.
-      // For Gibbous (p < 0.75), Terminator bows Right (Sweep 1).
-      // For Crescent (p > 0.75), Terminator bows Left (Sweep 0).
       pathD = `
          M 0,${radius} 
          A ${radius},${radius} 0 0,1 0,${-radius} 
@@ -78,9 +53,13 @@ const MoonIcon: React.FC<{ phase: number; size: number; className?: string; high
         </clipPath>
       </defs>
       {/* Dark Side / Base */}
-      <circle cx="0" cy="0" r={radius} className="fill-stone-900 stroke-stone-800" strokeWidth="1" />
-      {/* Lit Side */}
-      <path d={pathD} className={highlight ? "fill-stone-100 drop-shadow-[0_0_8px_rgba(255,255,255,0.5)]" : "fill-stone-400 opacity-80"} clipPath={`url(#moon-clip-${phase})`} />
+      <circle cx="0" cy="0" r={radius} className="fill-[#120b1e] stroke-indigo-900/30" strokeWidth="1" />
+      {/* Lit Side with Glow */}
+      <path
+        d={pathD}
+        className={highlight ? "fill-white drop-shadow-[0_0_8px_rgba(224,231,255,0.8)]" : "fill-indigo-200/40"}
+        clipPath={`url(#moon-clip-${phase})`}
+      />
     </svg>
   );
 };
@@ -91,34 +70,24 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const t = useT();
   const [locale] = useLocale();
+  const vibe = 'mystical';
 
   // Generate Phases
   useEffect(() => {
     const data: MoonPhaseData[] = [];
     const now = new Date();
-
-    // Start strictly from today (beginning of day to catch phases happening later today)
-    // This removes past phases (history) as requested.
     const startOfToday = new Date(now);
     startOfToday.setHours(0, 0, 0, 0);
     const startMs = startOfToday.getTime();
-
-    // End exactly at wedding date (no future phases beyond it)
     const endMs = targetDate.getTime();
 
     let currentMs = startMs;
-
-    // Find first sync point (New Moon) before startMs
-    // Ref: Jan 11 2024
     const diffFromRef = startMs - REFERENCE_NEW_MOON.getTime();
     const cyclesSinceRef = Math.floor(diffFromRef / (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY));
     const firstNewMoonMs = REFERENCE_NEW_MOON.getTime() + (cyclesSinceRef * SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY);
-
-    // Ensure we start checking phases from the sync point just before our start window
     currentMs = firstNewMoonMs;
 
     const addPhase = (time: number, type: MoonPhaseData['type'], phaseVal: number, lbl: string) => {
-      // Filter out any calculated phases that are before the start of today
       if (time >= startMs && time <= endMs) {
         data.push({
           date: new Date(time),
@@ -129,18 +98,14 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
       }
     };
 
-    // Iterate until we pass the end date
-    // Note: We might start loop before startMs, but addPhase filters.
     while (currentMs <= endMs) {
       addPhase(currentMs, 'NEW', 0, t.lunar.newMoon);
       addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.25), 'FIRST_QUARTER', 0.25, t.lunar.firstQuarter);
       addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.5), 'FULL', 0.5, t.lunar.fullMoon);
       addPhase(currentMs + (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY * 0.75), 'LAST_QUARTER', 0.75, t.lunar.lastQuarter);
-
       currentMs += (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY);
     }
 
-    // Insert "Current" (Right Now)
     const nowPhaseVal = ((now.getTime() - REFERENCE_NEW_MOON.getTime()) / (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY)) % 1;
     const getPhaseLabel = (p: number) => {
       if (p < 0.25) return t.lunar.waxingCrescent;
@@ -157,7 +122,6 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
       isCurrent: true
     });
 
-    // Insert "Wedding"
     const targetPhaseVal = ((targetDate.getTime() - REFERENCE_NEW_MOON.getTime()) / (SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY)) % 1;
     data.push({
       date: targetDate,
@@ -167,42 +131,26 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
       isWedding: true
     });
 
-    // Sort by date
     data.sort((a, b) => a.date.getTime() - b.date.getTime());
 
-    // Deduplicate: If "Current" is very close (< 24h) to a major phase, skip the major phase to avoid visual clutter.
-    // We prioritize "Current" over a standard phase if they are effectively the same day.
     const filteredData: MoonPhaseData[] = [];
-
     for (let i = 0; i < data.length; i++) {
       const current = data[i];
-
-      // Look ahead to next item
       if (i < data.length - 1) {
         const next = data[i + 1];
-
-        // Conflict Resolution:
-        // If `current` is a generated phase and `next` is "Current" (You Are Here), and they are < 24h apart:
-        // Skip `current` so "You Are Here" takes precedence.
         if (!current.isCurrent && !current.isWedding && next.isCurrent) {
           const diffHours = (next.date.getTime() - current.date.getTime()) / (1000 * 60 * 60);
           if (diffHours < 24) continue;
         }
       }
-
       filteredData.push(current);
     }
-
-    // Second pass to remove items strictly following "Current" that are too close (e.g. Current is 10pm, Next Phase is Tomorrow 2am - maybe keep? User said "update daily".
-    // If we have Current (Jan 22) and Last Quarter (Jan 23), that's fine.
-    // The main duplicate to avoid is Current (Jan 22 10am) and Last Quarter (Jan 22 1pm).
 
     const finalData: MoonPhaseData[] = [];
     for (let i = 0; i < filteredData.length; i++) {
       const current = filteredData[i];
       if (i > 0) {
         const prev = filteredData[i - 1];
-        // If prev was Current and current is standard phase and < 24h, skip current
         if (prev.isCurrent && !current.isWedding && !current.isCurrent) {
           const diffHours = (current.date.getTime() - prev.date.getTime()) / (1000 * 60 * 60);
           if (diffHours < 24) continue;
@@ -214,7 +162,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
     setPhases(finalData);
   }, [targetDate, t]);
 
-  // Allow scroll-through to parent snap container when at top/bottom of lunar timeline
+  // Handle Scroll
   useEffect(() => {
     const el = scrollContainerRef.current;
     if (!el) return;
@@ -222,15 +170,9 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
     const handleWheel = (e: WheelEvent) => {
       const atBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 2;
       const atTop = el.scrollTop < 2;
-      const scrollingDown = e.deltaY > 0;
-      const scrollingUp = e.deltaY < 0;
-
-      // At boundary and scrolling further — let event pass to parent
-      if ((atBottom && scrollingDown) || (atTop && scrollingUp)) {
+      if ((atBottom && e.deltaY > 0) || (atTop && e.deltaY < 0)) {
         el.style.overflowY = 'hidden';
-        requestAnimationFrame(() => {
-          el.style.overflowY = 'auto';
-        });
+        requestAnimationFrame(() => { el.style.overflowY = 'auto'; });
       }
     };
 
@@ -247,67 +189,55 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
     };
   }, [onScrolledToBottom]);
 
-  // Scroll to Current
   useLayoutEffect(() => {
     if (isActive && phases.length > 0 && scrollContainerRef.current) {
-      // Find 'current' item
       const currentIndex = phases.findIndex(p => p.isCurrent);
       if (currentIndex !== -1) {
         const el = itemRefs.current.get(`item-${currentIndex}`);
-        if (el) {
-          // Scroll to top of view roughly, or center
-          el.scrollIntoView({ behavior: 'auto', block: 'center' });
-        }
+        el?.scrollIntoView({ behavior: 'auto', block: 'center' });
       }
     }
   }, [phases, isActive]);
 
-
   return (
-    <div className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4">
+    <div className={`h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4`}>
+      {/* Background mystical glow */}
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-900 rounded-full blur-[140px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-900/40 rounded-full blur-[160px]"></div>
+      </div>
+
       {/* 1. Module Title */}
       <div className="text-center z-20 flex-shrink-0 mb-4">
-        <h2 className={typography.header.module}>{t.lunar.header}</h2>
-        <p className={`${colors.text.muted} text-[9px] sm:text-xs font-mono uppercase tracking-widest mt-1 animate-pulse`}>
+        <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl`}>{t.lunar.header}</h2>
+        <p className={`${getVibeClass(vibe, 'footer')} text-[9px] sm:text-xs uppercase tracking-[0.2em] mt-2 opacity-60 animate-pulse`}>
           {t.lunar.scrollHint}
         </p>
       </div>
 
-      {/* 2. Scrollable Timeline (In Flow) */}
+      {/* 2. Scrollable Timeline */}
       <div
         ref={scrollContainerRef}
         className="flex-1 w-full overflow-y-auto no-scrollbar relative px-2 sm:px-6 scroll-smooth"
       >
         {/* Vertical Guide Line */}
-        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-stone-800 -translate-x-1/2 z-0" />
+        <div className="absolute left-1/2 top-0 bottom-0 w-px bg-indigo-500/10 -translate-x-1/2 z-0" />
 
         <div className="flex flex-col items-center gap-4 sm:gap-16 py-6 sm:py-10">
           {phases.map((p, i) => {
-            const isPast = p.isCurrent ? false : p.date < new Date();
-
-            let opacityClass = 'opacity-40';
-
-            if (p.isCurrent || p.isWedding) {
-              opacityClass = 'opacity-100';
-            }
-
-            // Reduced scale on mobile to keep things compact
-            const scaleClass = (p.isCurrent || p.isWedding) ? 'scale-105 sm:scale-125' : 'scale-100';
-
+            const isHighlight = p.isCurrent || p.isWedding;
             return (
               <div
                 key={`${p.date.toISOString()}-${i}`}
-                ref={(el) => {
-                  if (el) itemRefs.current.set(`item-${i}`, el);
-                }}
-                className={`flex items-center w-full max-w-lg z-10 relative transition-all duration-500 ${opacityClass} ${scaleClass}`}
+                ref={(el) => { if (el) itemRefs.current.set(`item-${i}`, el); }}
+                className={`flex items-center w-full max-w-lg z-10 relative transition-all duration-500 ${isHighlight ? 'opacity-100 scale-105 sm:scale-125' : 'opacity-30 scale-100'}`}
               >
-                {/* Left: Date - Reduced padding on mobile */}
-                <div className={`flex-1 text-right pr-3 sm:pr-10 ${p.isCurrent ? 'text-stone-100' : 'text-stone-500'}`}>
-                  <div className="font-mono text-[10px] sm:text-xs tracking-widest uppercase font-bold">
+                {/* Left: Date */}
+                <div className={`flex-1 text-right pr-3 sm:pr-10 ${p.isCurrent ? 'text-indigo-100' : 'text-indigo-400'}`}>
+                  <div className={`${getVibeClass(vibe, 'label')} !text-[10px] sm:!text-xs leading-none`}>
                     {p.date.toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: 'short', day: 'numeric' })}
                   </div>
-                  <div className="font-mono text-[9px] sm:text-[10px] text-stone-600 uppercase">
+                  <div className="text-[9px] sm:text-[10px] text-indigo-500/50 uppercase mt-1">
                     {p.date.getFullYear()}
                   </div>
                 </div>
@@ -316,24 +246,26 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
                 <div className="relative flex-shrink-0">
                   <MoonIcon
                     phase={p.phase}
-                    size={p.isCurrent || p.isWedding ? 48 : 36}
-                    highlight={p.isCurrent || p.isWedding}
+                    size={isHighlight ? 48 : 36}
+                    highlight={isHighlight}
                     className="drop-shadow-2xl"
                   />
                 </div>
 
-                {/* Right: Label - Reduced padding on mobile */}
-                <div className={`flex-1 text-left pl-3 sm:pl-10 ${p.isWedding ? 'text-amber-200' : 'text-stone-400'}`}>
+                {/* Right: Label */}
+                <div className={`flex-1 text-left pl-3 sm:pl-10`}>
                   {p.isCurrent && (
                     <div className="mb-1 sm:mb-2">
-                      <span className="text-[9px] sm:text-[10px] text-stone-100 font-mono tracking-widest bg-stone-800 px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full border border-stone-700 whitespace-nowrap">{t.lunar.youAreHere}</span>
+                      <span className="text-[8px] sm:text-[9px] text-indigo-100 font-mono tracking-widest bg-indigo-900/50 px-2 py-0.5 rounded-full border border-indigo-500/30">
+                        {t.lunar.youAreHere}
+                      </span>
                     </div>
                   )}
-                  <div className={`font-serif italic leading-tight ${p.isCurrent || p.isWedding ? 'text-lg sm:text-xl' : 'text-sm sm:text-base'}`}>
+                  <div className={`${getVibeClass(vibe, 'header')} lowercase !tracking-[0.1em] ${isHighlight ? 'text-lg sm:text-xl text-white' : 'text-sm sm:text-base text-indigo-300/60'}`}>
                     {p.label}
                   </div>
                   {p.isWedding && (
-                    <div className="font-mono text-[9px] sm:text-[10px] text-amber-500/50 uppercase tracking-widest mt-1">
+                    <div className={`${getVibeClass(vibe, 'label')} !text-[8px] sm:!text-[9px] !text-amber-500/60 lowercase mt-1`}>
                       {t.lunar.theBigDay}
                     </div>
                   )}
@@ -341,8 +273,6 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
               </div>
             );
           })}
-
-          {/* Bottom spacer so last items aren't flush with edge */}
           <div className="py-8" />
         </div>
       </div>

@@ -55,6 +55,10 @@ export const es: Translations = {
     waxingGibbous: 'Gibosa Creciente',
     waningGibbous: 'Gibosa Menguante',
     waningCrescent: 'Luna Menguante',
+    age: 'Días de Edad',
+    distance: 'Distancia (KM)',
+    illuminated: 'Iluminada',
+    nextFull: 'Próxima Luna Llena'
   },
   social: {
     header: 'Construcciones Sociales',

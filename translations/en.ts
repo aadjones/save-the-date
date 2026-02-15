@@ -55,6 +55,10 @@ export const en: Translations = {
     waxingGibbous: 'Waxing Gibbous',
     waningGibbous: 'Waning Gibbous',
     waningCrescent: 'Waning Crescent',
+    age: 'Days Old',
+    distance: 'Distance (KM)',
+    illuminated: 'Illuminated',
+    nextFull: 'Next Full Moon'
   },
   social: {
     header: 'Social Constructs',

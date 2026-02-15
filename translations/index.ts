@@ -55,6 +55,10 @@ export type Translations = {
     waxingGibbous: string;
     waningGibbous: string;
     waningCrescent: string;
+    age: string;
+    distance: string;
+    illuminated: string;
+    nextFull: string;
   };
   social: {
     header: string;
