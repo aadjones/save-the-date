@@ -85,9 +85,9 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     svg.append('circle')
       .attr('r', radius)
       .attr('fill', 'none')
-      .attr('stroke', '#1e293b') // slate-800
-      .attr('stroke-width', 1)
-      .attr('stroke-dasharray', '2 4');
+      .attr('stroke', '#64748b') // slate-500
+      .attr('stroke-width', 1.5)
+      .attr('stroke-dasharray', '4 3');
 
     // Wedding Marker (Fixed at top - 90 degrees or -Math.PI/2)
     const targetAngle = -Math.PI / 2;
@@ -163,7 +163,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('y1', engY)
       .attr('x2', Math.cos(engAngle) * (engLabelR - 10))
       .attr('y2', Math.sin(engAngle) * (engLabelR - 10))
-      .attr('stroke', '#1e293b')
+      .attr('stroke', '#334155') // slate-700
       .attr('stroke-width', 1)
       .attr('stroke-dasharray', '1 3');
 
@@ -171,14 +171,14 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('x', engLabelX)
       .attr('y', engLabelY)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#475569') // slate-600
+      .attr('fill', '#64748b') // slate-500
       .attr('class', 'font-mono text-[8px] sm:text-[9px] uppercase tracking-widest')
       .text(t.orbit.engaged);
 
     // Dynamic Arrow Path (Initialized empty)
     const arrowPath = svg.append('path')
       .attr('fill', 'none')
-      .attr('stroke', '#334155')
+      .attr('stroke', '#475569') // slate-600
       .attr('stroke-width', 1.5)
       .attr('marker-end', 'url(#arrow)');
 
@@ -321,34 +321,31 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       {/* 2. Visualization Area (In Flow) */}
       <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
 
-      {/* 3. Overlay Stats (Stacked in flow) */}
-      <div className="w-full max-w-4xl z-10 flex flex-col items-center -mt-20 sm:-mt-32 mb-2">
-        <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full">
-          <div className="flex flex-col items-center justify-start">
-            <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
+      {/* 3. Stats — absolutely anchored above the nav arrow */}
+      <div className="absolute bottom-20 sm:bottom-24 left-0 right-0 px-4 z-10">
+        <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center w-full max-w-4xl mx-auto">
+          <div className="flex flex-col items-center">
+            <div className={`${getVibeClass(vibe, 'number')} text-base sm:text-xl md:text-2xl`}>
               {stats.degrees.toFixed(1).padStart(5, '0')}°
             </div>
-            <div className={`${getVibeClass(vibe, 'label')} mt-1`}>{t.orbit.arc}</div>
+            <div className={`${getVibeClass(vibe, 'label')} mt-0.5 text-[10px] sm:text-xs`}>{t.orbit.arc}</div>
           </div>
 
-          <div className="flex flex-col items-center justify-start">
-            <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
+          <div className="flex flex-col items-center">
+            <div className={`${getVibeClass(vibe, 'number')} text-base sm:text-xl md:text-2xl`}>
               {(stats.km / 1000000).toFixed(1).padStart(4, '0')}M
             </div>
-            <div className={`${getVibeClass(vibe, 'label')} mt-1`}>{t.orbit.km}</div>
+            <div className={`${getVibeClass(vibe, 'label')} mt-0.5 text-[10px] sm:text-xs`}>{t.orbit.km}</div>
           </div>
 
-          <div className="flex flex-col items-center justify-start">
-            <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
+          <div className="flex flex-col items-center">
+            <div className={`${getVibeClass(vibe, 'number')} text-base sm:text-xl md:text-2xl`}>
               {stats.fraction.toFixed(3)}
             </div>
-            <div className={`${getVibeClass(vibe, 'label')} mt-1`}>{t.orbit.orbits}</div>
+            <div className={`${getVibeClass(vibe, 'label')} mt-0.5 text-[10px] sm:text-xs`}>{t.orbit.orbits}</div>
           </div>
         </div>
       </div>
-
-      {/* 4. Caption / Footer Spacer */}
-      <div className="pb-4 sm:pb-8 px-4 z-10" />
     </div>
   );
 };

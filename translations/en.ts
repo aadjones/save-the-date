@@ -5,7 +5,7 @@ export const en: Translations = {
     title: 'Save the Date',
     date: 'October 24, 2026',
     calendarTitle: 'Wedding - Save the Date',
-    calendarDescription: 'Join Aaron Demby Jones and Anakaren Santana Gálvez for our wedding celebration!',
+    calendarDescription: 'Join Aaron Demby Jones and Anakaren Santana Gálvez for their wedding celebration!',
     locationAriaLabel: 'Open venue location in maps',
     calendarAriaLabel: 'Download calendar event',
   },

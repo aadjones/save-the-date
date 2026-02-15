@@ -5,7 +5,7 @@ export const es: Translations = {
     title: 'Reserva la Fecha',
     date: '24 de Octubre, 2026',
     calendarTitle: 'Boda - Reserva la Fecha',
-    calendarDescription: '¡Acompaña a Aaron Demby Jones y Anakaren Santana Gálvez en nuestra celebración de boda!',
+    calendarDescription: '¡Acompaña a Aaron Demby Jones y Anakaren Santana Gálvez en su celebración de boda!',
     locationAriaLabel: 'Abrir ubicación del lugar en el mapa',
     calendarAriaLabel: 'Descargar evento de calendario',
   },

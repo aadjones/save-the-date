@@ -158,7 +158,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
                 className={`${getButtonClass(active)} flex items-center gap-2 px-4 py-2 pointer-events-auto`}
               >
                 <Icon size={16} className="sm:w-4 sm:h-4" />
-                <span className={`${getVibeClass(vibe, 'label')} !text-[10px] sm:!text-xs font-bold`}>{btn.label}</span>
+                <span className={`${getVibeClass(vibe, 'label')} ${active ? '!text-white' : ''} !text-[10px] sm:!text-xs font-bold`}>{btn.label}</span>
               </button>
             </Tooltip>
           )

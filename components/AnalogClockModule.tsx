@@ -156,7 +156,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
             {/* 1. Module Title & Subtitle */}
             <div className="text-center z-20 flex-shrink-0 mb-8 sm:mb-12">
                 <h2 className={getVibeClass(vibe, 'header')}>{t.clock.header}</h2>
-                <p className={`${typography.hint.animated} text-stone-500 mt-1`}>
+                <p className={`${typography.hint.animated} !text-amber-600/80 mt-1`}>
                     {t.clock.scrollHint}
                 </p>
             </div>

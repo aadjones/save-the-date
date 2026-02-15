@@ -63,9 +63,14 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       className={`h-full w-full flex flex-col items-center justify-between ${vibes[vibe].container} transition-colors duration-700 cursor-pointer pt-28 sm:pt-32 px-4 select-none`}
     >
       {/* 1. Header */}
-      <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl text-center mb-8 z-10`}>
-        {t.absurd.header}
-      </h2>
+      <div className="text-center z-10 mb-8">
+        <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl`}>
+          {t.absurd.header}
+        </h2>
+        <p className={`${getVibeClass(vibe, 'label')} text-[10px] sm:text-xs mt-2 animate-bounce`}>
+          {t.absurd.tapHint}
+        </p>
+      </div>
 
       {/* 2. Main Metric Area */}
       <div className="flex-1 flex flex-col items-center justify-center text-center w-full min-h-0 z-10">
@@ -81,9 +86,6 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
       {/* 3. Footer / Hint Area */}
       <div className="flex flex-col items-center gap-4 pb-14 sm:pb-32 px-4 z-10">
-        <div className={`${getVibeClass(vibe, 'label')} text-[10px] sm:text-xs animate-bounce`}>
-          {t.absurd.tapHint}
-        </div>
         {unit === AbsurdUnit.OH_SHIT && (
           <p className={`${getVibeClass(vibe, 'footer')} text-[9px] sm:text-[10px] opacity-60`}>
             {t.absurd.stressNote}

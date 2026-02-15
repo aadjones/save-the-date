@@ -47,9 +47,9 @@ export const colors = {
 
   // State colors
   state: {
-    active: 'bg-stone-100 text-stone-900 border-stone-100',
-    inactive: 'bg-transparent text-stone-500 border-stone-800',
-    hover: 'hover:border-stone-600',
+    active: 'bg-blue-600 text-white border-blue-600',
+    inactive: 'bg-transparent text-slate-500 border-slate-400',
+    hover: 'hover:border-slate-600 hover:text-slate-700',
   }
 } as const;
 

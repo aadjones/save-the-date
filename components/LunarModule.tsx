@@ -57,7 +57,7 @@ const MoonIcon: React.FC<{ phase: number; size: number; className?: string; high
       {/* Lit Side with Glow */}
       <path
         d={pathD}
-        className={highlight ? "fill-white drop-shadow-[0_0_8px_rgba(224,231,255,0.8)]" : "fill-indigo-200/40"}
+        className={highlight ? "fill-white drop-shadow-[0_0_8px_rgba(224,231,255,0.8)]" : "fill-indigo-200/70"}
         clipPath={`url(#moon-clip-${phase})`}
       />
     </svg>
@@ -210,7 +210,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
       {/* 1. Module Title */}
       <div className="text-center z-20 flex-shrink-0 mb-4">
         <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl`}>{t.lunar.header}</h2>
-        <p className={`${getVibeClass(vibe, 'footer')} text-[9px] sm:text-xs uppercase tracking-[0.2em] mt-2 opacity-60 animate-pulse`}>
+        <p className={`${getVibeClass(vibe, 'footer')} text-[9px] sm:text-xs uppercase tracking-[0.2em] mt-2 opacity-90 animate-pulse`}>
           {t.lunar.scrollHint}
         </p>
       </div>
@@ -230,14 +230,14 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
               <div
                 key={`${p.date.toISOString()}-${i}`}
                 ref={(el) => { if (el) itemRefs.current.set(`item-${i}`, el); }}
-                className={`flex items-center w-full max-w-lg z-10 relative transition-all duration-500 ${isHighlight ? 'opacity-100 scale-105 sm:scale-125' : 'opacity-30 scale-100'}`}
+                className={`flex items-center w-full max-w-lg z-10 relative transition-all duration-500 ${isHighlight ? 'opacity-100 scale-105 sm:scale-125' : 'opacity-55 scale-100'}`}
               >
                 {/* Left: Date */}
                 <div className={`flex-1 text-right pr-3 sm:pr-10 ${p.isCurrent ? 'text-indigo-100' : 'text-indigo-400'}`}>
                   <div className={`${getVibeClass(vibe, 'label')} !text-[10px] sm:!text-xs leading-none`}>
                     {p.date.toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: 'short', day: 'numeric' })}
                   </div>
-                  <div className="text-[9px] sm:text-[10px] text-indigo-500/50 uppercase mt-1">
+                  <div className="text-[9px] sm:text-[10px] text-indigo-300/70 uppercase mt-1">
                     {p.date.getFullYear()}
                   </div>
                 </div>
@@ -261,7 +261,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
                       </span>
                     </div>
                   )}
-                  <div className={`${getVibeClass(vibe, 'header')} lowercase !tracking-[0.1em] ${isHighlight ? 'text-lg sm:text-xl text-white' : 'text-sm sm:text-base text-indigo-300/60'}`}>
+                  <div className={`${getVibeClass(vibe, 'header')} lowercase !tracking-[0.1em] ${isHighlight ? 'text-lg sm:text-xl text-white' : 'text-sm sm:text-base text-indigo-200/80'}`}>
                     {p.label}
                   </div>
                   {p.isWedding && (
