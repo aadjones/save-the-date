@@ -29,24 +29,19 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
     const isMobile = width < 640;
 
-    // Header Safe Area (branding + toggle)
-    const headerSafety = isMobile ? 120 : 140;
-    // Bottom Stats Safe Area
-    const footerSafety = isMobile ? 180 : 220;
+    // Header Safe Area (branding + toggle) - Increase to move diagram down
+    const headerSafety = isMobile ? 140 : 180;
+    // Bottom Stats Safe Area - Decrease to tighten gap
+    const footerSafety = isMobile ? 120 : 140;
 
     const availableHeightForOrbit = height - headerSafety - footerSafety;
     const centerY = headerSafety + (availableHeightForOrbit / 2);
 
-    // Radius must fit:
-    // 1. Horizontally: radius + padding < width / 2
-    // 2. Vertically: radius + labelOffset < availableHeightForOrbit / 2
-    // We increase labelPadding to ensure the 'Wedding' text and icon have breathing room
-    const labelPadding = isMobile ? 65 : 85;
+    // Label padding for vertical radius calculation
+    const labelPadding = isMobile ? 60 : 80;
     const horizontalMaxRadius = (width / 2) - 40;
     const verticalMaxRadius = (availableHeightForOrbit / 2) - labelPadding;
 
-    // Set a more reasonable minimum (60) so it doesn't look like a dot, 
-    // but still respects the shrinking requirement.
     const radius = Math.max(60, Math.min(horizontalMaxRadius, verticalMaxRadius));
 
     const centerYOffset = centerY - (height / 2);
@@ -327,7 +322,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
 
       {/* 3. Overlay Stats (Stacked in flow) */}
-      <div className="w-full max-w-4xl z-10 flex flex-col items-center mb-6">
+      <div className="w-full max-w-4xl z-10 flex flex-col items-center mb-2">
         <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full">
           <div className="flex flex-col items-center justify-start">
             <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
@@ -353,7 +348,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       </div>
 
       {/* 4. Caption / Footer Spacer */}
-      <div className="pb-14 sm:pb-32 px-4 z-10" />
+      <div className="pb-8 sm:pb-24 px-4 z-10" />
     </div>
   );
 };
