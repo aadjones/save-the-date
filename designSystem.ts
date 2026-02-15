@@ -276,11 +276,11 @@ export const vibes: Record<Vibe, {
     branding: 'text-black'
   },
   steampunk: {
-    container: 'bg-[#2b1b12] text-[#d4af37]', // brass over mahogany
-    header: 'font-serif font-black uppercase text-[#8b4513] tracking-widest border-y-2 border-[#8b4513] py-1',
-    number: 'font-serif font-bold text-[#d4af37]',
-    label: 'font-serif uppercase font-black text-[#cd7f32] tracking-tighter',
-    footer: 'font-serif italic text-orange-900 opacity-80',
+    container: 'bg-[#150d08] text-[#e5c100]', // Darker espresso over gold
+    header: 'font-serif font-black uppercase text-[#eab308] tracking-widest border-y-2 border-[#eab308]/30 py-1',
+    number: 'font-serif font-bold text-[#fcd34d]',
+    label: 'font-serif uppercase font-black text-[#d97706] tracking-tighter', // Amber-600
+    footer: 'font-serif italic text-stone-500 opacity-60',
     branding: 'text-[#d4af37]'
   }
 };

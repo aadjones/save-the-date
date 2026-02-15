@@ -93,15 +93,15 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         const weekVal = (dayOfWeek + h / 24) / 7;
 
         return [
-            { id: 'sec', label: t.clock.seconds, value: secVal, color: '#d4af37', lengthScale: 0.95, width: 1, description: t.clock.descSeconds }, // Gold
-            { id: 'min', label: t.clock.minutes, value: minVal, color: '#cd7f32', lengthScale: 0.85, width: 2, description: t.clock.descMinutes }, // Bronze
-            { id: 'hr', label: t.clock.hours, value: hourVal, color: '#b87333', lengthScale: 0.6, width: 4, description: t.clock.descHours }, // Copper
-            { id: 'week', label: t.clock.week, value: weekVal, color: '#8b4513', lengthScale: 0.5, width: 6, description: t.clock.descWeek }, // Saddle Brown
-            { id: 'lunar', label: t.clock.lunarPhase, value: lunarPhase, color: '#a0522d', lengthScale: 0.45, width: 2, description: t.clock.descLunarPhase }, // Sienna
-            { id: 'month', label: t.clock.month, value: dayVal, color: '#800000', lengthScale: 0.75, width: 1, description: t.clock.descMonth }, // Maroon
-            { id: 'year', label: t.clock.solarYear, value: yearProgress, color: '#daa520', lengthScale: 0.9, width: 1.5, description: t.clock.descSolarYear }, // Goldenrod
-            { id: 'sidereal', label: t.clock.siderealDay, value: siderealVal, color: '#556b2f', lengthScale: 0.6, width: 1, description: t.clock.descSiderealDay }, // Dark Olive Green
-            { id: 'wait', label: t.clock.theCountdown, value: waitProgress, color: '#8b0000', lengthScale: 1.0, width: 3, description: t.clock.descCountdown }, // Dark Red
+            { id: 'sec', label: t.clock.seconds, value: secVal, color: '#fbbf24', lengthScale: 0.95, width: 1, description: t.clock.descSeconds }, // Amber
+            { id: 'min', label: t.clock.minutes, value: minVal, color: '#f59e0b', lengthScale: 0.85, width: 2, description: t.clock.descMinutes }, // Amber-500
+            { id: 'hr', label: t.clock.hours, value: hourVal, color: '#d97706', lengthScale: 0.6, width: 4, description: t.clock.descHours }, // Amber-600
+            { id: 'week', label: t.clock.week, value: weekVal, color: '#fde047', lengthScale: 0.5, width: 6, description: t.clock.descWeek }, // Yellow-300
+            { id: 'lunar', label: t.clock.lunarPhase, value: lunarPhase, color: '#eab308', lengthScale: 0.45, width: 2, description: t.clock.descLunarPhase }, // Yellow-500
+            { id: 'month', label: t.clock.month, value: dayVal, color: '#fbbf24', lengthScale: 0.75, width: 1, description: t.clock.descMonth },
+            { id: 'year', label: t.clock.solarYear, value: yearProgress, color: '#fef3c7', lengthScale: 0.9, width: 1.5, description: t.clock.descSolarYear }, // Amber-100
+            { id: 'sidereal', label: t.clock.siderealDay, value: siderealVal, color: '#a3e635', lengthScale: 0.6, width: 1, description: t.clock.descSiderealDay }, // Lime-400 for sidereal difference
+            { id: 'wait', label: t.clock.theCountdown, value: waitProgress, color: '#ef4444', lengthScale: 1.0, width: 3, description: t.clock.descCountdown }, // Red highlight for the Wait
         ];
     }, [now, targetDate, t]);
 
@@ -148,15 +148,15 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
             onClick={handleTap}
             className={`h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4 select-none cursor-pointer`}
         >
-            {/* 0. Background Ambience */}
-            <div className="absolute inset-0 opacity-20 pointer-events-none">
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(68,64,60,0.2)_0%,rgba(12,10,9,0)_70%)]" />
+            {/* 0. Background Ambience - Increased contrast/warmth */}
+            <div className="absolute inset-0 opacity-30 pointer-events-none">
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(212,175,55,0.15)_0%,rgba(12,10,9,0)_70%)]" />
             </div>
 
             {/* 1. Module Title & Subtitle */}
             <div className="text-center z-20 flex-shrink-0 mb-8 sm:mb-12">
                 <h2 className={getVibeClass(vibe, 'header')}>{t.clock.header}</h2>
-                <p className={`${typography.hint.animated} text-stone-400 mt-1`}>
+                <p className={`${typography.hint.animated} text-stone-500 mt-1`}>
                     {t.clock.scrollHint}
                 </p>
             </div>
@@ -164,9 +164,9 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
             {/* 2. Clock Area (In Flow) */}
             <div className="flex-1 w-full max-w-xl aspect-square z-10 relative min-h-0 flex items-center justify-center">
                 <svg viewBox="-100 -100 200 200" className="w-[65%] sm:w-[70%] aspect-square drop-shadow-2xl">
-                    {/* Base Face */}
-                    <circle cx="0" cy="0" r="98" fill="none" stroke="#292524" strokeWidth="0.5" />
-                    <circle cx="0" cy="0" r="2" fill="#57534e" />
+                    {/* Base Face - Brighter lines */}
+                    <circle cx="0" cy="0" r="98" fill="none" stroke="#44403c" strokeWidth="0.5" />
+                    <circle cx="0" cy="0" r="2" fill="#78716c" />
 
                     {/* Ghosted Hands */}
                     {hands.map((hand, i) => {
@@ -174,7 +174,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
                         const coords = getHandCoords(hand.value, hand.lengthScale, 95);
                         return (
                             <g key={hand.id} className="transition-opacity duration-500 opacity-20">
-                                <path d={getArcPath(hand.value, 95 * hand.lengthScale)} fill="none" stroke={hand.color} strokeWidth="0.5" opacity="0.3" />
+                                <path d={getArcPath(hand.value, 95 * hand.lengthScale)} fill="none" stroke={hand.color} strokeWidth="0.5" opacity="0.4" />
                                 <line x1={coords.x1} y1={coords.y1} x2={coords.x2} y2={coords.y2} stroke={hand.color} strokeWidth="1" strokeLinecap="round" />
                             </g>
                         );
@@ -182,10 +182,10 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
 
                     {/* Active Hand */}
                     <g className="transition-all duration-500 ease-out">
-                        <path d={getArcPath(activeHand.value, 95 * activeHand.lengthScale)} fill="none" stroke={activeHand.color} strokeWidth="4" opacity="0.15" />
+                        <path d={getArcPath(activeHand.value, 95 * activeHand.lengthScale)} fill="none" stroke={activeHand.color} strokeWidth="6" opacity="0.1" />
                         <path d={getArcPath(activeHand.value, 95 * activeHand.lengthScale)} fill="none" stroke={activeHand.color} strokeWidth="0.5" opacity="0.5" strokeDasharray="2 2" />
-                        <line x1={0} y1={0} x2={Math.cos(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} y2={Math.sin(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} stroke={activeHand.color} strokeWidth={activeHand.width} strokeLinecap="round" className="drop-shadow-[0_0_10px_rgba(251,191,36,0.5)]" />
-                        <circle cx={Math.cos(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} cy={Math.sin(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} r={activeHand.width * 1.5} fill={activeHand.color} />
+                        <line x1={0} y1={0} x2={Math.cos(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} y2={Math.sin(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} stroke={activeHand.color} strokeWidth={activeHand.width} strokeLinecap="round" className="drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]" />
+                        <circle cx={Math.cos(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} cy={Math.sin(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} r={activeHand.width * 1.5} fill={activeHand.color} className="drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]" />
                     </g>
                     <circle cx="0" cy="0" r="3" fill="#1c1917" stroke={activeHand.color} strokeWidth="1" />
                 </svg>
