@@ -97,6 +97,6 @@ export const es: Translations = {
     descSolarYear: 'Una órbita alrededor del Sol.',
     descSiderealDay: 'Rotación relativa a estrellas lejanas.',
     descCountdown: 'Del compromiso a la boda.',
-    scrollHint: 'Desplaza o Toca para Cambiar Manecilla',
+    scrollHint: 'Toca para Cambiar Manecilla',
   },
 };

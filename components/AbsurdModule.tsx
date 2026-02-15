@@ -17,7 +17,7 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   };
 
   useEffect(() => {
-     // Initial setup
+    // Initial setup
   }, []);
 
   useEffect(() => {
@@ -51,44 +51,48 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   }, [targetDate, unit]);
 
   const cycleUnit = () => {
-      const units = Object.values(AbsurdUnit);
-      const idx = units.indexOf(unit);
-      setUnit(units[(idx + 1) % units.length]);
+    const units = Object.values(AbsurdUnit);
+    const idx = units.indexOf(unit);
+    setUnit(units[(idx + 1) % units.length]);
   };
 
   return (
-    <div 
-        onClick={cycleUnit}
-        className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-6 sm:p-8 pt-16 sm:pt-20 cursor-pointer hover:bg-[#0f0d0c] transition-colors relative"
+    <div
+      onClick={cycleUnit}
+      className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4 cursor-pointer hover:bg-[#0f0d0c] transition-colors"
     >
-      {/* Consistent Header */}
-      <div className={getModuleHeaderClass()}>
+      {/* 1. Module Title */}
+      <h2 className={`${typography.header.module} text-center mb-6`}>
         {t.absurd.header}
-      </div>
+      </h2>
 
-      <div className="text-center select-none w-full max-w-2xl mt-4 sm:mt-10">
-        <div className="my-4 sm:my-12">
-            <div className={`${typography.number.large} mb-3 sm:mb-4 break-all sm:break-normal`}>
-                {Math.floor(count).toLocaleString()}
-            </div>
-            <div className={`text-xl sm:text-3xl md:text-4xl font-serif ${colors.text.tertiary} px-4`}>
-                {unitLabels[unit]}
-            </div>
+      {/* 2. Center Content (In Flow) */}
+      <div className="flex-1 flex flex-col items-center justify-center text-center select-none w-full max-w-2xl min-h-0">
+        <div className="my-2 sm:my-12">
+          <div className={`${typography.number.large} mb-3 sm:mb-4 break-all sm:break-normal`}>
+            {Math.floor(count).toLocaleString()}
+          </div>
+          <div className={`text-xl sm:text-3xl md:text-4xl font-serif ${colors.text.tertiary} px-4`}>
+            {unitLabels[unit]}
+          </div>
         </div>
 
         <p className={typography.hint.standard}>{t.absurd.tapHint}</p>
 
         {unit === AbsurdUnit.OH_SHIT && (
-             <p className={`${typography.caption.standard} ${colors.text.subtle} mt-4 px-4`}>
-                 {t.absurd.stressNote}
-             </p>
+          <p className={`${typography.caption.standard} ${colors.text.subtle} mt-4 px-4`}>
+            {t.absurd.stressNote}
+          </p>
         )}
-         {unit === AbsurdUnit.HEARTBEATS && (
-             <p className={`${typography.caption.standard} mt-4 px-4 opacity-70`}>
-                 {t.absurd.bpmNote}
-             </p>
+        {unit === AbsurdUnit.HEARTBEATS && (
+          <p className={`${typography.caption.standard} mt-4 px-4 opacity-70`}>
+            {t.absurd.bpmNote}
+          </p>
         )}
       </div>
+
+      {/* 3. Footer Spacer (to clear bounce arrow) */}
+      <div className="pb-14 sm:pb-32" />
     </div>
   );
 };

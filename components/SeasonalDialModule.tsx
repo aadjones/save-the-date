@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { TimeModuleProps } from "../types";
 import { Snowflake, Flower2, Sun, Leaf } from "lucide-react";
 import { createRoot } from "react-dom/client";
-import { getModuleHeaderClass } from "../designSystem";
+import { getModuleHeaderClass, typography } from "../designSystem";
 import { useT, useLocale } from "../i18n";
 
 const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
@@ -34,14 +34,14 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     // 1. Center Shift
     // Mobile: Shift down to make room for the header
     // Desktop: Centered
-    const centerYOffset = isMobile ? 30 : 20;
+    const centerYOffset = isMobile ? 0 : 20;
 
     // 2. Radius configuration
     // Mobile: Increased size for better visibility
     // Tablet: Moderate
     // Desktop: Larger for grand presentation
-    let radiusScale = 0.36;
-    if (isMobile) radiusScale = 0.24;
+    let radiusScale = 0.45;
+    if (isMobile) radiusScale = 0.28;
     else if (isTablet) radiusScale = 0.3;
 
     const radius = Math.min(width, height) * radiusScale;
@@ -497,12 +497,17 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   }, [targetDate, resizeTrigger, t, locale]);
 
   return (
-    <div className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-6 relative overflow-hidden">
-      {/* Background Graphic */}
-      <div ref={containerRef} className="absolute inset-0 z-0" />
+    <div className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4">
+      {/* 1. Module Title */}
+      <h2 className={`${typography.header.module} text-center z-10 mb-2`}>
+        {t.seasonal.header}
+      </h2>
 
-      {/* Consistent Header */}
-      <div className={getModuleHeaderClass()}>{t.seasonal.header}</div>
+      {/* 2. Visualization Area (In Flow) */}
+      <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
+
+      {/* 3. Footer Spacer (to clear bounce arrow) */}
+      <div className="pb-14 sm:pb-32" />
     </div>
   );
 };

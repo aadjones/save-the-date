@@ -25,17 +25,17 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
     const width = containerRef.current.clientWidth;
     const height = containerRef.current.clientHeight;
-    
+
     const isMobile = width < 640;
 
     // Adjust Center Y
     // Shift slightly upwards on both to leave ample room for the bottom stats block
-    const centerYOffset = isMobile ? -20 : -20;
+    const centerYOffset = isMobile ? 0 : -20;
 
     // Adjust Radius
     // Significantly reduced to prevent the orbit path or labels from overlapping 
     // with the top header or bottom stats area.
-    const radiusScale = isMobile ? 0.22 : 0.26;
+    const radiusScale = isMobile ? 0.23 : 0.32;
     const radius = Math.min(width, height) * radiusScale;
 
     // Clear previous
@@ -67,10 +67,10 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('fill', '#fcd34d') // amber-300
       .attr('filter', 'blur(4px)')
       .attr('opacity', 0.8);
-    
+
     svg.append('circle')
       .attr('r', isMobile ? 6 : 8)
-      .attr('fill', '#fff') 
+      .attr('fill', '#fff')
       .attr('opacity', 0.9);
 
     // Orbit Path
@@ -123,7 +123,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('fill', '#a8a29e')
       .attr('class', 'font-mono text-[10px] sm:text-xs tracking-widest')
       .text(t.orbit.wedding);
-    
+
     // --- ENGAGEMENT MARKER ---
     // Calculate position for Engagement Date
     // Earth travels CCW (decreasing angle). Past dates are at "higher" angles (further CCW back).
@@ -138,13 +138,13 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
     // Engagement marker circle (ring style)
     svg.append('circle')
-        .attr('cx', engX)
-        .attr('cy', engY)
-        .attr('r', isMobile ? 4 : 5)
-        .attr('fill', 'none')
-        .attr('stroke', '#78716c') // stone-500
-        .attr('stroke-width', 1.5)
-        .attr('opacity', 0.7);
+      .attr('cx', engX)
+      .attr('cy', engY)
+      .attr('r', isMobile ? 4 : 5)
+      .attr('fill', 'none')
+      .attr('stroke', '#78716c') // stone-500
+      .attr('stroke-width', 1.5)
+      .attr('opacity', 0.7);
 
     // Label for Engagement with extended positioning
     const engExtension = isMobile ? 35 : 50;
@@ -154,22 +154,22 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
     // Leader line for Engagement
     svg.append('line')
-        .attr('x1', engX)
-        .attr('y1', engY)
-        .attr('x2', Math.cos(engAngle) * (engLabelR - 10))
-        .attr('y2', Math.sin(engAngle) * (engLabelR - 10))
-        .attr('stroke', '#57534e')
-        .attr('stroke-width', 1)
-        .attr('stroke-dasharray', '2 2')
-        .attr('opacity', 0.6);
+      .attr('x1', engX)
+      .attr('y1', engY)
+      .attr('x2', Math.cos(engAngle) * (engLabelR - 10))
+      .attr('y2', Math.sin(engAngle) * (engLabelR - 10))
+      .attr('stroke', '#57534e')
+      .attr('stroke-width', 1)
+      .attr('stroke-dasharray', '2 2')
+      .attr('opacity', 0.6);
 
     svg.append('text')
-        .attr('x', engLabelX)
-        .attr('y', engLabelY)
-        .attr('text-anchor', 'middle')
-        .attr('fill', '#78716c') // stone-500
-        .attr('class', 'font-mono text-[8px] sm:text-[9px] tracking-widest')
-        .text(t.orbit.engaged);
+      .attr('x', engLabelX)
+      .attr('y', engLabelY)
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#78716c') // stone-500
+      .attr('class', 'font-mono text-[8px] sm:text-[9px] tracking-widest')
+      .text(t.orbit.engaged);
 
     // Dynamic Arrow Path (Initialized empty)
     const arrowPath = svg.append('path')
@@ -206,15 +206,15 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
     // Animation Loop
     let animationId: number;
-    
+
     const animate = () => {
       const now = new Date();
       const diffMs = targetDate.getTime() - now.getTime();
       const diffDays = diffMs / (1000 * 60 * 60 * 24);
-      
+
       const totalDegrees = (diffDays / DAYS_PER_YEAR) * 360;
       const kmRemaining = (diffDays / DAYS_PER_YEAR) * EARTH_ORBIT_KM;
-      
+
       // Angle for visualization
       const remainingRadians = (totalDegrees * Math.PI) / 180;
       const currentAngle = targetAngle + remainingRadians;
@@ -284,7 +284,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       // Update Arrow Position
       const arrowStartOffset = 0.15; // rads ~ 8 deg
       const arrowLength = 0.5; // rads ~ 28 deg
-      
+
       const arrowStart = currentAngle - arrowStartOffset;
       const arrowEnd = currentAngle - arrowStartOffset - arrowLength;
 
@@ -314,41 +314,43 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   }, [targetDate, isActive, resizeTrigger, t]);
 
   return (
-    <div className="h-full w-full relative bg-stone-950 overflow-hidden">
-       {/* Visualization Container */}
-      <div ref={containerRef} className="absolute inset-0 z-0" />
-      
-      {/* Consistent Header */}
-      <div className={getModuleHeaderClass()}>
+    <div className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4">
+      {/* 1. Module Title */}
+      <h2 className={`${typography.header.module} text-center z-10 mb-4`}>
         {t.orbit.header}
-      </div>
+      </h2>
 
-      {/* Overlay Stats */}
-      <div className="absolute bottom-16 sm:bottom-16 left-0 right-0 z-10 flex flex-col items-center justify-center pointer-events-none">
-        {/* Mobile: Grid cols 3 (horizontal), Desktop: Grid cols 3 (horizontal) but bigger */}
-        <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full max-w-4xl">
-           <div className="flex flex-col items-center justify-start">
-             <div className={typography.number.small}>
-               {stats.degrees.toFixed(1)}°
-             </div>
-             <div className={`${typography.label.small} mt-1`}>{t.orbit.arc}</div>
-           </div>
+      {/* 2. Visualization Area (In Flow) */}
+      <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
 
-           <div className="flex flex-col items-center justify-start">
-             <div className={typography.number.small}>
-               {(stats.km / 1000000).toFixed(1)}M
-             </div>
-             <div className={`${typography.label.small} mt-1`}>{t.orbit.km}</div>
-           </div>
+      {/* 3. Overlay Stats (Stacked in flow) */}
+      <div className="w-full max-w-4xl z-10 flex flex-col items-center mb-6">
+        <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full">
+          <div className="flex flex-col items-center justify-start">
+            <div className="text-lg sm:text-2xl md:text-3xl font-mono text-stone-200">
+              {stats.degrees.toFixed(1)}°
+            </div>
+            <div className={`${typography.label.small} mt-1`}>{t.orbit.arc}</div>
+          </div>
 
-           <div className="flex flex-col items-center justify-start">
-             <div className={typography.number.small}>
-               {stats.fraction.toFixed(3)}
-             </div>
-             <div className={`${typography.label.small} mt-1`}>{t.orbit.orbits}</div>
-           </div>
+          <div className="flex flex-col items-center justify-start">
+            <div className="text-lg sm:text-2xl md:text-3xl font-mono text-stone-200">
+              {(stats.km / 1000000).toFixed(1)}M
+            </div>
+            <div className={`${typography.label.small} mt-1`}>{t.orbit.km}</div>
+          </div>
+
+          <div className="flex flex-col items-center justify-start">
+            <div className="text-lg sm:text-2xl md:text-3xl font-mono text-stone-200">
+              {stats.fraction.toFixed(3)}
+            </div>
+            <div className={`${typography.label.small} mt-1`}>{t.orbit.orbits}</div>
+          </div>
         </div>
       </div>
+
+      {/* 4. Caption / Footer Spacer */}
+      <div className="pb-14 sm:pb-32 px-4 z-10" />
     </div>
   );
 };

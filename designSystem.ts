@@ -67,7 +67,7 @@ export const typography = {
   number: {
     large: 'text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-mono font-bold text-stone-100 tabular-nums tracking-tight',
     medium: 'text-4xl sm:text-5xl md:text-6xl lg:text-8xl font-mono font-light tracking-[-0.05em] tabular-nums text-stone-100',
-    small: 'text-2xl sm:text-3xl md:text-4xl font-mono text-stone-200 tabular-nums',
+    small: 'text-xl sm:text-3xl md:text-4xl font-mono text-stone-200 tabular-nums',
   },
 
   // Labels
@@ -100,13 +100,13 @@ export const spacing = {
 
   // Header positioning (consistent across all modules)
   header: {
-    top: 'top-16 sm:top-12',
+    top: 'top-20 sm:top-12',
     position: 'absolute left-0 right-0 z-10 text-center pointer-events-none px-4',
   },
 
   // Footer/caption positioning
   footer: {
-    bottom: 'bottom-16 sm:bottom-12',
+    bottom: 'bottom-20 sm:bottom-12',
     position: 'absolute left-0 right-0 text-center px-4 z-10',
   },
 

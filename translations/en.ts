@@ -97,6 +97,6 @@ export const en: Translations = {
     descSolarYear: 'One orbit around the Sun.',
     descSiderealDay: 'Rotation relative to distant stars.',
     descCountdown: 'Engagement to Wedding.',
-    scrollHint: 'Scroll or Tap to Cycle Hands',
+    scrollHint: 'Tap to Cycle Hands',
   },
 };
