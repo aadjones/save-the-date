@@ -60,11 +60,11 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
   }, [targetDate]);
 
   const Item = ({ val, label }: { val: number; label: string }) => (
-    <div className="flex flex-col items-center justify-center p-1 sm:p-4">
-      <span className={`${getVibeClass(vibe, 'number')} text-4xl sm:text-5xl md:text-6xl lg:text-8xl tabular-nums`}>
+    <div className="flex flex-col items-center justify-center p-0.5 sm:p-2">
+      <span className={`${getVibeClass(vibe, 'number')} text-2xl sm:text-4xl md:text-5xl lg:text-7xl tabular-nums leading-tight`}>
         {val.toString().padStart(2, '0')}
       </span>
-      <span className={`${getVibeClass(vibe, 'label')} mt-1.5 sm:mt-2`}>{label}</span>
+      <span className={`${getVibeClass(vibe, 'label')} mt-0.5 sm:mt-1 text-[8px] sm:text-[10px] md:text-xs`}>{label}</span>
     </div>
   );
 
@@ -75,24 +75,24 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <div className="absolute bottom-10 right-10 w-96 h-96 bg-stone-200 rounded-full blur-[120px]"></div>
       </div>
 
-      <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl text-center z-10 font-bold flex-shrink-0 mb-2 sm:mb-4`}>
+      <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl text-center z-10 font-bold flex-shrink-0 mb-1 sm:mb-2`}>
         {t.standard.header}
       </h2>
 
-      {/* 2. Main Visualization Area (Potato) */}
-      <div className="flex-1 w-full flex items-center justify-center min-h-0 py-4 z-10 overflow-hidden">
-        <div className="relative w-full h-full max-h-[160px] sm:max-h-[200px] md:max-h-[240px] flex items-center justify-center">
+      {/* 2. Main Visualization Area (Potato) - THE PRIORITY */}
+      <div className="flex-[2] w-full flex items-center justify-center min-h-[140px] py-2 z-10 overflow-hidden">
+        <div className="relative w-full h-full max-h-[180px] sm:max-h-[260px] md:max-h-[320px] flex items-center justify-center">
           <img
             src="/potatoes-transparent.png"
             alt="Aaron & Anakaren"
-            className="h-full w-auto object-contain drop-shadow-xl"
+            className="h-full w-auto object-contain drop-shadow-2xl translate-y-2"
           />
         </div>
       </div>
 
-      {/* 3. Stats Area */}
-      <div className="w-full max-w-4xl z-10 flex flex-col justify-center mb-8 px-2 sm:px-6 flex-shrink-0">
-        <div className="grid grid-cols-3 gap-x-2 gap-y-2 sm:gap-x-4 sm:gap-y-6 md:gap-x-8 md:gap-y-8">
+      {/* 3. Stats Area - Scales down to accommodate potatoes */}
+      <div className="w-full max-w-4xl z-10 flex flex-col justify-center mb-6 px-2 sm:px-6 flex-shrink-0">
+        <div className="grid grid-cols-3 gap-x-1 gap-y-1 sm:gap-x-4 sm:gap-y-4 md:gap-x-8 md:gap-y-6">
           <Item val={timeLeft.years} label={t.standard.years} />
           <Item val={timeLeft.months} label={t.standard.months} />
           <Item val={timeLeft.days} label={t.standard.days} />

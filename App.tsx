@@ -8,7 +8,7 @@ import AbsurdModule from './components/AbsurdModule';
 import AnalogClockModule from './components/AnalogClockModule';
 import { ChevronDown } from 'lucide-react';
 import { TARGET_DATE, VENUE_NAME, VENUE_ADDRESS, VENUE_COORDINATES } from './constants';
-import { components, colors, typography, vibes, getVibeClass } from './designSystem';
+import { components, colors, typography, vibes, getVibeClass, Vibe } from './designSystem';
 import { generateIcsFile } from './utils/calendarUtils';
 import { openMapsLink } from './utils/mapsUtils';
 import { useT, LanguageToggle } from './i18n';
@@ -19,14 +19,14 @@ const App: React.FC = () => {
   const [lunarAtBottom, setLunarAtBottom] = useState(false);
   const t = useT();
 
-  const modules = [
-    { id: 'standard', Component: StandardCountdown },
-    { id: 'orbit', Component: OrbitModule },
-    { id: 'seasonal', Component: SeasonalDialModule },
-    { id: 'lunar', Component: LunarModule },
-    { id: 'social', Component: SocialTimeModule },
-    { id: 'absurd', Component: AbsurdModule },
-    { id: 'clock', Component: AnalogClockModule },
+  const modules: { id: string; vibe: Vibe; Component: React.FC<any> }[] = [
+    { id: 'standard', vibe: 'wedding', Component: StandardCountdown },
+    { id: 'orbit', vibe: 'space', Component: OrbitModule },
+    { id: 'seasonal', vibe: 'elemental', Component: SeasonalDialModule },
+    { id: 'lunar', vibe: 'mystical', Component: LunarModule },
+    { id: 'social', vibe: 'corporate', Component: SocialTimeModule },
+    { id: 'absurd', vibe: 'humorous', Component: AbsurdModule },
+    { id: 'clock', vibe: 'steampunk', Component: AnalogClockModule },
   ];
 
   const handleScroll = () => {
@@ -123,12 +123,12 @@ const App: React.FC = () => {
         {/* Using fixed width for the logo block to prevent the toggle from shifting when language changes */}
         <div className="w-full flex justify-between items-start gap-2 sm:gap-4">
           <div className="flex flex-col items-start pointer-events-auto flex-shrink-0 w-28 sm:w-40">
-            <h1 className={`${getVibeClass(modules[activeModule].id as any, 'branding')} font-serif text-sm sm:text-lg tracking-wide font-bold whitespace-nowrap transition-colors duration-500`}>
+            <h1 className={`${getVibeClass(modules[activeModule].vibe, 'branding')} font-serif text-sm sm:text-lg tracking-wide font-bold whitespace-nowrap transition-colors duration-500`}>
               {t.app.title}
             </h1>
             <button
               onClick={handleDateClick}
-              className={`${getVibeClass(modules[activeModule].id as any, 'branding')} text-[9px] sm:text-xs font-mono cursor-pointer opacity-60 hover:opacity-100 transition-all underline decoration-dotted underline-offset-2`}
+              className={`${getVibeClass(modules[activeModule].vibe, 'branding')} text-[9px] sm:text-xs font-mono cursor-pointer opacity-60 hover:opacity-100 transition-all underline decoration-dotted underline-offset-2`}
               aria-label={t.app.calendarAriaLabel}
             >
               {t.app.date}
@@ -144,7 +144,7 @@ const App: React.FC = () => {
           <div className="flex justify-end pointer-events-auto flex-shrink-0 w-10 sm:w-40">
             <button
               onClick={handleLocationClick}
-              className={`${getVibeClass(modules[activeModule].id as any, 'branding')} text-[9px] sm:text-xs font-mono cursor-pointer opacity-60 hover:opacity-100 transition-all underline decoration-dotted underline-offset-2 hidden sm:inline`}
+              className={`${getVibeClass(modules[activeModule].vibe, 'branding')} text-[9px] sm:text-xs font-mono cursor-pointer opacity-60 hover:opacity-100 transition-all underline decoration-dotted underline-offset-2 hidden sm:inline`}
               aria-label={t.app.locationAriaLabel}
             >
               {VENUE_COORDINATES}
