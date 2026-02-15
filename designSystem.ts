@@ -230,7 +230,7 @@ export const vibes: Record<Vibe, {
   };
 }> = {
   wedding: {
-    container: 'bg-[#f4fafa] text-stone-900', // Soft teal off-white
+    container: 'bg-[#f0fafa] text-stone-900', // Noticeably softer teal off-white
     header: 'font-serif italic text-stone-600 tracking-wide',
     number: 'font-serif font-light text-stone-900',
     label: 'font-serif uppercase tracking-widest text-stone-500',
@@ -299,6 +299,6 @@ export const vibes: Record<Vibe, {
 /**
  * Helper to get vibe-specific class for a module element
  */
-export function getVibeClass(vibe: Vibe, element: keyof typeof vibes[Vibe]): string {
-  return vibes[vibe][element] || '';
+export function getVibeClass(vibe: Vibe, element: Exclude<keyof typeof vibes[Vibe], 'pagination'>): string {
+  return (vibes[vibe][element] as string) || '';
 }

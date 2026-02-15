@@ -201,12 +201,12 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     // Earth Body
     earthGroup.append('circle')
       .attr('r', isMobile ? 5 : 7)
-      .attr('fill', '#fff'); // Space vibe: Stark white earth
+      .attr('fill', '#38bdf8'); // Space: Blue Earth
 
     // Moon Body
     const moon = earthGroup.append('circle')
       .attr('r', isMobile ? 1.5 : 2.5)
-      .attr('fill', '#38bdf8'); // Sky moon accent
+      .attr('fill', '#fff'); // Space: White Moon
 
     // "You Are Here" Label Group (will be updated in animation)
     const youAreHereGroup = svg.append('g').attr('class', 'you-are-here-label');
