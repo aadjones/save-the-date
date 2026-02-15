@@ -79,9 +79,9 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         {t.standard.header}
       </h2>
 
-      {/* 2. Main Visualization Area (Potato) - THE PRIORITY */}
-      <div className="flex-[2] w-full flex items-center justify-center min-h-[140px] py-2 z-10 overflow-hidden">
-        <div className="relative w-full h-full max-h-[180px] sm:max-h-[260px] md:max-h-[320px] flex items-center justify-center">
+      {/* 2. Main Visualization Area (Potato) - THE ABSOLUTE PRIORITY */}
+      <div className="flex-[3] w-full flex items-center justify-center min-h-[160px] py-1 z-10 overflow-hidden">
+        <div className="relative w-full h-full max-h-[220px] sm:max-h-[300px] md:max-h-[380px] flex items-center justify-center">
           <img
             src="/potatoes-transparent.png"
             alt="Aaron & Anakaren"

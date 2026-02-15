@@ -45,8 +45,9 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     const horizontalMaxRadius = (width / 2) - 40;
     const verticalMaxRadius = (availableHeightForOrbit / 2) - labelPadding;
 
-    // Remove the high floor (100) to allow it to shrink as much as needed for short viewports
-    const radius = Math.max(40, Math.min(horizontalMaxRadius, verticalMaxRadius));
+    // Set a more reasonable minimum (60) so it doesn't look like a dot, 
+    // but still respects the shrinking requirement.
+    const radius = Math.max(60, Math.min(horizontalMaxRadius, verticalMaxRadius));
 
     const centerYOffset = centerY - (height / 2);
 
