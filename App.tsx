@@ -120,9 +120,11 @@ const App: React.FC = () => {
       {/* Global Header Elements */}
       <div className="absolute top-4 left-4 right-4 z-50 pointer-events-none">
         {/* Top row: Left (Logo/Date), Center (Toggle), Right (Coords - desktop) */}
-        <div className="w-full grid grid-cols-3 items-start">
-          <div className="flex flex-col items-start pointer-events-auto">
-            <h1 className={`${colors.text.secondary} font-serif text-sm sm:text-lg tracking-wide font-bold whitespace-nowrap`}>{t.app.title}</h1>
+        <div className="w-full flex justify-between items-start gap-2 sm:gap-4">
+          <div className="flex flex-col items-start pointer-events-auto flex-shrink-0">
+            <h1 className={`${colors.text.secondary} font-serif text-sm sm:text-lg tracking-wide font-bold whitespace-nowrap`}>
+              {t.app.title}
+            </h1>
             <button
               onClick={handleDateClick}
               className={`${colors.text.tertiary} text-[9px] sm:text-xs font-mono cursor-pointer hover:text-stone-300 transition-colors underline decoration-dotted underline-offset-2`}
@@ -132,11 +134,13 @@ const App: React.FC = () => {
             </button>
           </div>
 
-          <div className="flex justify-center pointer-events-auto">
-            <LanguageToggle />
+          <div className="flex-1 flex justify-center pointer-events-auto min-w-0">
+            <div className="flex-shrink-0">
+              <LanguageToggle />
+            </div>
           </div>
 
-          <div className="flex justify-end pointer-events-auto">
+          <div className="flex justify-end pointer-events-auto flex-shrink-0">
             <button
               onClick={handleLocationClick}
               className={`${colors.text.muted} ${typography.label.mono} cursor-pointer hover:text-stone-200 transition-colors underline decoration-dotted underline-offset-2 hidden sm:inline`}
