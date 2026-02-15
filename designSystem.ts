@@ -230,12 +230,12 @@ export const vibes: Record<Vibe, {
   };
 }> = {
   wedding: {
-    container: 'bg-stone-50 text-stone-900',
+    container: 'bg-[#f4fafa] text-stone-900', // Soft teal off-white
     header: 'font-serif italic text-stone-600 tracking-wide',
     number: 'font-serif font-light text-stone-900',
     label: 'font-serif uppercase tracking-widest text-stone-500',
     footer: 'font-serif italic text-stone-400',
-    accent: 'text-amber-600',
+    accent: 'text-teal-600',
     branding: 'text-stone-800',
     pagination: { active: 'bg-stone-800', inactive: 'bg-stone-300' }
   },
