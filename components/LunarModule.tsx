@@ -266,7 +266,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
   return (
     <div className="h-full w-full bg-stone-950 text-stone-200 relative overflow-hidden flex flex-col">
        {/* Header - Fixed - Increased Top Padding for Mobile to clear global header */}
-       <div className="pt-28 sm:pt-16 pb-4 text-center z-20 bg-gradient-to-b from-stone-950 via-stone-950 to-transparent flex-shrink-0">
+       <div className="pt-20 sm:pt-16 pb-3 text-center z-20 bg-gradient-to-b from-stone-950 via-stone-950 to-transparent flex-shrink-0">
           <h2 className={typography.header.module}>{t.lunar.header}</h2>
           <p className={`${colors.text.muted} ${typography.label.mono} mt-2 animate-pulse`}>
              {t.lunar.scrollHint}
@@ -276,12 +276,12 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
        {/* Scrollable Timeline */}
        <div 
          ref={scrollContainerRef}
-         className="flex-1 overflow-y-auto no-scrollbar relative px-2 sm:px-6 pb-20 scroll-smooth"
+         className="flex-1 overflow-y-auto no-scrollbar relative px-2 sm:px-6 pb-14 scroll-smooth"
        >
          {/* Vertical Guide Line */}
          <div className="absolute left-1/2 top-0 bottom-0 w-px bg-stone-800 -translate-x-1/2 z-0" />
 
-         <div className="flex flex-col items-center gap-6 sm:gap-16 py-10">
+         <div className="flex flex-col items-center gap-4 sm:gap-16 py-6 sm:py-10">
             {phases.map((p, i) => {
                 const isPast = p.isCurrent ? false : p.date < new Date();
                 
@@ -316,7 +316,7 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
                         <div className="relative flex-shrink-0">
                              <MoonIcon 
                                 phase={p.phase} 
-                                size={p.isCurrent || p.isWedding ? 64 : 48} 
+                                size={p.isCurrent || p.isWedding ? 48 : 36}
                                 highlight={p.isCurrent || p.isWedding}
                                 className="drop-shadow-2xl"
                              />

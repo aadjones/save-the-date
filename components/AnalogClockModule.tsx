@@ -190,7 +190,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         </p>
       </div>
 
-      <div className="relative z-10 w-full max-w-xl aspect-square p-6 sm:p-12 mt-16 sm:mt-14 max-h-[60vh] sm:max-h-none">
+      <div className="relative z-10 w-full max-w-xl aspect-square p-4 sm:p-12 mt-10 sm:mt-14 max-h-[55dvh] sm:max-h-none">
         <svg viewBox="-100 -100 200 200" className="w-full h-full drop-shadow-2xl">
             {/* Base Face */}
             <circle cx="0" cy="0" r="98" fill="none" stroke="#292524" strokeWidth="0.5" />
@@ -265,9 +265,9 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         </svg>
 
         {/* Floating Label with Backdrop for Better Readability */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none mt-32 sm:mt-40 md:mt-48 px-4">
-            <div className="bg-stone-950/60 backdrop-blur-sm rounded-lg px-4 py-3 border border-stone-800/30">
-                <div className="text-4xl sm:text-5xl md:text-6xl font-mono text-amber-100/90 font-light tracking-tighter drop-shadow-lg">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none mt-24 sm:mt-40 md:mt-48 px-4">
+            <div className="bg-stone-950/60 backdrop-blur-sm rounded-lg px-3 py-2 sm:px-4 sm:py-3 border border-stone-800/30">
+                <div className="text-3xl sm:text-5xl md:text-6xl font-mono text-amber-100/90 font-light tracking-tighter drop-shadow-lg">
                     {activeHand.id === 'wait'
                         ? (activeHand.value * 100).toFixed(4) + '%'
                         : activeHand.id === 'year' || activeHand.id === 'lunar'
@@ -277,10 +277,10 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
                                  : (activeHand.value * (activeHand.id === 'hr' ? 12 : 1)).toFixed(2)
                     }
                 </div>
-                <div className="text-amber-500 font-serif italic text-xl sm:text-xl md:text-2xl mt-2">
+                <div className="text-amber-500 font-serif italic text-base sm:text-xl md:text-2xl mt-1 sm:mt-2">
                     {activeHand.label}
                 </div>
-                <div className="text-stone-500 font-mono text-[10px] sm:text-[10px] md:text-xs uppercase tracking-widest mt-2 max-w-[180px] sm:max-w-[200px] md:max-w-[240px] mx-auto leading-tight">
+                <div className="text-stone-500 font-mono text-[9px] sm:text-[10px] md:text-xs uppercase tracking-widest mt-1 sm:mt-2 max-w-[160px] sm:max-w-[200px] md:max-w-[240px] mx-auto leading-tight">
                     {activeHand.description}
                 </div>
             </div>

@@ -92,25 +92,25 @@ const App: React.FC = () => {
 
             {/* Scroll down arrow */}
             {index < modules.length - 1 && Module.id !== 'lunar' && (
-              <div className="absolute bottom-16 inset-x-0 flex justify-center z-20">
+              <div className="absolute bottom-8 sm:bottom-16 inset-x-0 flex justify-center z-20">
                 <button
                   onClick={() => scrollToModule(index + 1)}
                   className="animate-bounce opacity-80 hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
                   aria-label="Scroll to next section"
                 >
-                  <ChevronDown size={36} className="text-stone-300" />
+                  <ChevronDown size={28} className="text-stone-300 sm:w-9 sm:h-9" />
                 </button>
               </div>
             )}
             {/* Lunar: arrow appears only once scrolled to the bottom of the timeline */}
             {Module.id === 'lunar' && index < modules.length - 1 && (
-              <div className={`absolute bottom-16 inset-x-0 flex justify-center z-20 transition-opacity duration-500 ${lunarAtBottom ? 'opacity-80' : 'opacity-0 pointer-events-none'}`}>
+              <div className={`absolute bottom-8 sm:bottom-16 inset-x-0 flex justify-center z-20 transition-opacity duration-500 ${lunarAtBottom ? 'opacity-80' : 'opacity-0 pointer-events-none'}`}>
                 <button
                   onClick={() => scrollToModule(index + 1)}
                   className="animate-bounce hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
                   aria-label="Scroll to next section"
                 >
-                  <ChevronDown size={36} className="text-stone-300" />
+                  <ChevronDown size={28} className="text-stone-300 sm:w-9 sm:h-9" />
                 </button>
               </div>
             )}

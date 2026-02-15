@@ -147,7 +147,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         {t.social.header}
       </div>
 
-      <div className="flex gap-3 sm:gap-4 mb-8 sm:mb-12 flex-col min-[400px]:flex-row justify-center mt-10 sm:mt-0">
+      <div className="flex gap-2 sm:gap-4 mb-6 sm:mb-12 flex-col min-[400px]:flex-row justify-center mt-6 sm:mt-0">
         {buttons.map((btn) => {
             const Icon = btn.icon;
             const active = selectedUnit === btn.id;
@@ -166,7 +166,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       </div>
 
       <div className="text-center animate-in fade-in duration-500">
-        <span className="text-7xl sm:text-8xl md:text-9xl lg:text-[10rem] font-mono font-light tracking-tighter text-stone-100 block mb-2 sm:mb-4">
+        <span className="text-6xl sm:text-8xl md:text-9xl lg:text-[10rem] font-mono font-light tracking-tighter text-stone-100 block mb-2 sm:mb-4">
             {Math.floor(count).toLocaleString()}
         </span>
         <span className="text-lg sm:text-xl md:text-2xl font-serif italic text-stone-500">

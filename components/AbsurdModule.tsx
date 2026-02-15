@@ -59,19 +59,19 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   return (
     <div 
         onClick={cycleUnit}
-        className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-8 pt-20 cursor-pointer hover:bg-[#0f0d0c] transition-colors relative"
+        className="h-full w-full flex flex-col items-center justify-center bg-stone-950 text-stone-200 p-6 sm:p-8 pt-16 sm:pt-20 cursor-pointer hover:bg-[#0f0d0c] transition-colors relative"
     >
       {/* Consistent Header */}
       <div className={getModuleHeaderClass()}>
         {t.absurd.header}
       </div>
 
-      <div className="text-center select-none w-full max-w-2xl mt-8 sm:mt-10">
-        <div className="my-8 sm:my-12">
+      <div className="text-center select-none w-full max-w-2xl mt-4 sm:mt-10">
+        <div className="my-4 sm:my-12">
             <div className={`${typography.number.large} mb-3 sm:mb-4 break-all sm:break-normal`}>
                 {Math.floor(count).toLocaleString()}
             </div>
-            <div className={`text-2xl sm:text-3xl md:text-4xl font-serif ${colors.text.tertiary} px-4`}>
+            <div className={`text-xl sm:text-3xl md:text-4xl font-serif ${colors.text.tertiary} px-4`}>
                 {unitLabels[unit]}
             </div>
         </div>

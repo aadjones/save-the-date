@@ -83,15 +83,15 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
       </div>
 
       {/* Image fills all space between header and countdown, centered within it */}
-      <div className="flex-1 flex items-center justify-center w-full pt-32 sm:pt-20">
+      <div className="flex-1 flex items-center justify-center w-full pt-20 sm:pt-20">
         <img
           src="/potatoes-transparent.png"
           alt="Aaron & Anakaren"
-          className="z-10 max-h-[225px] sm:max-h-[285px] w-auto object-contain drop-shadow-2xl"
+          className="z-10 max-h-[180px] sm:max-h-[285px] w-auto object-contain drop-shadow-2xl"
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-x-2 gap-y-8 sm:gap-x-4 sm:gap-y-8 md:gap-x-8 md:gap-y-10 z-10 w-full max-w-4xl px-6 pb-44 sm:pb-28">
+      <div className="grid grid-cols-3 gap-x-2 gap-y-3 sm:gap-x-4 sm:gap-y-8 md:gap-x-8 md:gap-y-10 z-10 w-full max-w-4xl px-6 pb-28 sm:pb-28">
         <Item val={timeLeft.years} label={t.standard.years} />
         <Item val={timeLeft.months} label={t.standard.months} />
         <Item val={timeLeft.days} label={t.standard.days} />
