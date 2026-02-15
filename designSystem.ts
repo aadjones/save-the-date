@@ -202,9 +202,84 @@ export const effects = {
     subtle: 'shadow-sm',
     standard: 'shadow-lg',
     heavy: 'shadow-2xl',
+    vibrant: 'shadow-[0_0_20px_rgba(255,105,180,0.5)]', // used for absurd vibe
   },
   blur: {
     small: 'blur-[100px]',
     medium: 'blur-[120px]',
   }
 } as const;
+
+// ============================================================================
+// VIBES (Module Specific Design Themes)
+// ============================================================================
+
+export type Vibe = 'wedding' | 'space' | 'elemental' | 'mystical' | 'corporate' | 'humorous' | 'steampunk';
+
+export const vibes: Record<Vibe, {
+  container: string;
+  header: string;
+  number: string;
+  label: string;
+  footer: string;
+  accent?: string;
+}> = {
+  wedding: {
+    container: 'bg-stone-50 text-stone-900',
+    header: 'font-serif italic text-stone-600 tracking-wide',
+    number: 'font-serif font-light text-stone-900',
+    label: 'font-serif uppercase tracking-widest text-stone-500',
+    footer: 'font-serif italic text-stone-400',
+    accent: 'text-amber-600'
+  },
+  space: {
+    container: 'bg-black text-white',
+    header: 'font-mono uppercase text-white tracking-widest',
+    number: 'font-mono font-bold text-white tracking-tighter',
+    label: 'font-mono uppercase text-sky-400',
+    footer: 'font-mono text-stone-500',
+    accent: 'text-sky-500'
+  },
+  elemental: {
+    container: 'bg-[#1a2f2a] text-stone-100', // deep forest green
+    header: 'font-serif italic text-emerald-200 tracking-normal',
+    number: 'font-serif font-medium text-white',
+    label: 'font-sans uppercase tracking-[0.2em] text-emerald-400',
+    footer: 'font-serif italic text-stone-400'
+  },
+  mystical: {
+    container: 'bg-[#120b1e] text-indigo-100', // deep mystical violet
+    header: 'font-serif lowercase tracking-widest text-indigo-300',
+    number: 'font-serif font-bold text-white drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]',
+    label: 'font-serif uppercase tracking-[0.3em] text-violet-400',
+    footer: 'font-serif italic text-indigo-500'
+  },
+  corporate: {
+    container: 'bg-slate-50 text-slate-900',
+    header: 'font-sans font-black uppercase text-slate-500 tracking-tight',
+    number: 'font-sans font-bold text-slate-900',
+    label: 'font-sans font-bold uppercase text-blue-600',
+    footer: 'font-sans font-medium text-slate-400'
+  },
+  humorous: {
+    container: 'bg-yellow-400 text-black',
+    header: 'font-mono font-black italic text-black -rotate-2',
+    number: 'font-mono font-black text-black scale-y-125',
+    label: 'font-mono font-bold uppercase text-pink-600',
+    footer: 'font-mono font-bold text-black opacity-60'
+  },
+  steampunk: {
+    container: 'bg-[#2b1b12] text-[#d4af37]', // brass over mahogany
+    header: 'font-serif font-black uppercase text-[#8b4513] tracking-widest border-y-2 border-[#8b4513] py-1',
+    number: 'font-serif font-bold text-[#d4af37]',
+    label: 'font-serif uppercase font-black text-[#cd7f32] tracking-tighter',
+    footer: 'font-serif italic text-orange-900 opacity-80'
+  }
+};
+
+/**
+ * Helper to get vibe-specific class for a module element
+ */
+export function getVibeClass(vibe: Vibe, element: keyof typeof vibes[Vibe]): string {
+  return vibes[vibe][element] || '';
+}
