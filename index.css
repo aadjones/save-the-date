@@ -1,2 +1,5 @@
-/* Main styles are in index.html inline styles */
-/* This file is referenced but currently empty */
+/* Dynamic viewport height — accounts for iOS Safari browser chrome */
+.h-dvh {
+  height: 100vh; /* fallback for older browsers */
+  height: 100dvh;
+}

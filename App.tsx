@@ -59,7 +59,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <div className="relative w-screen h-screen overflow-hidden bg-gradient-to-b from-stone-950 via-stone-950 to-stone-900">
+    <div className="relative w-screen h-dvh overflow-hidden bg-gradient-to-b from-stone-950 via-stone-950 to-stone-900">
       <div 
         ref={containerRef}
         onScroll={handleScroll}
