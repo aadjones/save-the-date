@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { EARTH_ORBIT_KM, DAYS_PER_YEAR, ENGAGEMENT_DATE } from '../constants';
 import { TimeModuleProps } from '../types';
-import { getModuleHeaderClass, typography, spacing } from '../designSystem';
+import { getModuleHeaderClass, typography, spacing, vibes, getVibeClass } from '../designSystem';
 import { Heart, MapPin } from 'lucide-react';
 import { createRoot } from 'react-dom/client';
 import { useT } from '../i18n';
@@ -12,6 +12,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const t = useT();
   const [stats, setStats] = useState({ degrees: 0, km: 0, fraction: 0 });
   const [resizeTrigger, setResizeTrigger] = useState(0);
+  const vibe = 'space';
 
   // Handle Resize
   useEffect(() => {
@@ -59,27 +60,27 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr("orient", "auto-start-reverse")
       .append("path")
       .attr("d", "M 0 0 L 10 5 L 0 10 z")
-      .attr("fill", "#a8a29e"); // stone-400
+      .attr("fill", "#38bdf8"); // sky-400
 
     // Sun
     svg.append('circle')
       .attr('r', isMobile ? 12 : 16)
-      .attr('fill', '#fcd34d') // amber-300
-      .attr('filter', 'blur(4px)')
-      .attr('opacity', 0.8);
+      .attr('fill', '#fff') // Pure white sun for "Spare Space" vibe
+      .attr('filter', 'blur(8px)')
+      .attr('opacity', 0.6);
 
     svg.append('circle')
       .attr('r', isMobile ? 6 : 8)
       .attr('fill', '#fff')
-      .attr('opacity', 0.9);
+      .attr('opacity', 1);
 
     // Orbit Path
     svg.append('circle')
       .attr('r', radius)
       .attr('fill', 'none')
-      .attr('stroke', '#44403c') // stone-700
+      .attr('stroke', '#1e293b') // slate-800
       .attr('stroke-width', 1)
-      .attr('stroke-dasharray', '4 4');
+      .attr('stroke-dasharray', '2 4');
 
     // Wedding Marker (Fixed at top - 90 degrees or -Math.PI/2)
     const targetAngle = -Math.PI / 2;
@@ -90,7 +91,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('y1', Math.sin(targetAngle) * (radius - 15))
       .attr('x2', Math.cos(targetAngle) * (radius + 15))
       .attr('y2', Math.sin(targetAngle) * (radius + 15))
-      .attr('stroke', '#a8a29e') // stone-400
+      .attr('stroke', '#38bdf8') // sky-400
       .attr('stroke-width', 2);
 
     // Wedding Icon
@@ -110,7 +111,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     weddingIconRoot.render(
       <Heart
         size={weddingIconSize}
-        className="text-stone-400"
+        className="text-sky-400"
         fill="currentColor"
         strokeWidth={1.5}
       />
@@ -120,13 +121,11 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('x', Math.cos(targetAngle) * (radius + (isMobile ? 30 : 40)))
       .attr('y', Math.sin(targetAngle) * (radius + (isMobile ? 45 : 60)))
       .attr('text-anchor', 'middle')
-      .attr('fill', '#a8a29e')
-      .attr('class', 'font-mono text-[10px] sm:text-xs tracking-widest')
+      .attr('fill', '#fff')
+      .attr('class', 'font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold')
       .text(t.orbit.wedding);
 
     // --- ENGAGEMENT MARKER ---
-    // Calculate position for Engagement Date
-    // Earth travels CCW (decreasing angle). Past dates are at "higher" angles (further CCW back).
     const engDiffMs = targetDate.getTime() - ENGAGEMENT_DATE.getTime();
     const engDiffDays = engDiffMs / (1000 * 60 * 60 * 24);
     const engTotalDegrees = (engDiffDays / DAYS_PER_YEAR) * 360;
@@ -142,9 +141,8 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('cy', engY)
       .attr('r', isMobile ? 4 : 5)
       .attr('fill', 'none')
-      .attr('stroke', '#78716c') // stone-500
-      .attr('stroke-width', 1.5)
-      .attr('opacity', 0.7);
+      .attr('stroke', '#334155') // slate-700
+      .attr('stroke-width', 1.5);
 
     // Label for Engagement with extended positioning
     const engExtension = isMobile ? 35 : 50;
@@ -158,26 +156,24 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('y1', engY)
       .attr('x2', Math.cos(engAngle) * (engLabelR - 10))
       .attr('y2', Math.sin(engAngle) * (engLabelR - 10))
-      .attr('stroke', '#57534e')
+      .attr('stroke', '#1e293b')
       .attr('stroke-width', 1)
-      .attr('stroke-dasharray', '2 2')
-      .attr('opacity', 0.6);
+      .attr('stroke-dasharray', '1 3');
 
     svg.append('text')
       .attr('x', engLabelX)
       .attr('y', engLabelY)
       .attr('text-anchor', 'middle')
-      .attr('fill', '#78716c') // stone-500
-      .attr('class', 'font-mono text-[8px] sm:text-[9px] tracking-widest')
+      .attr('fill', '#475569') // slate-600
+      .attr('class', 'font-mono text-[8px] sm:text-[9px] uppercase tracking-widest')
       .text(t.orbit.engaged);
 
     // Dynamic Arrow Path (Initialized empty)
     const arrowPath = svg.append('path')
       .attr('fill', 'none')
-      .attr('stroke', '#78716c')
-      .attr('stroke-width', 2)
-      .attr('marker-end', 'url(#arrow)')
-      .attr('opacity', 0.8);
+      .attr('stroke', '#334155')
+      .attr('stroke-width', 1.5)
+      .attr('marker-end', 'url(#arrow)');
 
     // Earth Group
     const earthGroup = svg.append('g');
@@ -187,19 +183,18 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     earthGroup.append('circle')
       .attr('r', moonOrbitRadius)
       .attr('fill', 'none')
-      .attr('stroke', '#57534e')
-      .attr('stroke-width', 0.5)
-      .attr('opacity', 0.4);
+      .attr('stroke', '#1e293b')
+      .attr('stroke-width', 0.5);
 
     // Earth Body
     earthGroup.append('circle')
       .attr('r', isMobile ? 5 : 7)
-      .attr('fill', '#38bdf8'); // sky-400
+      .attr('fill', '#fff'); // Space vibe: Stark white earth
 
     // Moon Body
     const moon = earthGroup.append('circle')
       .attr('r', isMobile ? 1.5 : 2.5)
-      .attr('fill', '#e7e5e4'); // stone-200
+      .attr('fill', '#38bdf8'); // Sky moon accent
 
     // "You Are Here" Label Group (will be updated in animation)
     const youAreHereGroup = svg.append('g').attr('class', 'you-are-here-label');
@@ -225,14 +220,11 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       earthGroup.attr('transform', `translate(${earthX}, ${earthY})`);
 
       // Update Moon Position
-      // Approx 29.5 days per cycle
       const moonRadians = (diffDays / 29.53) * 2 * Math.PI;
       const mx = Math.cos(moonRadians) * moonOrbitRadius;
       const my = Math.sin(moonRadians) * moonOrbitRadius;
 
-      moon
-        .attr('cx', mx)
-        .attr('cy', my);
+      moon.attr('cx', mx).attr('cy', my);
 
       // Update "You Are Here" Label
       youAreHereGroup.selectAll('*').remove();
@@ -248,7 +240,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
         .attr('y1', earthY)
         .attr('x2', Math.cos(currentAngle) * (youAreHereLabelR - 10))
         .attr('y2', Math.sin(currentAngle) * (youAreHereLabelR - 10))
-        .attr('stroke', '#44403c')
+        .attr('stroke', '#334155')
         .attr('stroke-width', 1)
         .attr('stroke-dasharray', '2 2');
 
@@ -267,7 +259,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       mapPinRoot.render(
         <MapPin
           size={mapPinSize}
-          className="text-stone-300"
+          className="text-white"
           fill="currentColor"
           strokeWidth={1.5}
         />
@@ -277,13 +269,12 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
         .attr('x', youAreHereLabelX)
         .attr('y', youAreHereLabelY + (isMobile ? 4 : 6))
         .attr('text-anchor', 'middle')
-        .attr('fill', '#d6d3d1') // stone-300
-        .attr('class', 'font-mono text-[8px] sm:text-[9px] tracking-widest font-bold')
+        .attr('fill', '#fff')
+        .attr('class', 'font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-black')
         .text(t.orbit.youAreHere);
 
-      // Update Arrow Position
-      const arrowStartOffset = 0.15; // rads ~ 8 deg
-      const arrowLength = 0.5; // rads ~ 28 deg
+      const arrowStartOffset = 0.15;
+      const arrowLength = 0.5;
 
       const arrowStart = currentAngle - arrowStartOffset;
       const arrowEnd = currentAngle - arrowStartOffset - arrowLength;
@@ -314,9 +305,9 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   }, [targetDate, isActive, resizeTrigger, t]);
 
   return (
-    <div className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4">
+    <div className={`h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4`}>
       {/* 1. Module Title */}
-      <h2 className={`${typography.header.module} text-center z-10 mb-4`}>
+      <h2 className={`${getVibeClass(vibe, 'header')} text-center z-10 mb-4 sm:text-2xl`}>
         {t.orbit.header}
       </h2>
 
@@ -327,24 +318,24 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       <div className="w-full max-w-4xl z-10 flex flex-col items-center mb-6">
         <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full">
           <div className="flex flex-col items-center justify-start">
-            <div className="text-lg sm:text-2xl md:text-3xl font-mono text-stone-200">
-              {stats.degrees.toFixed(1)}°
+            <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
+              {stats.degrees.toFixed(1).padStart(5, '0')}°
             </div>
-            <div className={`${typography.label.small} mt-1`}>{t.orbit.arc}</div>
+            <div className={`${getVibeClass(vibe, 'label')} mt-1`}>{t.orbit.arc}</div>
           </div>
 
           <div className="flex flex-col items-center justify-start">
-            <div className="text-lg sm:text-2xl md:text-3xl font-mono text-stone-200">
-              {(stats.km / 1000000).toFixed(1)}M
+            <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
+              {(stats.km / 1000000).toFixed(1).padStart(4, '0')}M
             </div>
-            <div className={`${typography.label.small} mt-1`}>{t.orbit.km}</div>
+            <div className={`${getVibeClass(vibe, 'label')} mt-1`}>{t.orbit.km}</div>
           </div>
 
           <div className="flex flex-col items-center justify-start">
-            <div className="text-lg sm:text-2xl md:text-3xl font-mono text-stone-200">
+            <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
               {stats.fraction.toFixed(3)}
             </div>
-            <div className={`${typography.label.small} mt-1`}>{t.orbit.orbits}</div>
+            <div className={`${getVibeClass(vibe, 'label')} mt-1`}>{t.orbit.orbits}</div>
           </div>
         </div>
       </div>
