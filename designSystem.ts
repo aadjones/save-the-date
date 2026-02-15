@@ -224,6 +224,10 @@ export const vibes: Record<Vibe, {
   footer: string;
   accent?: string;
   branding: string;
+  pagination: {
+    active: string;
+    inactive: string;
+  };
 }> = {
   wedding: {
     container: 'bg-stone-50 text-stone-900',
@@ -232,7 +236,8 @@ export const vibes: Record<Vibe, {
     label: 'font-serif uppercase tracking-widest text-stone-500',
     footer: 'font-serif italic text-stone-400',
     accent: 'text-amber-600',
-    branding: 'text-stone-800' // Dark text on light bg
+    branding: 'text-stone-800',
+    pagination: { active: 'bg-stone-800', inactive: 'bg-stone-300' }
   },
   space: {
     container: 'bg-black text-white',
@@ -241,7 +246,8 @@ export const vibes: Record<Vibe, {
     label: 'font-mono uppercase text-sky-400',
     footer: 'font-mono text-stone-500',
     accent: 'text-sky-500',
-    branding: 'text-stone-100' // Light text on dark bg
+    branding: 'text-stone-100',
+    pagination: { active: 'bg-sky-400', inactive: 'bg-stone-700' }
   },
   elemental: {
     container: 'bg-[#1a2f2a] text-stone-100', // deep forest green
@@ -249,7 +255,8 @@ export const vibes: Record<Vibe, {
     number: 'font-serif font-medium text-white',
     label: 'font-sans uppercase tracking-[0.2em] text-emerald-400',
     footer: 'font-serif italic text-stone-400',
-    branding: 'text-emerald-100'
+    branding: 'text-emerald-100',
+    pagination: { active: 'bg-emerald-400', inactive: 'bg-[#0f1b18]' }
   },
   mystical: {
     container: 'bg-[#120b1e] text-indigo-100', // deep mystical violet
@@ -257,7 +264,8 @@ export const vibes: Record<Vibe, {
     number: 'font-serif font-bold text-white drop-shadow-[0_0_8px_rgba(168,85,247,0.5)]',
     label: 'font-serif uppercase tracking-[0.3em] text-violet-400',
     footer: 'font-serif italic text-indigo-500',
-    branding: 'text-indigo-200'
+    branding: 'text-indigo-200',
+    pagination: { active: 'bg-violet-400', inactive: 'bg-[#0a0512]' }
   },
   corporate: {
     container: 'bg-slate-50 text-slate-900',
@@ -265,7 +273,8 @@ export const vibes: Record<Vibe, {
     number: 'font-sans font-bold text-slate-900',
     label: 'font-sans font-bold uppercase text-blue-600',
     footer: 'font-sans font-medium text-slate-400',
-    branding: 'text-slate-800'
+    branding: 'text-slate-800',
+    pagination: { active: 'bg-blue-600', inactive: 'bg-slate-300' }
   },
   humorous: {
     container: 'bg-yellow-400 text-black',
@@ -273,7 +282,8 @@ export const vibes: Record<Vibe, {
     number: 'font-mono font-black text-black scale-y-125',
     label: 'font-mono font-bold uppercase text-pink-600',
     footer: 'font-mono font-bold text-black opacity-60',
-    branding: 'text-black'
+    branding: 'text-black',
+    pagination: { active: 'bg-black', inactive: 'bg-yellow-600/40' }
   },
   steampunk: {
     container: 'bg-[#150d08] text-[#e5c100]', // Darker espresso over gold
@@ -281,7 +291,8 @@ export const vibes: Record<Vibe, {
     number: 'font-serif font-bold text-[#fcd34d]',
     label: 'font-serif uppercase font-black text-[#d97706] tracking-tighter', // Amber-600
     footer: 'font-serif italic text-stone-500 opacity-60',
-    branding: 'text-[#d4af37]'
+    branding: 'text-[#d4af37]',
+    pagination: { active: 'bg-[#fcd34d]', inactive: 'bg-[#4a3728]' }
   }
 };
 
