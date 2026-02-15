@@ -322,7 +322,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
 
       {/* 3. Stats — absolutely anchored above the nav arrow */}
-      <div className="absolute bottom-20 sm:bottom-24 left-0 right-0 px-4 z-10">
+      <div className="absolute bottom-28 sm:bottom-32 left-0 right-0 px-4 z-10">
         <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center w-full max-w-4xl mx-auto">
           <div className="flex flex-col items-center">
             <div className={`${getVibeClass(vibe, 'number')} text-base sm:text-xl md:text-2xl`}>
