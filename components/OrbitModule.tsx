@@ -29,16 +29,16 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
     const isMobile = width < 640;
 
-    // Header Safe Area (branding + toggle) - Increase to move diagram down
-    const headerSafety = isMobile ? 160 : 200;
-    // Bottom Stats Safe Area - Decrease to tighten huge gap
-    const footerSafety = isMobile ? 60 : 80;
+    // Header Safe Area (branding + toggle)
+    const headerSafety = isMobile ? 100 : 120;
+    // Bottom Stats Safe Area - Increase this to push the diagram center UP
+    const footerSafety = isMobile ? 140 : 180;
 
     const availableHeightForOrbit = height - headerSafety - footerSafety;
     const centerY = headerSafety + (availableHeightForOrbit / 2);
 
     // Label padding for vertical radius calculation
-    const labelPadding = isMobile ? 60 : 80;
+    const labelPadding = isMobile ? 50 : 70;
     const horizontalMaxRadius = (width / 2) - 40;
     const verticalMaxRadius = (availableHeightForOrbit / 2) - labelPadding;
 
@@ -322,7 +322,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
 
       {/* 3. Overlay Stats (Stacked in flow) */}
-      <div className="w-full max-w-4xl z-10 flex flex-col items-center -mt-8 sm:-mt-12 mb-2">
+      <div className="w-full max-w-4xl z-10 flex flex-col items-center -mt-20 sm:-mt-32 mb-2">
         <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center px-2 w-full">
           <div className="flex flex-col items-center justify-start">
             <div className={`${getVibeClass(vibe, 'number')} text-lg sm:text-2xl md:text-3xl`}>
