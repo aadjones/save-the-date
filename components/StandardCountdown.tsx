@@ -86,7 +86,7 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
         <img
           src="/potatoes-transparent.png"
           alt="Aaron & Anakaren"
-          className="z-10 max-h-[120px] sm:max-h-[285px] w-auto object-contain drop-shadow-2xl"
+          className="z-10 max-h-[120px] sm:max-h-[220px] w-auto object-contain drop-shadow-2xl"
         />
       </div>
 
