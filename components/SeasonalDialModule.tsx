@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { TimeModuleProps } from "../types";
 import { Snowflake, Flower2, Sun, Leaf } from "lucide-react";
 import { createRoot } from "react-dom/client";
-import { getModuleHeaderClass, typography } from "../designSystem";
+import { getModuleHeaderClass, typography, vibes, getVibeClass } from "../designSystem";
 import { useT, useLocale } from "../i18n";
 
 const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
@@ -11,6 +11,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [resizeTrigger, setResizeTrigger] = useState(0);
   const t = useT();
   const [locale] = useLocale();
+  const vibe = 'elemental';
 
   // Handle Resize
   useEffect(() => {
@@ -27,19 +28,11 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     const width = containerRef.current.clientWidth;
     const height = containerRef.current.clientHeight;
 
-    // Breakpoints
     const isMobile = width < 640;
     const isTablet = width >= 640 && width < 1024;
 
-    // 1. Center Shift
-    // Mobile: Shift down to make room for the header
-    // Desktop: Centered
     const centerYOffset = isMobile ? 0 : 20;
 
-    // 2. Radius configuration
-    // Mobile: Increased size for better visibility
-    // Tablet: Moderate
-    // Desktop: Larger for grand presentation
     let radiusScale = 0.45;
     if (isMobile) radiusScale = 0.28;
     else if (isTablet) radiusScale = 0.3;
@@ -49,7 +42,6 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     // Clear previous
     d3.select(containerRef.current).selectAll("*").remove();
 
-    // Keep reference to root SVG for Safari foreignObject fix
     const rootSvg = d3
       .select(containerRef.current)
       .append("svg")
@@ -70,59 +62,52 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         startAngle: 0,
         endAngle: Math.PI / 2,
         labelAngle: Math.PI / 4,
+        color: '#94a3b8' // slate-400 (frosty)
       },
       {
         name: t.seasonal.spring,
         startAngle: Math.PI / 2,
         endAngle: Math.PI,
         labelAngle: (3 * Math.PI) / 4,
+        color: '#4ade80' // green-400 (bloom)
       },
       {
         name: t.seasonal.summer,
         startAngle: Math.PI,
         endAngle: (3 * Math.PI) / 2,
         labelAngle: (5 * Math.PI) / 4,
+        color: '#fbbf24' // amber-400 (sun)
       },
       {
         name: t.seasonal.fall,
         startAngle: (3 * Math.PI) / 2,
         endAngle: 2 * Math.PI,
         labelAngle: (7 * Math.PI) / 4,
+        color: '#c2410c' // orange-700 (earth/leaves)
       },
     ];
 
     // --- DRAW BASE DIAL ---
-
-    // Outer Circle
     svg
       .append("circle")
       .attr("r", radius)
       .attr("fill", "none")
-      .attr("stroke", "#57534e") // stone-600
+      .attr("stroke", "#334155") // slate-700
       .attr("stroke-width", 1);
 
-    // Crosshairs (Solstices/Equinoxes)
-    // Vertical
+    // Crosshairs
     svg
+      .selectAll(".crosshair")
+      .data([0, Math.PI / 2])
+      .enter()
       .append("line")
-      .attr("x1", 0)
-      .attr("y1", -radius)
-      .attr("x2", 0)
-      .attr("y2", radius)
-      .attr("stroke", "#44403c") // stone-700
+      .attr("x1", (d) => Math.sin(d) * -radius)
+      .attr("y1", (d) => -Math.cos(d) * -radius)
+      .attr("x2", (d) => Math.sin(d) * radius)
+      .attr("y2", (d) => -Math.cos(d) * radius)
+      .attr("stroke", "#1e293b") // slate-800
       .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "4 4");
-
-    // Horizontal
-    svg
-      .append("line")
-      .attr("x1", -radius)
-      .attr("y1", 0)
-      .attr("x2", radius)
-      .attr("y2", 0)
-      .attr("stroke", "#44403c") // stone-700
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "4 4");
+      .attr("stroke-dasharray", "2 6");
 
     // Season Labels
     svg
@@ -136,7 +121,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       .attr("alignment-baseline", "middle")
       .attr(
         "class",
-        "font-serif text-[10px] sm:text-base md:text-lg text-stone-400 fill-current uppercase tracking-widest font-bold opacity-50 select-none",
+        "font-serif text-[10px] sm:text-base md:text-lg text-emerald-100/30 fill-current uppercase tracking-[0.3em] italic select-none",
       )
       .text((d) => d.name);
 
@@ -149,16 +134,13 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     ];
 
     const iconSize = isMobile ? 16 : 24;
-    const iconOffset = isMobile ? 0.35 : 0.38; // Position icons closer to center than text
+    const iconOffset = isMobile ? 0.35 : 0.4;
 
     seasonIcons.forEach((season, i) => {
       const seasonData = seasons[i];
-      // Calculate relative position
       const iconX = Math.sin(seasonData.labelAngle) * (radius * iconOffset);
       const iconY = -Math.cos(seasonData.labelAngle) * (radius * iconOffset);
 
-      // Safari fix: Append to root SVG with absolute positions instead of transformed group
-      // Calculate absolute position including center transform
       const absoluteX = width / 2 + iconX - iconSize / 2;
       const absoluteY = height / 2 + centerYOffset + iconY - iconSize / 2;
 
@@ -178,18 +160,15 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       root.render(
         <Icon
           size={iconSize}
-          className="text-stone-400"
-          style={{ opacity: 0.6 }}
-          strokeWidth={2}
+          className="text-emerald-400"
+          style={{ opacity: 0.4 }}
+          strokeWidth={1.5}
         />,
       );
     });
 
     // --- SOLSTICE / EQUINOX LABELS ---
-    // Adjusted offsets for responsiveness
-    // dy/dx now conditional on isMobile vs Desktop for better spacing
-    const labelSpacing = isMobile ? 10 : 25;
-
+    const labelSpacing = isMobile ? 12 : 25;
     const dateLocale = locale === 'es' ? 'es-MX' : 'en-US';
     const fmtDate = (m: number, d: number) =>
       new Date(2026, m, d).toLocaleDateString(dateLocale, { month: 'short', day: 'numeric' }).toUpperCase();
@@ -200,7 +179,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         date: fmtDate(11, 21),
         angle: 0,
         align: "middle",
-        dy: -labelSpacing - 12, // Raised specifically for clearance
+        dy: -labelSpacing - 15,
         dx: 0,
       },
       {
@@ -216,10 +195,9 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         date: fmtDate(5, 21),
         angle: Math.PI,
         align: "middle",
-        dy: labelSpacing + 10,
+        dy: labelSpacing + 12,
         dx: 0,
       },
-      // Safari/mobile fix: Reduce negative dx offset to prevent label cutoff on left edge
       {
         name: t.seasonal.autumnalEquinox,
         date: fmtDate(8, 22),
@@ -245,13 +223,9 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         let textX = x + (d.dx || 0);
         let textY = y + (d.dy || 0);
 
-        // Render multi-line labels (Name + Date)
         const words = d.name.split(' ');
         let lines = [];
-
-        // Logical split for better two-line balance
         if (words.length > 1) {
-          // If 3 words (like "Solsticio de Invierno"), put 'de' on the second line
           if (words.length === 3 && words[1].toLowerCase() === 'de') {
             lines.push(words[0]);
             lines.push(words.slice(1).join(' '));
@@ -270,10 +244,9 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
           .attr("text-anchor", d.align)
           .attr(
             "class",
-            "font-mono text-[8px] sm:text-[10px] md:text-xs text-stone-500 fill-current font-bold uppercase tracking-wider",
+            "font-serif text-[9px] sm:text-[11px] md:text-sm text-emerald-200 fill-current italic tracking-wide",
           );
 
-        // Append Label Lines
         lines.forEach((line, i) => {
           nameEl.append("tspan")
             .attr("x", textX)
@@ -281,14 +254,13 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
             .text(line);
         });
 
-        // Append Date Line (always separate)
         g.append("text")
           .attr("x", textX)
           .attr("y", textY + (lines.length * (isMobile ? 10 : 14)))
           .attr("text-anchor", d.align)
           .attr(
             "class",
-            "font-mono text-[8px] sm:text-[9px] md:text-[10px] text-stone-600 fill-current uppercase tracking-wider",
+            "font-sans text-[8px] sm:text-[9px] md:text-[10px] text-emerald-400/60 fill-current tracking-[0.2em]",
           )
           .text(d.date);
       });
@@ -297,137 +269,70 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     const now = new Date();
     const year = now.getFullYear();
 
-    let lastWinterSolstice = new Date(year, 11, 21); // Dec 21
+    let lastWinterSolstice = new Date(year, 11, 21);
     if (now < lastWinterSolstice) {
       lastWinterSolstice = new Date(year - 1, 11, 21);
     }
-
-    const nextWinterSolstice = new Date(
-      lastWinterSolstice.getFullYear() + 1,
-      11,
-      21,
-    );
-    const daysInYearCycle =
-      (nextWinterSolstice.getTime() - lastWinterSolstice.getTime()) /
-      (1000 * 60 * 60 * 24);
-    const daysPassed =
-      (now.getTime() - lastWinterSolstice.getTime()) / (1000 * 60 * 60 * 24);
-
-    const cycleProgress = daysPassed / daysInYearCycle; // 0 to 1
+    const nextWinterSolstice = new Date(lastWinterSolstice.getFullYear() + 1, 11, 21);
+    const daysInYearCycle = (nextWinterSolstice.getTime() - lastWinterSolstice.getTime()) / (1000 * 60 * 60 * 24);
+    const daysPassed = (now.getTime() - lastWinterSolstice.getTime()) / (1000 * 60 * 60 * 24);
+    const cycleProgress = daysPassed / daysInYearCycle;
     const currentAngle = cycleProgress * 2 * Math.PI;
 
-    // Determine Active Season
+    // Active Season for Arc
     let activeSeasonIndex = 0;
-    if (currentAngle < Math.PI / 2)
-      activeSeasonIndex = 0; // Winter
-    else if (currentAngle < Math.PI)
-      activeSeasonIndex = 1; // Spring
-    else if (currentAngle < (3 * Math.PI) / 2)
-      activeSeasonIndex = 2; // Summer
-    else activeSeasonIndex = 3; // Fall
+    if (currentAngle < Math.PI / 2) activeSeasonIndex = 0;
+    else if (currentAngle < Math.PI) activeSeasonIndex = 1;
+    else if (currentAngle < (3 * Math.PI) / 2) activeSeasonIndex = 2;
+    else activeSeasonIndex = 3;
 
     const activeSeason = seasons[activeSeasonIndex];
 
-    // Progress within season
-    const seasonDuration = Math.PI / 2;
-    const angleInSeason = currentAngle - activeSeason.startAngle;
-    const seasonProgress = Math.max(
-      0,
-      Math.min(1, angleInSeason / seasonDuration),
-    );
-
-    // --- DRAW FILL ---
-    const fillRadius = radius * seasonProgress;
-    const arcGenerator = d3
-      .arc()
+    const fillRadius = radius * 0.95;
+    const arcGenerator = d3.arc()
       .innerRadius(0)
       .outerRadius(fillRadius)
       .startAngle(activeSeason.startAngle)
-      .endAngle(activeSeason.endAngle);
+      .endAngle(currentAngle);
 
-    svg
-      .append("path")
+    svg.append("path")
       .attr("d", arcGenerator as any)
-      .attr("fill", "#e7e5e4")
-      .attr("opacity", 0.1);
+      .attr("fill", activeSeason.color)
+      .attr("opacity", 0.05);
 
-    svg
-      .append("path")
-      .attr("d", arcGenerator as any)
-      .attr("fill", "#e7e5e4")
-      .attr("opacity", 0.15)
-      .append("animate")
-      .attr("attributeName", "opacity")
-      .attr("values", "0.15;0.05;0.15")
-      .attr("dur", "4s")
-      .attr("repeatCount", "indefinite");
-
-    // --- CURRENT DATE MARKER ---
+    // Current Date Line
     const currentX = Math.sin(currentAngle) * radius;
     const currentY = -Math.cos(currentAngle) * radius;
 
-    svg
-      .append("line")
+    svg.append("line")
       .attr("x1", 0)
       .attr("y1", 0)
       .attr("x2", currentX)
       .attr("y2", currentY)
-      .attr("stroke", "#e7e5e4")
-      .attr("stroke-width", 1.5);
+      .attr("stroke", activeSeason.color)
+      .attr("stroke-width", 2)
+      .attr("opacity", 0.8);
 
-    svg
-      .append("circle")
-      .attr("cx", currentX)
-      .attr("cy", currentY)
-      .attr("r", 3)
-      .attr("fill", "#e7e5e4")
-      .attr("stroke", "#0c0a09")
-      .attr("stroke-width", 1);
-
-    // Label for Current
-    // Dynamic extension
-    const curExtension = isMobile ? 40 : 80;
+    // Label for You Are Here
+    const curExtension = isMobile ? 35 : 70;
     const curLabelR = radius + curExtension;
     const curLabelX = Math.sin(currentAngle) * curLabelR;
     const curLabelY = -Math.cos(currentAngle) * curLabelR;
 
     const curGroup = svg.append("g");
-
-    svg
-      .append("line")
-      .attr("x1", currentX)
-      .attr("y1", currentY)
-      .attr("x2", Math.sin(currentAngle) * (curLabelR - 10))
-      .attr("y2", -Math.cos(currentAngle) * (curLabelR - 10))
-      .attr("stroke", "#44403c")
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "2 2");
-
-    curGroup
-      .append("text")
+    curGroup.append("text")
       .attr("x", curLabelX)
       .attr("y", curLabelY)
       .attr("text-anchor", "middle")
-      .attr(
-        "class",
-        "font-mono text-[9px] sm:text-[10px] md:text-xs font-bold text-stone-100 fill-current tracking-widest",
-      )
+      .attr("class", "font-serif text-[10px] sm:text-base italic text-emerald-100 fill-current tracking-tight")
       .text(t.seasonal.youAreHere);
 
-    curGroup
-      .append("text")
+    curGroup.append("text")
       .attr("x", curLabelX)
-      .attr("y", curLabelY + (isMobile ? 12 : 16))
+      .attr("y", curLabelY + (isMobile ? 12 : 18))
       .attr("text-anchor", "middle")
-      .attr(
-        "class",
-        "font-mono text-[8px] sm:text-[9px] md:text-[10px] text-stone-400 fill-current uppercase tracking-wider",
-      )
-      .text(
-        now
-          .toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: "short", day: "numeric" })
-          .toUpperCase(),
-      );
+      .attr("class", "font-sans text-[8px] sm:text-[10px] text-emerald-400 fill-current tracking-widest font-bold")
+      .text(now.toLocaleDateString(dateLocale, { month: "short", day: "numeric" }).toUpperCase());
 
     // --- WEDDING TARGET MARKER ---
     const tYear = targetDate.getFullYear();
@@ -436,95 +341,48 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       targetWS = new Date(tYear - 1, 11, 21);
     }
     const nextTargetWS = new Date(targetWS.getFullYear() + 1, 11, 21);
-    const targetCycleDays =
-      (nextTargetWS.getTime() - targetWS.getTime()) / (1000 * 60 * 60 * 24);
-    const targetDaysPassed =
-      (targetDate.getTime() - targetWS.getTime()) / (1000 * 60 * 60 * 24);
+    const targetCycleDays = (nextTargetWS.getTime() - targetWS.getTime()) / (1000 * 60 * 60 * 24);
+    const targetDaysPassed = (targetDate.getTime() - targetWS.getTime()) / (1000 * 60 * 60 * 24);
     const targetAngle = (targetDaysPassed / targetCycleDays) * 2 * Math.PI;
     const targetX = Math.sin(targetAngle) * radius;
     const targetY = -Math.cos(targetAngle) * radius;
 
-    // Dashed Line for Target
-    svg
-      .append("line")
-      .attr("x1", 0)
-      .attr("y1", 0)
-      .attr("x2", targetX)
-      .attr("y2", targetY)
-      .attr("stroke", "#a8a29e")
-      .attr("stroke-width", 1.5)
-      .attr("stroke-dasharray", "3 3");
-
-    svg
-      .append("circle")
+    svg.append("circle")
       .attr("cx", targetX)
       .attr("cy", targetY)
-      .attr("r", 4)
-      .attr("fill", "#0c0a09")
-      .attr("stroke", "#a8a29e")
-      .attr("stroke-width", 1.5);
+      .attr("r", 5)
+      .attr("fill", "none")
+      .attr("stroke", "#fbbf24") // amber-400 target glow
+      .attr("stroke-width", 2);
 
-    // Label for Target
-    const tarExtension = isMobile ? 40 : 100; // More extension on desktop for drama
+    const tarExtension = isMobile ? 40 : 100;
     const tarLabelR = radius + tarExtension;
     const tarLabelX = Math.sin(targetAngle) * tarLabelR;
     const tarLabelY = -Math.cos(targetAngle) * tarLabelR;
 
     const tarGroup = svg.append("g");
-
-    // Leader line for Target
-    svg
-      .append("line")
-      .attr("x1", targetX)
-      .attr("y1", targetY)
-      .attr("x2", Math.sin(targetAngle) * (tarLabelR - 10))
-      .attr("y2", -Math.cos(targetAngle) * (tarLabelR - 10))
-      .attr("stroke", "#a8a29e")
-      .attr("stroke-width", 1)
-      .attr("stroke-dasharray", "2 2");
-
-    // Manual Offset for Wedding Label
-    const wedOffsetX = -5;
-    const wedOffsetY = isMobile ? 12 : 16;
-
-    tarGroup
-      .append("text")
-      .attr("x", tarLabelX + wedOffsetX)
-      .attr("y", tarLabelY + wedOffsetY)
-      .attr("text-anchor", "end")
-      .attr(
-        "class",
-        "font-mono text-[9px] sm:text-[10px] md:text-xs font-bold text-stone-300 fill-current tracking-widest",
-      )
+    tarGroup.append("text")
+      .attr("x", tarLabelX)
+      .attr("y", tarLabelY)
+      .attr("text-anchor", "middle")
+      .attr("class", "font-serif text-[10px] sm:text-base italic text-amber-100 fill-current")
       .text(t.seasonal.wedding);
 
-    tarGroup
-      .append("text")
-      .attr("x", tarLabelX + wedOffsetX)
-      .attr("y", tarLabelY + wedOffsetY + (isMobile ? 12 : 16))
-      .attr("text-anchor", "end")
-      .attr(
-        "class",
-        "font-mono text-[8px] sm:text-[9px] md:text-[10px] text-stone-400 fill-current uppercase tracking-wider",
-      )
-      .text(
-        targetDate
-          .toLocaleDateString(locale === 'es' ? 'es-MX' : 'en-US', { month: "short", day: "numeric" })
-          .toUpperCase(),
-      );
+    tarGroup.append("text")
+      .attr("x", tarLabelX)
+      .attr("y", tarLabelY + (isMobile ? 12 : 18))
+      .attr("text-anchor", "middle")
+      .attr("class", "font-sans text-[8px] sm:text-[10px] text-amber-500 fill-current tracking-widest font-bold")
+      .text(targetDate.toLocaleDateString(dateLocale, { month: "short", day: "numeric" }).toUpperCase());
+
   }, [targetDate, resizeTrigger, t, locale]);
 
   return (
-    <div className="h-full w-full flex flex-col items-center bg-stone-950 text-stone-200 relative overflow-hidden pt-28 sm:pt-32 px-4">
-      {/* 1. Module Title */}
-      <h2 className={`${typography.header.module} text-center z-10 mb-2`}>
+    <div className={`h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4`}>
+      <h2 className={`${getVibeClass(vibe, 'header')} text-center z-10 mb-2 sm:text-3xl`}>
         {t.seasonal.header}
       </h2>
-
-      {/* 2. Visualization Area (In Flow) */}
       <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
-
-      {/* 3. Footer Spacer (to clear bounce arrow) */}
       <div className="pb-14 sm:pb-32" />
     </div>
   );
