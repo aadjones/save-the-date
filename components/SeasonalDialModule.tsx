@@ -127,10 +127,10 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
     // Season Icons
     const seasonIcons = [
-      { name: "Winter", icon: Snowflake },
-      { name: "Spring", icon: Flower2 },
-      { name: "Summer", icon: Sun },
-      { name: "Fall", icon: Leaf },
+      { name: "Winter", icon: Snowflake, color: "#ffffff" },
+      { name: "Spring", icon: Flower2, color: "#4ade80" },
+      { name: "Summer", icon: Sun, color: "#facc15" },
+      { name: "Fall", icon: Leaf, color: "#f97316" },
     ];
 
     const iconSize = isMobile ? 16 : 24;
@@ -160,8 +160,8 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       root.render(
         <Icon
           size={iconSize}
-          className="text-emerald-400"
-          style={{ opacity: 0.4 }}
+          color={season.color}
+          style={{ opacity: 0.8 }}
           strokeWidth={1.5}
         />,
       );

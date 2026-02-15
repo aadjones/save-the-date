@@ -123,7 +123,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     weddingIconRoot.render(
       <Heart
         size={weddingIconSize}
-        className="text-sky-400"
+        className="text-rose-500"
         fill="currentColor"
         strokeWidth={1.5}
       />
