@@ -6,7 +6,6 @@ import LunarModule from './components/LunarModule';
 import SocialTimeModule from './components/SocialTimeModule';
 import AbsurdModule from './components/AbsurdModule';
 import AnalogClockModule from './components/AnalogClockModule';
-import ShuffleButton from './components/ShuffleButton';
 import { ChevronDown } from 'lucide-react';
 import { TARGET_DATE, VENUE_NAME, VENUE_ADDRESS, VENUE_COORDINATES } from './constants';
 import { components, colors, typography } from './designSystem';
@@ -37,22 +36,6 @@ const App: React.FC = () => {
     if (index !== activeModule) {
       setActiveModule(index);
     }
-  };
-
-  const handleShuffle = () => {
-    if (!containerRef.current) return;
-    // Get a random index that's different from the current module
-    // If there are N modules and we exclude the current one, we have N-1 options
-    let randomIndex = Math.floor(Math.random() * (modules.length - 1));
-    // If the random index is >= current index, increment to skip the current module
-    if (randomIndex >= activeModule) {
-      randomIndex++;
-    }
-    const height = containerRef.current.clientHeight;
-    containerRef.current.scrollTo({
-      top: randomIndex * height,
-      behavior: 'smooth'
-    });
   };
 
   const handleDateClick = () => {
@@ -138,7 +121,7 @@ const App: React.FC = () => {
         <LanguageToggle />
       </div>
 
-      <ShuffleButton onClick={handleShuffle} />
+
     </div>
   );
 };

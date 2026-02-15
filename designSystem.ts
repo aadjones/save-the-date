@@ -145,11 +145,6 @@ export const components = {
     dotInactive: 'bg-stone-600',
   },
 
-  // Shuffle button
-  shuffle: {
-    container: 'fixed bottom-6 right-6 z-50',
-    button: `p-3 ${colors.background.button} backdrop-blur-sm rounded-full text-stone-500 hover:text-stone-300 ${colors.background.buttonHover} transition-all border ${colors.border.subtle}`,
-  }
 } as const;
 
 // ============================================================================

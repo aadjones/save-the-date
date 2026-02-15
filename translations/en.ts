@@ -8,7 +8,6 @@ export const en: Translations = {
     calendarDescription: 'Join Aaron Demby Jones and Anakaren Santana Gálvez for our wedding celebration!',
     locationAriaLabel: 'Open venue location in maps',
     calendarAriaLabel: 'Download calendar event',
-    shuffleAriaLabel: 'Random Clock',
   },
   standard: {
     header: 'Aaron & Anakaren\'s Wedding!',

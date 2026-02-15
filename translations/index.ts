@@ -8,7 +8,6 @@ export type Translations = {
     calendarDescription: string;
     locationAriaLabel: string;
     calendarAriaLabel: string;
-    shuffleAriaLabel: string;
   };
   standard: {
     header: string;

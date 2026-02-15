@@ -8,7 +8,6 @@ export const es: Translations = {
     calendarDescription: '¡Acompaña a Aaron Demby Jones y Anakaren Santana Gálvez en nuestra celebración de boda!',
     locationAriaLabel: 'Abrir ubicación del lugar en el mapa',
     calendarAriaLabel: 'Descargar evento de calendario',
-    shuffleAriaLabel: 'Reloj Aleatorio',
   },
   standard: {
     header: '¡La Boda de Aaron y Anakaren!',
