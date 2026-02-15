@@ -120,8 +120,9 @@ const App: React.FC = () => {
       {/* Global Header Elements */}
       <div className="absolute top-4 left-4 right-4 z-50 pointer-events-none">
         {/* Top row: Left (Logo/Date), Center (Toggle), Right (Coords - desktop) */}
+        {/* Using fixed width for the logo block to prevent the toggle from shifting when language changes */}
         <div className="w-full flex justify-between items-start gap-2 sm:gap-4">
-          <div className="flex flex-col items-start pointer-events-auto flex-shrink-0">
+          <div className="flex flex-col items-start pointer-events-auto flex-shrink-0 w-28 sm:w-40">
             <h1 className={`${colors.text.secondary} font-serif text-sm sm:text-lg tracking-wide font-bold whitespace-nowrap`}>
               {t.app.title}
             </h1>
@@ -140,7 +141,7 @@ const App: React.FC = () => {
             </div>
           </div>
 
-          <div className="flex justify-end pointer-events-auto flex-shrink-0">
+          <div className="flex justify-end pointer-events-auto flex-shrink-0 w-10 sm:w-40">
             <button
               onClick={handleLocationClick}
               className={`${colors.text.muted} ${typography.label.mono} cursor-pointer hover:text-stone-200 transition-colors underline decoration-dotted underline-offset-2 hidden sm:inline`}
