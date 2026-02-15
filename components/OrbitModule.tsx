@@ -40,11 +40,13 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     // Radius must fit:
     // 1. Horizontally: radius + padding < width / 2
     // 2. Vertically: radius + labelOffset < availableHeightForOrbit / 2
-    const labelPadding = isMobile ? 50 : 70;
+    // We increase labelPadding to ensure the 'Wedding' text and icon have breathing room
+    const labelPadding = isMobile ? 65 : 85;
     const horizontalMaxRadius = (width / 2) - 40;
     const verticalMaxRadius = (availableHeightForOrbit / 2) - labelPadding;
 
-    const radius = Math.max(100, Math.min(horizontalMaxRadius, verticalMaxRadius));
+    // Remove the high floor (100) to allow it to shrink as much as needed for short viewports
+    const radius = Math.max(40, Math.min(horizontalMaxRadius, verticalMaxRadius));
 
     const centerYOffset = centerY - (height / 2);
 
