@@ -11,6 +11,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const t = useT();
   const [stats, setStats] = useState({ degrees: 0, km: 0, fraction: 0 });
+  const [statsTop, setStatsTop] = useState<number | null>(null);
   const [resizeTrigger, setResizeTrigger] = useState(0);
   const vibe = 'space';
 
@@ -30,7 +31,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     const isMobile = width < 640;
 
     // Header Safe Area (branding + toggle)
-    const headerSafety = isMobile ? 100 : 120;
+    const headerSafety = isMobile ? 50 : 70;
     // Bottom Stats Safe Area - Increase this to push the diagram center UP
     const footerSafety = isMobile ? 140 : 180;
 
@@ -43,6 +44,13 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
     const verticalMaxRadius = (availableHeightForOrbit / 2) - labelPadding;
 
     const radius = Math.max(60, Math.min(horizontalMaxRadius, verticalMaxRadius));
+
+    // The diagram's lowest visible element is the "You Are Here" label.
+    // offsetTop converts from inner div coords → outer div coords (adds header + h2 height).
+    const youAreHereExtension = isMobile ? 40 : 60;
+    const innerDivOffset = containerRef.current.offsetTop;
+    const diagramBottomPx = innerDivOffset + centerY + radius + youAreHereExtension + 12;
+    setStatsTop(diagramBottomPx);
 
     const centerYOffset = centerY - (height / 2);
 
@@ -321,8 +329,8 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       {/* 2. Visualization Area (In Flow) */}
       <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
 
-      {/* 3. Stats — absolutely anchored above the nav arrow */}
-      <div className="absolute bottom-28 sm:bottom-32 left-0 right-0 px-4 z-10">
+      {/* 3. Stats — top anchored to diagram's actual bottom edge (offset-corrected coords) */}
+      <div className="absolute left-0 right-0 px-4 z-10" style={statsTop !== null ? { top: `${statsTop}px` } : { bottom: '7rem' }}>
         <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center w-full max-w-4xl mx-auto">
           <div className="flex flex-col items-center">
             <div className={`${getVibeClass(vibe, 'number')} text-base sm:text-xl md:text-2xl`}>
