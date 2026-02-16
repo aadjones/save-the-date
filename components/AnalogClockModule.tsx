@@ -161,56 +161,57 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
                 </p>
             </div>
 
-            {/* 2. Clock Area (In Flow) */}
-            <div className="flex-1 w-full max-w-xl aspect-square z-10 relative min-h-0 flex items-center justify-center">
-                <svg viewBox="-100 -100 200 200" className="w-[65%] sm:w-[70%] aspect-square drop-shadow-2xl">
-                    {/* Base Face - Brighter lines */}
-                    <circle cx="0" cy="0" r="98" fill="none" stroke="#44403c" strokeWidth="0.5" />
-                    <circle cx="0" cy="0" r="2" fill="#78716c" />
+            {/* 2. Clock + Label (grouped so label stays attached) */}
+            <div className="flex-1 w-full z-10 min-h-0 flex flex-col items-center justify-center gap-4">
+                <svg viewBox="-100 -100 200 200" className="w-[65%] sm:w-[70%] aspect-square drop-shadow-2xl max-h-[55vh]">
+                    {/* Base Face */}
+                    <circle cx="0" cy="0" r="98" fill="none" stroke="#78716c" strokeWidth="0.8" />
+                    <circle cx="0" cy="0" r="2" fill="#a8a29e" />
 
                     {/* Ghosted Hands */}
                     {hands.map((hand, i) => {
                         if (i === activeIndex) return null;
                         const coords = getHandCoords(hand.value, hand.lengthScale, 95);
                         return (
-                            <g key={hand.id} className="transition-opacity duration-500 opacity-20">
-                                <path d={getArcPath(hand.value, 95 * hand.lengthScale)} fill="none" stroke={hand.color} strokeWidth="0.5" opacity="0.4" />
-                                <line x1={coords.x1} y1={coords.y1} x2={coords.x2} y2={coords.y2} stroke={hand.color} strokeWidth="1" strokeLinecap="round" />
+                            <g key={hand.id} className="transition-opacity duration-500 opacity-40">
+                                <path d={getArcPath(hand.value, 95 * hand.lengthScale)} fill="none" stroke={hand.color} strokeWidth="0.8" opacity="0.6" />
+                                <line x1={coords.x1} y1={coords.y1} x2={coords.x2} y2={coords.y2} stroke={hand.color} strokeWidth="1.5" strokeLinecap="round" />
                             </g>
                         );
                     })}
 
                     {/* Active Hand */}
                     <g className="transition-all duration-500 ease-out">
-                        <path d={getArcPath(activeHand.value, 95 * activeHand.lengthScale)} fill="none" stroke={activeHand.color} strokeWidth="6" opacity="0.1" />
-                        <path d={getArcPath(activeHand.value, 95 * activeHand.lengthScale)} fill="none" stroke={activeHand.color} strokeWidth="0.5" opacity="0.5" strokeDasharray="2 2" />
+                        <path d={getArcPath(activeHand.value, 95 * activeHand.lengthScale)} fill="none" stroke={activeHand.color} strokeWidth="6" opacity="0.15" />
+                        <path d={getArcPath(activeHand.value, 95 * activeHand.lengthScale)} fill="none" stroke={activeHand.color} strokeWidth="0.8" opacity="0.8" strokeDasharray="2 2" />
                         <line x1={0} y1={0} x2={Math.cos(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} y2={Math.sin(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} stroke={activeHand.color} strokeWidth={activeHand.width} strokeLinecap="round" className="drop-shadow-[0_0_15px_rgba(251,191,36,0.6)]" />
                         <circle cx={Math.cos(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} cy={Math.sin(activeHand.value * TWO_PI - Math.PI / 2) * (95 * activeHand.lengthScale)} r={activeHand.width * 1.5} fill={activeHand.color} className="drop-shadow-[0_0_8px_rgba(255,255,255,0.4)]" />
                     </g>
                     <circle cx="0" cy="0" r="3" fill="#1c1917" stroke={activeHand.color} strokeWidth="1" />
                 </svg>
 
-                {/* Info Label - Below clock but still relatively positioned to it */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 translate-y-16 sm:translate-y-24 text-center pointer-events-none w-full px-4">
-                    <div className="bg-stone-950/60 backdrop-blur-sm rounded-lg px-3 py-2 sm:px-4 sm:py-3 border border-stone-800/30 inline-block">
-                        <div className="text-2xl sm:text-4xl md:text-5xl font-mono text-amber-100/90 font-light tracking-tighter drop-shadow-lg leading-tight">
-                            {activeHand.id === 'wait'
-                                ? (activeHand.value * 100).toFixed(4) + '%'
-                                : activeHand.id === 'year' || activeHand.id === 'lunar'
-                                    ? (activeHand.value * 100).toFixed(1) + '%'
-                                    : activeHand.id === 'sec' || activeHand.id === 'min'
-                                        ? Math.floor(activeHand.value * 60).toString().padStart(2, '0')
-                                        : (activeHand.value * (activeHand.id === 'hr' ? 12 : 1)).toFixed(2)
-                            }
-                        </div>
-                        <div className="text-amber-500 font-serif italic text-sm sm:text-lg mt-0.5 sm:mt-1">
-                            {activeHand.label}
-                        </div>
+                {/* Info Label — sibling to SVG, stays attached */}
+                <div className="text-center px-4 pointer-events-none pb-16 sm:pb-20">
+                <div className="bg-stone-950/60 backdrop-blur-sm rounded-lg px-3 py-2 sm:px-4 sm:py-3 border border-stone-800/30 inline-block">
+                    <div className="text-2xl sm:text-4xl md:text-5xl font-mono text-amber-100/90 font-light tracking-tighter drop-shadow-lg leading-tight">
+                        {activeHand.id === 'wait'
+                            ? (activeHand.value * 100).toFixed(4) + '%'
+                            : activeHand.id === 'year' || activeHand.id === 'lunar'
+                                ? (activeHand.value * 100).toFixed(1) + '%'
+                                : activeHand.id === 'sec' || activeHand.id === 'min'
+                                    ? Math.floor(activeHand.value * 60).toString().padStart(2, '0')
+                                    : (activeHand.value * (activeHand.id === 'hr' ? 12 : 1)).toFixed(2)
+                        }
+                    </div>
+                    <div className="text-amber-500 font-serif italic text-sm sm:text-lg mt-0.5 sm:mt-1">
+                        {activeHand.label}
+                    </div>
+                    <div className="text-stone-400 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest mt-1 opacity-80">
+                        {activeHand.description}
                     </div>
                 </div>
+                </div>
             </div>
-
-            {/* 3. Footer Spacer */}
         </div>
     );
 };
