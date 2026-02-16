@@ -29,15 +29,25 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     const height = containerRef.current.clientHeight;
 
     const isMobile = width < 640;
-    const isTablet = width >= 640 && width < 1024;
 
-    const centerYOffset = isMobile ? 0 : 20;
+    // Tightened label padding — empirically: equinox text is ~110px wide, not 155px.
+    // Bottom labels (2 lines + date) need ~78px on desktop, not 90px.
+    const topLabelPad    = isMobile ? 30  : 52;
+    const bottomLabelPad = isMobile ? 44  : 80;
+    const sideLabelPad   = isMobile ? 78  : 118;
 
-    let radiusScale = 0.45;
-    if (isMobile) radiusScale = 0.28;
-    else if (isTablet) radiusScale = 0.3;
+    // Largest constraint wins for each axis
+    const maxFromH = (height / 2) - Math.max(topLabelPad, bottomLabelPad);
+    const maxFromW = (width  / 2) - sideLabelPad;
+    const radius   = Math.max(40, Math.min(maxFromH, maxFromW));
 
-    const radius = Math.min(width, height) * radiusScale;
+    // Font scales with radius so text stays proportional on small diagrams
+    const labelFontPx = Math.max(8,  Math.min(isMobile ? 10 : 12, Math.round(radius * 0.10)));
+    const dateFontPx  = Math.max(7,  Math.min(isMobile ?  9 : 10, Math.round(radius * 0.08)));
+    const youHereFontPx = Math.max(8, Math.min(isMobile ? 11 : 13, Math.round(radius * 0.11)));
+
+    // Shift center up so the taller bottom labels don't push into the nav zone
+    const centerYOffset = -Math.round((bottomLabelPad - topLabelPad) / 2);
 
     // Clear previous
     d3.select(containerRef.current).selectAll("*").remove();
@@ -228,10 +238,8 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
           .attr("x", textX)
           .attr("y", textY)
           .attr("text-anchor", d.align)
-          .attr(
-            "class",
-            "font-serif text-[9px] sm:text-[11px] md:text-sm text-emerald-200 fill-current italic tracking-wide",
-          );
+          .attr("class", "font-serif text-emerald-200 fill-current italic tracking-wide")
+          .style("font-size", `${labelFontPx}px`);
 
         lines.forEach((line, i) => {
           nameEl.append("tspan")
@@ -242,12 +250,10 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
         g.append("text")
           .attr("x", textX)
-          .attr("y", textY + (lines.length * (isMobile ? 10 : 14)))
+          .attr("y", textY + (lines.length * labelFontPx * 1.3))
           .attr("text-anchor", d.align)
-          .attr(
-            "class",
-            "font-sans text-[8px] sm:text-[9px] md:text-[10px] text-emerald-400/60 fill-current tracking-[0.2em]",
-          )
+          .attr("class", "font-sans text-emerald-400/60 fill-current tracking-[0.2em]")
+          .style("font-size", `${dateFontPx}px`)
           .text(d.date);
       });
 
@@ -310,14 +316,16 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       .attr("x", curLabelX)
       .attr("y", curLabelY)
       .attr("text-anchor", "middle")
-      .attr("class", "font-serif text-[10px] sm:text-base italic text-emerald-100 fill-current tracking-tight")
+      .attr("class", "font-serif italic text-emerald-100 fill-current tracking-tight")
+      .style("font-size", `${youHereFontPx}px`)
       .text(t.seasonal.youAreHere);
 
     curGroup.append("text")
       .attr("x", curLabelX)
-      .attr("y", curLabelY + (isMobile ? 12 : 18))
+      .attr("y", curLabelY + youHereFontPx * 1.5)
       .attr("text-anchor", "middle")
-      .attr("class", "font-sans text-[8px] sm:text-[10px] text-emerald-400 fill-current tracking-widest font-bold")
+      .attr("class", "font-sans text-emerald-400 fill-current tracking-widest font-bold")
+      .style("font-size", `${dateFontPx}px`)
       .text(now.toLocaleDateString(dateLocale, { month: "short", day: "numeric" }).toUpperCase());
 
     // --- WEDDING TARGET MARKER ---
@@ -351,14 +359,16 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       .attr("x", tarLabelX)
       .attr("y", tarLabelY)
       .attr("text-anchor", "middle")
-      .attr("class", "font-serif text-[10px] sm:text-base italic text-amber-100 fill-current")
+      .attr("class", "font-serif italic text-amber-100 fill-current")
+      .style("font-size", `${youHereFontPx}px`)
       .text(t.seasonal.wedding);
 
     tarGroup.append("text")
       .attr("x", tarLabelX)
-      .attr("y", tarLabelY + (isMobile ? 12 : 18))
+      .attr("y", tarLabelY + youHereFontPx * 1.5)
       .attr("text-anchor", "middle")
-      .attr("class", "font-sans text-[8px] sm:text-[10px] text-amber-500 fill-current tracking-widest font-bold")
+      .attr("class", "font-sans text-amber-500 fill-current tracking-widest font-bold")
+      .style("font-size", `${dateFontPx}px`)
       .text(targetDate.toLocaleDateString(dateLocale, { month: "short", day: "numeric" }).toUpperCase());
 
   }, [targetDate, resizeTrigger, t, locale]);
@@ -369,7 +379,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
         {t.seasonal.header}
       </h2>
       <div ref={containerRef} className="flex-1 w-full min-h-0 z-0" />
-      <div className="pb-14 sm:pb-32" />
+      <div className="pb-14 sm:pb-20" />
     </div>
   );
 };
