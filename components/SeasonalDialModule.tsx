@@ -33,7 +33,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     // Tightened label padding — empirically: equinox text is ~110px wide, not 155px.
     // Bottom labels (2 lines + date) need ~78px on desktop, not 90px.
     const topLabelPad    = isMobile ? 30  : 52;
-    const bottomLabelPad = isMobile ? 44  : 80;
+    const bottomLabelPad = isMobile ? 95  : 120;
     const sideLabelPad   = isMobile ? 78  : 118;
 
     // Largest constraint wins for each axis
@@ -305,16 +305,22 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       .attr("stroke-width", 2)
       .attr("opacity", 0.8);
 
-    // Label for You Are Here — inside the circle so it never collides with outer labels
-    const curLabelR = radius * 0.62;
+    // Label for You Are Here:
+    // - Top/bottom zone (|sin| < 0.7): outside the circle — plenty of vertical room
+    // - Left/right zone (|sin| ≥ 0.7): inside the circle — horizontal space is used up by equinox labels
+    const isLeftRight = Math.abs(Math.sin(currentAngle)) >= 0.7;
+    const curLabelR = isLeftRight
+      ? radius * 0.62
+      : radius + (isMobile ? 70 : 100);
     const curLabelX = Math.sin(currentAngle) * curLabelR;
     const curLabelY = -Math.cos(currentAngle) * curLabelR;
+    const curTextAnchor = "middle";
 
     const curGroup = svg.append("g");
     curGroup.append("text")
       .attr("x", curLabelX)
       .attr("y", curLabelY)
-      .attr("text-anchor", "middle")
+      .attr("text-anchor", curTextAnchor)
       .attr("class", "font-serif italic text-emerald-100 fill-current tracking-tight")
       .style("font-size", `${youHereFontPx}px`)
       .text(t.seasonal.youAreHere);
@@ -322,7 +328,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     curGroup.append("text")
       .attr("x", curLabelX)
       .attr("y", curLabelY + youHereFontPx * 1.5)
-      .attr("text-anchor", "middle")
+      .attr("text-anchor", curTextAnchor)
       .attr("class", "font-sans text-emerald-400 fill-current tracking-widest font-bold")
       .style("font-size", `${dateFontPx}px`)
       .text(now.toLocaleDateString(dateLocale, { month: "short", day: "numeric" }).toUpperCase());
