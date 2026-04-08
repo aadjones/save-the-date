@@ -305,9 +305,8 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       .attr("stroke-width", 2)
       .attr("opacity", 0.8);
 
-    // Label for You Are Here
-    const curExtension = isMobile ? 35 : 70;
-    const curLabelR = radius + curExtension;
+    // Label for You Are Here — inside the circle so it never collides with outer labels
+    const curLabelR = radius * 0.62;
     const curLabelX = Math.sin(currentAngle) * curLabelR;
     const curLabelY = -Math.cos(currentAngle) * curLabelR;
 
