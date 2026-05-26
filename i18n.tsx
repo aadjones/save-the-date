@@ -48,6 +48,35 @@ export function useLocale(): [Locale, (locale: Locale) => void] {
   return [ctx.locale, ctx.setLocale];
 }
 
+export const LanguageToggleLight: React.FC = () => {
+  const [locale, setLocale] = useLocale();
+
+  return (
+    <div className="flex items-center gap-0 select-none">
+      <button
+        onClick={() => setLocale('en')}
+        className={`flex items-center gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-l-full border-2 transition-all cursor-pointer ${locale === 'en'
+            ? 'border-stone-500 bg-stone-900 text-stone-100 scale-105'
+            : 'border-stone-300 text-stone-400 hover:text-stone-700 hover:border-stone-400'
+          }`}
+      >
+        <span className="text-sm">🇺🇸</span>
+        <span className="font-mono text-[10px] sm:text-xs font-bold tracking-wider">EN</span>
+      </button>
+      <button
+        onClick={() => setLocale('es')}
+        className={`flex items-center gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-r-full border-2 border-l-0 transition-all cursor-pointer ${locale === 'es'
+            ? 'border-stone-500 bg-stone-900 text-stone-100 scale-105'
+            : 'border-stone-300 text-stone-400 hover:text-stone-700 hover:border-stone-400'
+          }`}
+      >
+        <span className="text-sm">🇲🇽</span>
+        <span className="font-mono text-[10px] sm:text-xs font-bold tracking-wider">ES</span>
+      </button>
+    </div>
+  );
+};
+
 export const LanguageToggle: React.FC = () => {
   const [locale, setLocale] = useLocale();
 

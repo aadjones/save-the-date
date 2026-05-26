@@ -6,6 +6,7 @@ import LunarModule from './components/LunarModule';
 import SocialTimeModule from './components/SocialTimeModule';
 import AbsurdModule from './components/AbsurdModule';
 import AnalogClockModule from './components/AnalogClockModule';
+import HomePage from './components/HomePage';
 import { ChevronDown } from 'lucide-react';
 import { TARGET_DATE, VENUE_NAME, VENUE_ADDRESS, VENUE_COORDINATES } from './constants';
 import { components, colors, typography, vibes, getVibeClass, Vibe } from './designSystem';
@@ -13,11 +14,29 @@ import { generateIcsFile } from './utils/calendarUtils';
 import { openMapsLink } from './utils/mapsUtils';
 import { useT, LanguageToggle } from './i18n';
 
+type View = 'home' | 'experience';
+
 const App: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [activeModule, setActiveModule] = useState<number>(0);
   const [lunarAtBottom, setLunarAtBottom] = useState(false);
+  const [view, setView] = useState<View>(() =>
+    window.location.hash === '#experience' ? 'experience' : 'home'
+  );
   const t = useT();
+
+  const navigateTo = (v: View) => {
+    window.location.hash = v === 'experience' ? 'experience' : '';
+    setView(v);
+  };
+
+  useEffect(() => {
+    const onHashChange = () => {
+      setView(window.location.hash === '#experience' ? 'experience' : 'home');
+    };
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
 
   const modules: { id: string; vibe: Vibe; Component: React.FC<any> }[] = [
     { id: 'standard', vibe: 'wedding', Component: StandardCountdown },
@@ -57,6 +76,10 @@ const App: React.FC = () => {
   const handleLocationClick = () => {
     openMapsLink(`${VENUE_NAME}, ${VENUE_ADDRESS}`);
   };
+
+  if (view === 'home') {
+    return <HomePage onViewExperience={() => navigateTo('experience')} />;
+  }
 
   return (
     <div className="relative w-screen h-dvh overflow-hidden bg-gradient-to-b from-stone-950 via-stone-950 to-stone-900">
@@ -123,6 +146,12 @@ const App: React.FC = () => {
         {/* Using fixed width for the logo block to prevent the toggle from shifting when language changes */}
         <div className="w-full flex justify-between items-start gap-2 sm:gap-4">
           <div className="flex flex-col items-start pointer-events-auto flex-shrink-0 w-28 sm:w-40">
+            <button
+              onClick={() => navigateTo('home')}
+              className={`${getVibeClass(modules[activeModule].vibe, 'branding')} text-[9px] font-mono cursor-pointer opacity-40 hover:opacity-100 transition-all mb-1`}
+            >
+              ← details
+            </button>
             <h1 className={`${getVibeClass(modules[activeModule].vibe, 'branding')} font-serif text-sm sm:text-lg tracking-wide font-bold whitespace-nowrap transition-colors duration-500`}>
               {t.app.title}
             </h1>
