@@ -2,7 +2,11 @@
 
 ## What This App Does
 
-A wedding countdown app with 7 different creative ways to visualize time until October 24, 2026. Users scroll vertically through different "modules" (visualizations), each showing the countdown in a unique way.
+A wedding website for the Santana ~ Jones wedding (October 24, 2026). It has two distinct layers:
+
+1. **Homepage** — the default landing view. Shows practical wedding details: hotel accommodation (two properties with booking links), directions to the venue, RSVP form link, and gifts note. Light sage palette, mobile-first, bilingual.
+
+2. **Countdown experience** — reachable via `/#experience` or the footer link on the homepage. Seven creative ways to visualize the time remaining until the wedding, each as a full-screen snap-scroll module with its own visual "vibe".
 
 ## Tech Stack
 
@@ -17,15 +21,17 @@ A wedding countdown app with 7 different creative ways to visualize time until O
 
 ```
 /
-├── App.tsx                    # Main app component, handles scrolling & module navigation
-├── index.tsx                  # React entry point
+├── App.tsx                    # Root component: view routing + experience shell
+├── index.tsx                  # React entry point, wraps app in LocaleProvider
 ├── index.html                 # HTML shell with Tailwind CDN & fonts
 │
 ├── constants.ts               # Wedding date, venue info, conversion factors
 ├── types.ts                   # TypeScript interfaces (TimeModuleProps, etc.)
-├── designSystem.ts            # All design tokens (colors, typography, spacing)
+├── designSystem.ts            # All design tokens (colors, typography, spacing, vibes)
+├── i18n.tsx                   # LocaleProvider, useT/useLocale hooks, LanguageToggle variants
 │
 ├── components/
+│   ├── HomePage.tsx           # Details homepage (hotels, directions, RSVP, gifts)
 │   ├── StandardCountdown.tsx  # Years/months/days/hours/minutes/seconds grid
 │   ├── OrbitModule.tsx        # Earth orbit visualization with D3
 │   ├── SeasonalDialModule.tsx # Seasonal clock showing progress through year
@@ -33,17 +39,33 @@ A wedding countdown app with 7 different creative ways to visualize time until O
 │   ├── SocialTimeModule.tsx   # Weekends/meals/holidays counter
 │   ├── AbsurdModule.tsx       # Netflix episodes, cat naps, heartbeats
 │   ├── AnalogClockModule.tsx  # Traditional analog clock
-│   ├── ShuffleButton.tsx      # Bottom-right button to jump to random module
 │   └── Tooltip.tsx            # Reusable tooltip component
+│
+├── translations/
+│   ├── index.ts               # Translations type + Locale type
+│   ├── en.ts                  # English strings
+│   └── es.ts                  # Spanish strings
 │
 └── utils/
     ├── calendarUtils.ts       # Generates .ics files for calendar export
-    └── mapsUtils.ts           # Opens venue location in maps app
+    └── mapsUtils.ts           # Opens venue location in maps app (platform-aware)
 ```
 
 ## How the App Works
 
-### 1. Module System
+### 1. Routing
+
+There is no router library. **App.tsx** holds a `view: 'home' | 'experience'` state value and conditionally renders either `<HomePage>` or the snap-scroll experience shell.
+
+```tsx
+const [view, setView] = useState<View>(() =>
+  window.location.hash === '#experience' ? 'experience' : 'home'
+);
+```
+
+`window.location.hash` is written manually on navigation (`#experience` or `''`), and a `hashchange` listener keeps the state in sync with the browser back button. This gives direct-linkable URLs with no dependency overhead.
+
+### 2. Module System
 
 **App.tsx** is the orchestrator:
 
@@ -61,7 +83,7 @@ const modules = [
 
 Each module gets rendered in a snap-scroll container. Only the visible module is "active" (for performance - animations pause when not visible).
 
-### 2. Module Interface
+### 3. Module Interface
 
 Every module implements the same interface:
 
@@ -74,7 +96,7 @@ interface TimeModuleProps {
 
 This makes all modules **swappable** - you can reorder them in `App.tsx` without breaking anything.
 
-### 3. Design System
+### 4. Design System
 
 **designSystem.ts** contains all visual constants:
 
@@ -96,7 +118,7 @@ import { getModuleHeaderClass, typography, colors } from '../designSystem';
 <h2 className={getModuleHeaderClass()}>
 ```
 
-### 4. Constants
+### 5. Constants
 
 **constants.ts** holds all non-visual configuration:
 
@@ -106,7 +128,18 @@ import { getModuleHeaderClass, typography, colors } from '../designSystem';
 
 **Why separated**: Makes it easy to clone this for another event - just change constants.ts and you're done.
 
-### 5. Module Patterns
+### 6. Internationalization (i18n)
+
+**i18n.tsx** provides a React Context that stores the current locale (`'en' | 'es'`) and persists it to `localStorage` so the choice survives page reloads and carries across both views.
+
+- **`useT()`** — returns the full `Translations` object for the active locale
+- **`useLocale()`** — returns `[locale, setLocale]` for reading/writing the locale
+- **`LanguageToggle`** — flag pill toggle styled for the dark experience view
+- **`LanguageToggleLight`** — same toggle styled for the light sage homepage
+
+All strings live in `translations/en.ts` and `translations/es.ts`, typed against the `Translations` interface in `translations/index.ts`. The `home` namespace covers the homepage; all other namespaces cover the countdown modules.
+
+### 7. Module Patterns
 
 All modules follow the same structure:
 
@@ -139,7 +172,7 @@ const SomeModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 - Background animations often use `isActive` to pause when off-screen
 - Headers use serif italic, footers use small mono text (design system enforces this)
 
-### 6. Visualization Modules
+### 8. Visualization Modules
 
 **D3-heavy modules** (Orbit, Seasonal, Lunar):
 - Create SVG elements using D3 for data binding and animations
@@ -150,7 +183,7 @@ const SomeModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 - Just do math and display numbers
 - No fancy graphics, rely on typography scale for impact
 
-### 7. Interactive Elements
+### 9. Interactive Elements
 
 **Shuffle button** (bottom-right):
 - Randomly jumps to a different module
@@ -166,7 +199,7 @@ const SomeModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 - Opens venue address in default maps application
 - Platform-aware: Google Maps on mobile, Apple/Google Maps on desktop
 
-### 8. Pagination Indicators
+### 10. Pagination Indicators
 
 Little dots on the right side show which module you're viewing:
 - Each module renders its own indicator (7 dots total)
@@ -221,4 +254,4 @@ Edit `designSystem.ts` - specifically the `colors` object. Everything else follo
 **Extensibility**: Adding new countdown visualizations is trivial
 **Portability**: Static export works anywhere (Vercel, Netlify, S3, GitHub Pages)
 
-The whole app is ~1700 lines of TypeScript. Small enough to understand in one sitting, structured enough to maintain easily.
+The whole app is ~2200 lines of TypeScript across source files. Small enough to understand in one sitting, structured enough to maintain easily.
