@@ -106,6 +106,7 @@ export const en: Translations = {
   home: {
     invited: "You're invited",
     time: '4:00 p.m.',
+    attire: 'Semi-formal attire',
     navHotels: 'Hotels',
     navDirections: 'Directions',
     navRsvp: 'RSVP',
@@ -122,7 +123,6 @@ export const en: Translations = {
     fairfieldNote: 'Mention code WSJ if booking by phone. Cancel 14+ days before arrival for no charge.',
     fairfieldLocation: 'San Diego North / San Marcos',
     rate: 'Rate',
-    weddingRate: 'Wedding rate',
     springhillLocation: 'Escondido',
     springhillNote1: 'Ask for the "wedding rate" if calling. Weekend discount requires 2+ nights; weekdays 1+ night.',
     springhillNote2: 'Cancel 14+ days before arrival for a full deposit refund.',
@@ -133,7 +133,7 @@ export const en: Translations = {
     rsvpText: "Please let us know if you can make it. We'll ask about food restrictions and whether you'd like transportation to and from the venue.",
     rsvpButton: 'RSVP now',
     giftsText: "We don't expect any gifts—we just want to celebrate with you. But we won't say no to a third black cat.",
-    footerTeaser: 'Before you go—',
+    footerTeaser: 'Before you go:',
     footerLink: 'Count down with us through time and space →',
   },
 };

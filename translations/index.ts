@@ -106,6 +106,7 @@ export type Translations = {
   home: {
     invited: string;
     time: string;
+    attire: string;
     navHotels: string;
     navDirections: string;
     navRsvp: string;
@@ -122,7 +123,6 @@ export type Translations = {
     fairfieldNote: string;
     fairfieldLocation: string;
     rate: string;
-    weddingRate: string;
     springhillLocation: string;
     springhillNote1: string;
     springhillNote2: string;

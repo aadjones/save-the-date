@@ -64,7 +64,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
           {h.invited}
         </p>
         <h1 className="font-serif italic text-5xl sm:text-7xl text-stone-900 tracking-wide mb-6">
-          Anakaren & Aaron
+          Anakaren <span className="whitespace-nowrap">&amp; Aaron</span>
         </h1>
         <div className="flex justify-center mb-6">
           <img
@@ -84,6 +84,9 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
         </p>
         <p className="font-mono text-[10px] sm:text-xs text-stone-400 tracking-wider">
           {VENUE_ADDRESS}
+        </p>
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-stone-400 mt-6">
+          {h.attire}
         </p>
       </section>
 
@@ -121,7 +124,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
               <div className="flex flex-col gap-3">
                 <div className="flex justify-between items-baseline">
                   <span className="font-serif text-stone-600 text-sm">{h.groupRate}</span>
-                  <span className="font-mono text-stone-900 font-bold">$180.72 / night</span>
+                  <span className="font-mono text-stone-900 font-bold">~$180 / night</span>
                 </div>
                 <div className="flex justify-between items-baseline">
                   <span className="font-serif text-stone-600 text-sm">{h.groupCode}</span>
@@ -152,7 +155,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
               <div className="flex flex-col gap-3">
                 <div className="flex justify-between items-baseline">
                   <span className="font-serif text-stone-600 text-sm">{h.rate}</span>
-                  <span className="font-mono text-stone-700 text-sm">{h.weddingRate}</span>
+                  <span className="font-mono text-stone-900 font-bold">~$214 / night</span>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 mt-2">
                   <BookingButton href={SPRINGHILL_BOOKING_URL}>{h.bookOnline}</BookingButton>
