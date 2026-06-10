@@ -1,5 +1,5 @@
-import React from 'react';
-import { VENUE_NAME, VENUE_ADDRESS } from '../constants';
+import React, { useState } from 'react';
+import { VENUE_NAME, VENUE_ADDRESS, VENMO_USERNAME } from '../constants';
 import { openMapsLink } from '../utils/mapsUtils';
 import { useT, LanguageToggleLight } from '../i18n';
 
@@ -39,6 +39,7 @@ const PhoneButton: React.FC<{ tel: string; display: string }> = ({ tel, display 
 const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
   const t = useT();
   const h = t.home;
+  const [showVenmoQR, setShowVenmoQR] = useState(false);
 
   const sections = [
     { id: 'hotels', label: h.navHotels },
@@ -200,7 +201,34 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
         {/* Gifts */}
         <section id="gifts">
           <SectionHeader>{h.sectionGifts}</SectionHeader>
-          <p className="font-serif italic text-stone-600 text-lg leading-relaxed">{h.giftsText}</p>
+          <div className="flex flex-col gap-6">
+            <p className="font-serif italic text-stone-600 text-lg leading-relaxed">{h.giftsText}</p>
+            
+            <div className="bg-white/40 border border-stone-300 p-6 flex flex-col items-center text-center gap-4">
+              <h3 className="font-serif font-bold text-xl text-stone-900">
+                {h.honeymoonFundTitle}
+              </h3>
+              <p className="font-serif italic text-stone-600 text-sm leading-relaxed max-w-md">
+                {h.honeymoonFundDesc}
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full max-w-md">
+                <a
+                  href={`https://venmo.com/u/${VENMO_USERNAME}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 text-center py-2.5 px-4 bg-stone-900 text-[#dbe9e6] font-mono text-xs uppercase tracking-widest hover:bg-stone-800 transition-colors"
+                >
+                  {h.venmoButton}
+                </a>
+                <button
+                  onClick={() => setShowVenmoQR(true)}
+                  className="flex-1 text-center py-2.5 px-4 border border-stone-800 text-stone-900 font-mono text-xs uppercase tracking-widest hover:bg-stone-900 hover:text-[#dbe9e6] transition-colors cursor-pointer"
+                >
+                  {h.qrButton}
+                </button>
+              </div>
+            </div>
+          </div>
         </section>
 
       </main>
@@ -215,6 +243,60 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
           {h.footerLink}
         </button>
       </footer>
+
+      {/* Venmo QR Modal */}
+      {showVenmoQR && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4 animate-fade-in">
+          <div className="bg-[#dbe9e6] border border-stone-300 max-w-sm w-full p-8 flex flex-col items-center gap-6 shadow-xl relative animate-scale-up">
+            <button
+              onClick={() => setShowVenmoQR(false)}
+              className="absolute top-4 right-4 text-stone-500 hover:text-stone-950 font-mono text-sm cursor-pointer"
+              aria-label={h.qrClose}
+            >
+              ✕
+            </button>
+            <h3 className="font-serif italic text-2xl text-stone-900">
+              {h.honeymoonFundTitle}
+            </h3>
+            
+            <div className="bg-white p-4 border border-stone-300 shadow-inner flex items-center justify-center w-64 h-64">
+              <img
+                src="/venmo-qr.png"
+                alt="Venmo QR Code"
+                className="w-full h-full object-contain"
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                  const fallback = document.getElementById('qr-fallback');
+                  if (fallback) fallback.style.display = 'flex';
+                }}
+              />
+              <div
+                id="qr-fallback"
+                style={{ display: 'none' }}
+                className="flex-col items-center justify-center text-center gap-3 text-stone-400 p-4"
+              >
+                <svg className="w-12 h-12 stroke-current" viewBox="0 0 24 24" fill="none" strokeWidth="1.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 013.75 9.375v-4.5zM3.75 14.625c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5a1.125 1.125 0 01-1.125-1.125v-4.5zM13.5 4.875c0-.621.504-1.125 1.125-1.125h4.5c.621 0 1.125.504 1.125 1.125v4.5c0 .621-.504 1.125-1.125 1.125h-4.5A1.125 1.125 0 0113.5 9.375v-4.5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15 15h.008v.008H15V15zm0 2.25h.008v.008H15v-.008zM17.25 15h.008v.008h-.008V15zm0 2.25h.008v.008h-.008v-.008zm-2.25 2.25h.008v.008H15v-.008zm2.25 0h.008v.008h-.008v-.008zm2.25-2.25h.008v.008H19.5V15zm0 2.25h.008v.008H19.5v-.008zm0 2.25h.008v.008H19.5v-.008z" />
+                </svg>
+                <p className="font-mono text-[9px] uppercase tracking-wider">
+                  Drop venmo-qr.png into public/ folder
+                </p>
+              </div>
+            </div>
+
+            <p className="font-mono text-xs text-stone-500 uppercase tracking-widest text-center">
+              @{VENMO_USERNAME}
+            </p>
+            <button
+              onClick={() => setShowVenmoQR(false)}
+              className="py-2 px-6 bg-stone-900 text-[#dbe9e6] font-mono text-xs uppercase tracking-widest hover:bg-stone-800 transition-colors w-full cursor-pointer"
+            >
+              {h.qrClose}
+            </button>
+          </div>
+        </div>
+      )}
 
     </div>
   );

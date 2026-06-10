@@ -133,6 +133,11 @@ export type Translations = {
     openInMaps: string;
     rsvpText: string;
     giftsText: string;
+    honeymoonFundTitle: string;
+    honeymoonFundDesc: string;
+    venmoButton: string;
+    qrButton: string;
+    qrClose: string;
     footerTeaser: string;
     footerLink: string;
   };
