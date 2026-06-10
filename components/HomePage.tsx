@@ -5,7 +5,6 @@ import { useT, LanguageToggleLight } from '../i18n';
 
 const FAIRFIELD_BOOKING_URL = 'https://app.marriott.com/reslink?id=1775002906996&key=GRP&app=resvlink';
 const SPRINGHILL_BOOKING_URL = 'https://www.marriott.com/event-reservations/reservation-link.mi?id=1766613917733&key=CORP&app=resvlink';
-const RSVP_URL = 'https://docs.google.com/forms/d/1H67ixZUh20HEpGtzT11yg7Xi_65HvFiu6NdLuJ7MdsU/viewform';
 
 interface HomePageProps {
   onViewExperience: () => void;
@@ -63,8 +62,8 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
         <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-stone-400 mb-8">
           {h.invited}
         </p>
-        <h1 className="font-serif italic text-5xl sm:text-7xl text-stone-900 tracking-wide mb-6">
-          Anakaren <span className="whitespace-nowrap">&amp; Aaron</span>
+        <h1 className="font-serif italic text-4xl sm:text-6xl text-stone-900 tracking-wide mb-6">
+          {h.heroTitle}
         </h1>
         <div className="flex justify-center mb-6">
           <img
@@ -195,14 +194,6 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
           <SectionHeader>{h.sectionRsvp}</SectionHeader>
           <div className="flex flex-col gap-5">
             <p className="font-serif italic text-stone-600 leading-relaxed">{h.rsvpText}</p>
-            <a
-              href={RSVP_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="self-start py-3 px-8 bg-stone-900 text-[#dbe9e6] font-mono text-xs uppercase tracking-widest hover:bg-stone-800 transition-colors"
-            >
-              {h.rsvpButton}
-            </a>
           </div>
         </section>
 

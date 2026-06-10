@@ -105,6 +105,7 @@ export type Translations = {
   };
   home: {
     invited: string;
+    heroTitle: string;
     time: string;
     attire: string;
     navHotels: string;
@@ -131,7 +132,6 @@ export type Translations = {
     appleMapsNote: string;
     openInMaps: string;
     rsvpText: string;
-    rsvpButton: string;
     giftsText: string;
     footerTeaser: string;
     footerLink: string;
