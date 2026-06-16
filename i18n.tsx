@@ -7,6 +7,8 @@ const STORAGE_KEY = 'save-the-date-locale';
 
 function getInitialLocale(): Locale {
   try {
+    const param = new URLSearchParams(window.location.search).get('lang');
+    if (param === 'en' || param === 'es') return param;
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === 'en' || stored === 'es') return stored;
   } catch { }

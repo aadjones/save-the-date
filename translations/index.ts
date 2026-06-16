@@ -108,12 +108,15 @@ export type Translations = {
     heroTitle: string;
     time: string;
     attire: string;
+    attireNote: string;
     navHotels: string;
     navDirections: string;
+    navAttire: string;
     navRsvp: string;
     navGifts: string;
     sectionAccommodation: string;
     sectionDirections: string;
+    sectionAttire: string;
     sectionRsvp: string;
     sectionGifts: string;
     groupRate: string;

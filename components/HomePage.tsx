@@ -44,6 +44,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
   const sections = [
     { id: 'hotels', label: h.navHotels },
     { id: 'directions', label: h.navDirections },
+    { id: 'attire', label: h.navAttire },
     { id: 'rsvp', label: h.navRsvp },
     { id: 'gifts', label: h.navGifts },
   ];
@@ -60,7 +61,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
         <div className="flex justify-end mb-6">
           <LanguageToggleLight />
         </div>
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-stone-400 mb-8">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-stone-600 mb-8">
           {h.invited}
         </p>
         <h1 className="font-serif italic text-4xl sm:text-6xl text-stone-900 tracking-wide mb-6">
@@ -73,19 +74,19 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
             className="h-48 sm:h-64 w-auto object-contain"
           />
         </div>
-        <p className="font-mono text-sm sm:text-base text-stone-500 tracking-widest mb-1">
+        <p className="font-mono text-sm sm:text-base text-stone-700 tracking-widest mb-1">
           {t.app.date}
         </p>
-        <p className="font-mono text-xs sm:text-sm text-stone-400 tracking-widest mb-3">
+        <p className="font-mono text-xs sm:text-sm text-stone-600 tracking-widest mb-3">
           {h.time}
         </p>
         <p className="font-serif italic text-stone-600 text-lg sm:text-xl mb-5">
           {VENUE_NAME}
         </p>
-        <p className="font-mono text-[10px] sm:text-xs text-stone-400 tracking-wider">
+        <p className="font-mono text-[10px] sm:text-xs text-stone-600 tracking-wider">
           {VENUE_ADDRESS}
         </p>
-        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-stone-400 mt-6">
+        <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-stone-600 mt-6">
           {h.attire}
         </p>
       </section>
@@ -97,7 +98,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
             <button
               key={id}
               onClick={() => scrollToSection(id)}
-              className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-stone-500 hover:text-stone-900 transition-colors"
+              className="font-mono text-[10px] sm:text-xs uppercase tracking-widest text-stone-600 hover:text-stone-900 transition-colors"
             >
               {label}
             </button>
@@ -118,7 +119,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
               <h3 className="font-serif font-bold text-xl text-stone-900 mb-1">
                 Fairfield by Marriott Inn & Suites
               </h3>
-              <p className="font-mono text-[10px] text-stone-500 uppercase tracking-widest mb-5">
+              <p className="font-mono text-[10px] text-stone-700 uppercase tracking-widest mb-5">
                 {h.fairfieldLocation}
               </p>
               <div className="flex flex-col gap-3">
@@ -132,13 +133,13 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
                 </div>
                 <div className="flex justify-between items-baseline">
                   <span className="font-serif text-stone-600 text-sm">{h.bookBy}</span>
-                  <span className="font-mono text-amber-700 text-sm font-semibold">{h.fairfieldDeadline}</span>
+                  <span className="font-mono text-amber-800 text-sm font-semibold">{h.fairfieldDeadline}</span>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3 mt-2">
                   <BookingButton href={FAIRFIELD_BOOKING_URL}>{h.bookOnline}</BookingButton>
                   <PhoneButton tel="+17608910111" display="(760) 891-0111" />
                 </div>
-                <p className="font-serif italic text-xs text-stone-400 mt-1">
+                <p className="font-serif italic text-xs text-stone-600 mt-1">
                   {h.fairfieldNote}
                 </p>
               </div>
@@ -149,7 +150,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
               <h3 className="font-serif font-bold text-xl text-stone-900 mb-1">
                 SpringHill Suites by Marriott
               </h3>
-              <p className="font-mono text-[10px] text-stone-500 uppercase tracking-widest mb-5">
+              <p className="font-mono text-[10px] text-stone-700 uppercase tracking-widest mb-5">
                 {h.springhillLocation}
               </p>
               <div className="flex flex-col gap-3">
@@ -162,8 +163,8 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
                   <PhoneButton tel="+14422868100" display="(442) 286-8100" />
                 </div>
                 <div className="flex flex-col gap-1.5 mt-1">
-                  <p className="font-serif italic text-xs text-stone-400">{h.springhillNote1}</p>
-                  <p className="font-serif italic text-xs text-stone-400">{h.springhillNote2}</p>
+                  <p className="font-serif italic text-xs text-stone-600">{h.springhillNote1}</p>
+                  <p className="font-serif italic text-xs text-stone-600">{h.springhillNote2}</p>
                 </div>
               </div>
             </div>
@@ -176,17 +177,26 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
           <SectionHeader>{h.sectionDirections}</SectionHeader>
           <div className="flex flex-col gap-5">
             <div>
-              <p className="font-mono text-[10px] uppercase tracking-widest text-stone-500 mb-2">{h.addressLabel}</p>
+              <p className="font-mono text-[10px] uppercase tracking-widest text-stone-600 mb-2">{h.addressLabel}</p>
               <p className="font-serif text-stone-900 text-lg">{VENUE_ADDRESS}</p>
             </div>
             <p className="font-serif italic text-stone-600 leading-relaxed">{h.directionsText}</p>
-            <p className="font-mono text-[10px] uppercase tracking-widest text-stone-500">{h.appleMapsNote}</p>
+            <p className="font-mono text-[10px] uppercase tracking-widest text-stone-600">{h.appleMapsNote}</p>
             <button
               onClick={() => openMapsLink(`${VENUE_NAME}, ${VENUE_ADDRESS}`)}
               className="self-start py-2.5 px-6 border border-stone-800 text-stone-900 font-mono text-xs uppercase tracking-widest hover:bg-stone-900 hover:text-[#dbe9e6] transition-colors"
             >
               {h.openInMaps}
             </button>
+          </div>
+        </section>
+
+        {/* Attire */}
+        <section id="attire">
+          <SectionHeader>{h.sectionAttire}</SectionHeader>
+          <div className="flex flex-col gap-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-stone-600">{h.attire}</p>
+            <p className="font-serif italic text-stone-600 leading-relaxed">{h.attireNote}</p>
           </div>
         </section>
 
@@ -235,10 +245,10 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
 
       {/* Footer */}
       <footer className="border-t border-stone-300 py-16 px-6 text-center">
-        <p className="font-serif italic text-stone-500 mb-4 text-sm">{h.footerTeaser}</p>
+        <p className="font-serif italic text-stone-600 mb-4 text-sm">{h.footerTeaser}</p>
         <button
           onClick={onViewExperience}
-          className="font-mono text-xs uppercase tracking-widest text-stone-500 hover:text-stone-900 transition-colors underline decoration-dotted underline-offset-4 cursor-pointer"
+          className="font-mono text-xs uppercase tracking-widest text-stone-600 hover:text-stone-900 transition-colors underline decoration-dotted underline-offset-4 cursor-pointer"
         >
           {h.footerLink}
         </button>
@@ -250,7 +260,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
           <div className="bg-[#dbe9e6] border border-stone-300 max-w-sm w-full p-8 flex flex-col items-center gap-6 shadow-xl relative animate-scale-up">
             <button
               onClick={() => setShowVenmoQR(false)}
-              className="absolute top-4 right-4 text-stone-500 hover:text-stone-950 font-mono text-sm cursor-pointer"
+              className="absolute top-4 right-4 text-stone-600 hover:text-stone-950 font-mono text-sm cursor-pointer"
               aria-label={h.qrClose}
             >
               ✕
@@ -285,7 +295,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
               </div>
             </div>
 
-            <p className="font-mono text-xs text-stone-500 uppercase tracking-widest text-center">
+            <p className="font-mono text-xs text-stone-600 uppercase tracking-widest text-center">
               @{VENMO_USERNAME}
             </p>
             <button
