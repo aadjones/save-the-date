@@ -108,7 +108,7 @@ export const es: Translations = {
     heroTitle: 'La Boda de Anakaren y\u00A0Aaron',
     time: '4:00 p.m.',
     attire: 'Vestimenta semiformal para jardín',
-    attireNote: 'La ceremonia y recepción se llevarán a cabo al aire libre en un jardín. Planea tu vestimenta con ello en mente. En particular, recomendamos no usar tacones de aguja y traer un suéter en caso de que haga frío.',
+    attireNote: 'La ceremonia y la recepción se llevarán a cabo al aire libre, sobre el césped de un jardín. Les recomendamos tomar esto en cuenta al elegir su vestimenta, por ejemplo, evitando los tacones de aguja y llevando un suéter o una chamarra ligera. Fuera de eso, pueden vestir como gusten; pero, si están en busca de guía, sugerimos estilo semi-formal.',
     navHotels: 'Hoteles',
     navDirections: 'Cómo llegar',
     navAttire: 'Vestimenta',

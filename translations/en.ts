@@ -108,7 +108,7 @@ export const en: Translations = {
     heroTitle: "Anakaren &\u00A0Aaron's Wedding",
     time: '4:00 p.m.',
     attire: 'Semi-formal garden attire',
-    attireNote: 'The ceremony and reception take place outdoors on a garden lawn. We recommend you plan your attire accordingly, such as avoiding narrow heels and bringing a sweater.',
+    attireNote: 'The ceremony and reception take place outdoors on a garden lawn. We recommend you plan your attire accordingly, such as avoiding narrow heels and bringing a sweater. Otherwise, you can wear whatever you like, but if you\'re looking for guidance, we\'re going with a semi-formal attire vibe.',
     navHotels: 'Hotels',
     navDirections: 'Directions',
     navAttire: 'Attire',
