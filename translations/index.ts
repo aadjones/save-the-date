@@ -111,11 +111,13 @@ export type Translations = {
     attireNote: string;
     navHotels: string;
     navDirections: string;
+    navBrunch: string;
     navAttire: string;
     navRsvp: string;
     navGifts: string;
     sectionAccommodation: string;
     sectionDirections: string;
+    sectionBrunch: string;
     sectionAttire: string;
     sectionRsvp: string;
     sectionGifts: string;
@@ -132,8 +134,10 @@ export type Translations = {
     springhillNote2: string;
     addressLabel: string;
     directionsText: string;
+    arrivalNote: string;
     appleMapsNote: string;
     openInMaps: string;
+    brunchDateTime: string;
     rsvpText: string;
     giftsText: string;
     honeymoonFundTitle: string;

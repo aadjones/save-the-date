@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { VENUE_NAME, VENUE_ADDRESS, VENMO_USERNAME } from '../constants';
+import { VENUE_NAME, VENUE_ADDRESS, VENMO_USERNAME, BRUNCH_VENUE_NAME, BRUNCH_VENUE_ADDRESS } from '../constants';
 import { openMapsLink } from '../utils/mapsUtils';
 import { useT, LanguageToggleLight } from '../i18n';
 
@@ -45,6 +45,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
     { id: 'hotels', label: h.navHotels },
     { id: 'directions', label: h.navDirections },
     { id: 'attire', label: h.navAttire },
+    { id: 'brunch', label: h.navBrunch },
     { id: 'rsvp', label: h.navRsvp },
     { id: 'gifts', label: h.navGifts },
   ];
@@ -93,7 +94,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
 
       {/* Sticky anchor strip */}
       <nav className="sticky top-0 z-40 bg-[#dbe9e6]/90 backdrop-blur-sm border-b border-stone-300/60">
-        <div className="flex justify-center gap-6 sm:gap-10 py-3 px-4">
+        <div className="flex justify-center gap-3 sm:gap-10 py-3 px-4">
           {sections.map(({ id, label }) => (
             <button
               key={id}
@@ -181,6 +182,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
               <p className="font-serif text-stone-900 text-lg">{VENUE_ADDRESS}</p>
             </div>
             <p className="font-serif italic text-stone-600 leading-relaxed">{h.directionsText}</p>
+            <p className="font-serif text-stone-900">{h.arrivalNote}</p>
             <p className="font-mono text-[10px] uppercase tracking-widest text-stone-600">{h.appleMapsNote}</p>
             <button
               onClick={() => openMapsLink(`${VENUE_NAME}, ${VENUE_ADDRESS}`)}
@@ -197,6 +199,24 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
           <div className="flex flex-col gap-5">
             <p className="font-mono text-[10px] uppercase tracking-widest text-stone-600">{h.attire}</p>
             <p className="font-serif italic text-stone-600 leading-relaxed">{h.attireNote}</p>
+          </div>
+        </section>
+
+        {/* Brunch */}
+        <section id="brunch">
+          <SectionHeader>{h.sectionBrunch}</SectionHeader>
+          <div className="flex flex-col gap-5">
+            <p className="font-mono text-[10px] uppercase tracking-widest text-stone-600">{h.brunchDateTime}</p>
+            <div>
+              <p className="font-serif text-stone-900 text-lg">{BRUNCH_VENUE_NAME}</p>
+              <p className="font-mono text-[10px] text-stone-600 tracking-wider mt-1">{BRUNCH_VENUE_ADDRESS}</p>
+            </div>
+            <button
+              onClick={() => openMapsLink(`${BRUNCH_VENUE_NAME}, ${BRUNCH_VENUE_ADDRESS}`)}
+              className="self-start py-2.5 px-6 border border-stone-800 text-stone-900 font-mono text-xs uppercase tracking-widest hover:bg-stone-900 hover:text-[#dbe9e6] transition-colors"
+            >
+              {h.openInMaps}
+            </button>
           </div>
         </section>
 
