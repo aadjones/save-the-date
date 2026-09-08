@@ -225,6 +225,7 @@ const HomePage: React.FC<HomePageProps> = ({ onViewExperience }) => {
           <SectionHeader>{h.sectionRsvp}</SectionHeader>
           <div className="flex flex-col gap-5">
             <p className="font-serif italic text-stone-600 leading-relaxed">{h.rsvpText}</p>
+            <p className="font-mono text-sm uppercase tracking-widest text-red-700 font-bold">{h.rsvpDeadline}</p>
           </div>
         </section>
 

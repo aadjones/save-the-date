@@ -139,6 +139,7 @@ export type Translations = {
     openInMaps: string;
     brunchDateTime: string;
     rsvpText: string;
+    rsvpDeadline: string;
     giftsText: string;
     honeymoonFundTitle: string;
     honeymoonFundDesc: string;
