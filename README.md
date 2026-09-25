@@ -3,12 +3,12 @@
 A wedding website for the Santana ~ Jones wedding, October 24, 2026. Built with React, TypeScript, Vite, and D3.js.
 
 The site has two layers:
-- **Homepage** — wedding details (hotels, directions, RSVP, gifts), the default landing experience
-- **Countdown experience** — 7 creative ways to visualize time until the wedding, accessible via `/#experience`
+- **Homepage**—wedding details (hotels, directions, attire, brunch, RSVP, gifts), the default landing experience
+- **Countdown experience**—7 creative ways to visualize time until the wedding, accessible via `/#experience`
 
 ## Features
 
-- **Details Homepage**: Accommodation info, directions, RSVP link, and gifts — the practical stuff guests actually need
+- **Details Homepage**: Accommodation info, directions, attire, Sunday brunch, RSVP link, and gifts—the practical stuff guests actually need
 - **Multiple Countdown Modules**: 7 different creative ways to visualize time until the wedding
   - Standard Countdown
   - Orbital Visualization
@@ -18,7 +18,7 @@ The site has two layers:
   - Absurd Time Units
   - Analog Clock
 - **After the wedding**: from 4:30 p.m. Pacific on Oct 24, 2026 the modules count *up* ("Married For", "since the wedding"), the lunar stack becomes a wedding-moon vs. tonight comparison, and the clock's red hand tracks progress to the next anniversary
-- **Bilingual (EN/ES)**: Full English and Spanish support across both views — includes Mexican holidays and locale-aware date formatting. Language preference persists via localStorage.
+- **Bilingual (EN/ES)**: Full English and Spanish support across both views—includes Mexican holidays and locale-aware date formatting. Language preference persists via localStorage.
 - **Hash-based routing**: `/#experience` links directly to the countdown; default (`/`) lands on the homepage
 - **Smooth Scrolling**: Snap-scroll through different countdown modules
 - **Fully Responsive**: Mobile-first, works on desktop and mobile
