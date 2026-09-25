@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, AbsurdUnit } from '../types';
 import { ABSURD_CONVERSIONS, MILLISECONDS_PER_DAY } from '../constants';
-import { getModuleHeaderClass, getModuleFooterClass, typography, colors, vibes, getVibeClass } from '../designSystem';
+import { typography, colors, vibes, getVibeClass } from '../designSystem';
 import { useT } from '../i18n';
 
 const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {

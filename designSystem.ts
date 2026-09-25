@@ -152,20 +152,6 @@ export const components = {
 // ============================================================================
 
 /**
- * Gets the complete module header className
- */
-export function getModuleHeaderClass(): string {
-  return `${components.moduleHeader} ${typography.header.module}`;
-}
-
-/**
- * Gets the complete module footer className
- */
-export function getModuleFooterClass(): string {
-  return components.moduleFooter;
-}
-
-/**
  * Gets button classes based on state
  */
 export function getButtonClass(isActive: boolean): string {

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { TimeModuleProps } from '../types';
 import { ENGAGEMENT_DATE, MILLISECONDS_PER_DAY, SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON } from '../constants';
-import { getModuleHeaderClass, getModuleFooterClass, typography, vibes, getVibeClass } from '../designSystem';
+import { typography, vibes, getVibeClass } from '../designSystem';
 import { useT, useLocale } from '../i18n';
 
 const TWO_PI = Math.PI * 2;

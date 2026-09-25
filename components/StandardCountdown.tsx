@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, CountdownTime } from '../types';
-import { getModuleHeaderClass, getModuleFooterClass, typography, spacing, colors, vibes, getVibeClass } from '../designSystem';
+import { typography, spacing, colors, vibes, getVibeClass } from '../designSystem';
 import { useT } from '../i18n';
 
 const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {

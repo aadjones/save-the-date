@@ -117,8 +117,6 @@ const vibe = 'mystical';
 </div>
 ```
 
-(`getModuleHeaderClass` / `getModuleFooterClass` still exist in designSystem.ts but nothing calls them.)
-
 ### 5. Constants
 
 **constants.ts** holds all non-visual configuration:

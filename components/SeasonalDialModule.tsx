@@ -3,7 +3,7 @@ import * as d3 from "d3";
 import { TimeModuleProps } from "../types";
 import { Snowflake, Flower2, Sun, Leaf } from "lucide-react";
 import { createRoot } from "react-dom/client";
-import { getModuleHeaderClass, typography, vibes, getVibeClass } from "../designSystem";
+import { typography, vibes, getVibeClass } from "../designSystem";
 import { useT, useLocale } from "../i18n";
 
 const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
