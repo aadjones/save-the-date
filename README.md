@@ -17,6 +17,7 @@ The site has two layers:
   - Social Time Converter
   - Absurd Time Units
   - Analog Clock
+- **After the wedding**: from 4:30 p.m. Pacific on Oct 24, 2026 the modules count *up* ("Married For", "since the wedding"), the lunar stack becomes a wedding-moon vs. tonight comparison, and the clock's red hand tracks progress to the next anniversary
 - **Bilingual (EN/ES)**: Full English and Spanish support across both views — includes Mexican holidays and locale-aware date formatting. Language preference persists via localStorage.
 - **Hash-based routing**: `/#experience` links directly to the countdown; default (`/`) lands on the homepage
 - **Smooth Scrolling**: Snap-scroll through different countdown modules
@@ -50,19 +51,11 @@ npm run build
 
 The built files will be in the `dist/` directory.
 
-## Deploy to Vercel
+## Deploy
 
-This app is ready to deploy to Vercel:
+The repo is connected to Vercel through its GitHub integration: **every push to `main` deploys straight to production** (savethedate-three.vercel.app). Run `npm run build` before pushing.
 
-1. Push to GitHub
-2. Import the repository in Vercel
-3. Vercel will auto-detect Vite and configure the build settings
-4. Deploy!
-
-Alternatively, use the Vercel CLI:
-```bash
-vercel
-```
+To check a deploy went out, look at the "Vercel" status on the commit (`gh api repos/aadjones/save-the-date/commits/<sha>/status`) or run `vercel ls`.
 
 ## Tech Stack
 
@@ -70,7 +63,7 @@ vercel
 - TypeScript
 - Vite
 - D3.js (for visualizations)
-- Tailwind CSS (via CDN)
+- Tailwind CSS (via the runtime CDN script; see TODO.md)
 - Lucide React (icons)
 
 ## License

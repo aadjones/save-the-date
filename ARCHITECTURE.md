@@ -6,7 +6,7 @@ A wedding website for the Santana ~ Jones wedding (October 24, 2026). It has two
 
 1. **Homepage** — the default landing view. Shows practical wedding details: hotel accommodation (two properties with booking links), directions to the venue, RSVP form link, and gifts note. Light sage palette, mobile-first, bilingual.
 
-2. **Countdown experience** — reachable via `/#experience` or the footer link on the homepage. Seven creative ways to visualize the time remaining until the wedding, each as a full-screen snap-scroll module with its own visual "vibe".
+2. **Countdown experience** — reachable via `/#experience` or the footer link on the homepage. Seven creative ways to visualize the time remaining until the wedding, each as a full-screen snap-scroll module with its own visual "vibe". After the wedding the same modules count up instead (see "After the Wedding" below).
 
 ## Tech Stack
 
@@ -122,7 +122,7 @@ import { getModuleHeaderClass, typography, colors } from '../designSystem';
 
 **constants.ts** holds all non-visual configuration:
 
-- Wedding date and venue coordinates
+- Wedding date and venue coordinates. `TARGET_DATE` is the moment the site flips from counting down to counting up: 4:30 p.m. **with an explicit Pacific offset** (`-07:00`), so every guest flips at the same instant regardless of their own time zone. Anything that displays it as a calendar date (the `.ics` export, the seasonal dial label) formats it in `America/Los_Angeles` so guests far east of California still see Oct 24.
 - Milliseconds per day/year/lunar cycle
 - Conversion factors for "absurd" units (Netflix hours, cat nap duration)
 
@@ -179,9 +179,25 @@ const SomeModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 - Use `useRef` to access DOM elements for D3 manipulation
 - Calculate positions using trigonometry (angles, arcs, orbits)
 
+- Redraw via a `ResizeObserver` on the container, not a window `resize` listener. The container can still be 0px tall when the module mounts (e.g. arriving from the homepage while the Tailwind CDN is still applying styles), and a one-time measurement left the seasonal dial blank until a refresh.
+
 **Simple modules** (Standard, Social, Absurd):
 - Just do math and display numbers
 - No fancy graphics, rely on typography scale for impact
+
+### After the Wedding
+
+Each module checks `now >= targetDate` on every tick, so an open page flips live at 4:30 p.m. on Oct 24:
+
+| Module | After the wedding |
+|---|---|
+| Standard | Header becomes "Married For"; counts up from the wedding |
+| Orbit | Stats show distance travelled *since*; one full lap = first anniversary |
+| Seasonal | Unchanged (it was always cyclical) |
+| Lunar | The scrolling stack is replaced by "The Wedding Moon": wedding-night moon vs. tonight's, plus full moons since. Re-checked when scrolled into view rather than every second |
+| Social | "… since the wedding"; holidays counted between wedding and now |
+| Absurd | Absolute value plus a "since 'I do'" line |
+| Clock | The red "Countdown" hand becomes "The Anniversary": progress from the latest Oct 24 to the next |
 
 ### 9. Interactive Elements
 
@@ -225,7 +241,7 @@ Active module runs animations, others pause
 1. **Scroll snapping**: Browser-native, no JavaScript needed for smooth scrolling
 2. **Conditional rendering**: Most modules don't pause their timers when inactive, but D3 animations respect `isActive`
 3. **No route splits**: Everything loads at once (app is tiny anyway)
-4. **Tailwind CDN**: Simpler than build-time purging for a small app
+4. **Tailwind CDN**: Simpler than build-time purging for a small app, but it generates styles at runtime, so layout isn't guaranteed to be final when components mount. Measure DOM size with a `ResizeObserver`, never once on mount. Moving to build-time Tailwind is in TODO.md
 
 ## Extending the App
 
@@ -242,7 +258,7 @@ Edit `designSystem.ts` - specifically the `colors` object. Everything else follo
 
 ### Using for a different event:
 
-1. Change `TARGET_DATE` in `constants.ts`
+1. Change `TARGET_DATE` in `constants.ts` (keep an explicit time-zone offset, and update the `America/Los_Angeles` formatting in `calendarUtils.ts` and `SeasonalDialModule.tsx` if the venue moves)
 2. Update venue info
 3. Modify `index.html` title
 4. Done!
