@@ -77,15 +77,22 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         const yearProgress = (now.getTime() - startOfYear.getTime()) / (endOfYear.getTime() - startOfYear.getTime());
 
         // 8. The Wait (Oh Shit Curve)
-        // Engagement to Wedding
-        const totalWait = targetDate.getTime() - ENGAGEMENT_DATE.getTime();
-        const elapsedWait = now.getTime() - ENGAGEMENT_DATE.getTime();
-        let waitProgress = elapsedWait / totalWait;
-        // Clamp or let it spin? Let's clamp at 100% (Wedding) or Loop?
-        // "Oh shit" implies approaching doom/event.
-        // If past wedding, maybe it stays at 100 or spins wild. Let's clamp 0-1 for cleanliness.
-        if (waitProgress > 1) waitProgress = 1;
-        if (waitProgress < 0) waitProgress = 0;
+        // Before the wedding: Engagement to Wedding.
+        // After: progress from the most recent anniversary to the next one.
+        const isMarried = now >= targetDate;
+        let waitProgress: number;
+        if (isMarried) {
+            const lastAnniv = new Date(targetDate);
+            lastAnniv.setFullYear(targetDate.getFullYear() + (now.getFullYear() - targetDate.getFullYear()));
+            if (lastAnniv > now) lastAnniv.setFullYear(lastAnniv.getFullYear() - 1);
+            const nextAnniv = new Date(lastAnniv);
+            nextAnniv.setFullYear(lastAnniv.getFullYear() + 1);
+            waitProgress = (now.getTime() - lastAnniv.getTime()) / (nextAnniv.getTime() - lastAnniv.getTime());
+        } else {
+            const totalWait = targetDate.getTime() - ENGAGEMENT_DATE.getTime();
+            const elapsedWait = now.getTime() - ENGAGEMENT_DATE.getTime();
+            waitProgress = Math.max(0, elapsedWait / totalWait);
+        }
 
         // 9. Week (Social)
         // Progress through current week (Sun-Sat)
@@ -101,7 +108,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
             { id: 'month', label: t.clock.month, value: dayVal, color: '#fbbf24', lengthScale: 0.75, width: 1, description: t.clock.descMonth },
             { id: 'year', label: t.clock.solarYear, value: yearProgress, color: '#fef3c7', lengthScale: 0.9, width: 1.5, description: t.clock.descSolarYear }, // Amber-100
             { id: 'sidereal', label: t.clock.siderealDay, value: siderealVal, color: '#a3e635', lengthScale: 0.6, width: 1, description: t.clock.descSiderealDay }, // Lime-400 for sidereal difference
-            { id: 'wait', label: t.clock.theCountdown, value: waitProgress, color: '#ef4444', lengthScale: 1.0, width: 3, description: t.clock.descCountdown }, // Red highlight for the Wait
+            { id: 'wait', label: isMarried ? t.clock.anniversary : t.clock.theCountdown, value: waitProgress, color: '#ef4444', lengthScale: 1.0, width: 3, description: isMarried ? t.clock.descAnniversary : t.clock.descCountdown }, // Red highlight for the Wait
         ];
     }, [now, targetDate, t]);
 

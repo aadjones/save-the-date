@@ -11,6 +11,7 @@ export const en: Translations = {
   },
   standard: {
     header: 'Aaron & Anakaren\'s Wedding!',
+    headerMarried: 'Married For',
     years: 'Years',
     months: 'Months',
     days: 'Days',
@@ -58,7 +59,13 @@ export const en: Translations = {
     age: 'Days Old',
     distance: 'Distance (KM)',
     illuminated: 'Illuminated',
-    nextFull: 'Next Full Moon'
+    nextFull: 'Next Full Moon',
+    headerMarried: 'The Wedding Moon',
+    tonight: 'Tonight',
+    fullMoonSince: 'full moon since the wedding',
+    fullMoonsSince: 'full moons since the wedding',
+    nextFullIn: 'Next full moon in {n} days',
+    nextFullSoon: 'Full moon tonight',
   },
   social: {
     header: 'Social Constructs',
@@ -68,7 +75,10 @@ export const en: Translations = {
     weekendsTooltip: 'Estimated Saturdays and Sundays remaining',
     mealsTooltip: 'Assumes 3 meals per day (breakfast, lunch, dinner)',
     holidaysTooltip: 'U.S. Federal Holidays between now and the wedding',
+    weekendsTooltipSince: 'Estimated Saturdays and Sundays since the wedding',
+    holidaysTooltipSince: 'U.S. Federal Holidays since the wedding',
     remaining: 'remaining',
+    since: 'since the wedding',
     footer: '*Estimates based on standard calendar weeks, 3 meals/day, and U.S. Federal Holidays.',
   },
   absurd: {
@@ -80,6 +90,7 @@ export const en: Translations = {
     tapHint: 'Tap to change perspective',
     stressNote: '*Calculated based on a stress coefficient of 0.2 panics/day.',
     bpmNote: 'Based on 70 BPM resting rate.',
+    since: 'since "I do"',
   },
   clock: {
     header: 'The Relative Clock',
@@ -101,6 +112,8 @@ export const en: Translations = {
     descSolarYear: 'One orbit around the Sun.',
     descSiderealDay: 'Rotation relative to distant stars.',
     descCountdown: 'Engagement to Wedding.',
+    anniversary: 'The Anniversary',
+    descAnniversary: 'Progress to the next anniversary.',
     scrollHint: 'Tap to Cycle Hands',
   },
   home: {

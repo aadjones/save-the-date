@@ -11,6 +11,7 @@ export type Translations = {
   };
   standard: {
     header: string;
+    headerMarried: string;
     years: string;
     months: string;
     days: string;
@@ -59,6 +60,12 @@ export type Translations = {
     distance: string;
     illuminated: string;
     nextFull: string;
+    headerMarried: string;
+    tonight: string;
+    fullMoonSince: string;
+    fullMoonsSince: string;
+    nextFullIn: string;
+    nextFullSoon: string;
   };
   social: {
     header: string;
@@ -68,7 +75,10 @@ export type Translations = {
     weekendsTooltip: string;
     mealsTooltip: string;
     holidaysTooltip: string;
+    weekendsTooltipSince: string;
+    holidaysTooltipSince: string;
     remaining: string;
+    since: string;
     footer: string;
   };
   absurd: {
@@ -80,6 +90,7 @@ export type Translations = {
     tapHint: string;
     stressNote: string;
     bpmNote: string;
+    since: string;
   };
   clock: {
     header: string;
@@ -101,6 +112,8 @@ export type Translations = {
     descSolarYear: string;
     descSiderealDay: string;
     descCountdown: string;
+    anniversary: string;
+    descAnniversary: string;
     scrollHint: string;
   };
   home: {

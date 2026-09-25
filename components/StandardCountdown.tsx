@@ -5,24 +5,28 @@ import { useT } from '../i18n';
 
 const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState<CountdownTime>({ years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [isMarried, setIsMarried] = useState(false);
   const t = useT();
   const vibe = 'wedding';
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const difference = +targetDate - +new Date();
+      const now = new Date();
+      const married = now >= targetDate;
+      setIsMarried(married);
+
+      // Before the wedding: count from now to the wedding. After: from the wedding to now.
+      const from = married ? targetDate : now;
+      const to = married ? now : targetDate;
       let timeLeft: CountdownTime = { years: 0, months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
 
-      if (difference > 0) {
-        const now = new Date();
-        const target = new Date(targetDate);
-
-        let years = target.getFullYear() - now.getFullYear();
-        let months = target.getMonth() - now.getMonth();
-        let days = target.getDate() - now.getDate();
-        let hours = target.getHours() - now.getHours();
-        let minutes = target.getMinutes() - now.getMinutes();
-        let seconds = target.getSeconds() - now.getSeconds();
+      if (to > from) {
+        let years = to.getFullYear() - from.getFullYear();
+        let months = to.getMonth() - from.getMonth();
+        let days = to.getDate() - from.getDate();
+        let hours = to.getHours() - from.getHours();
+        let minutes = to.getMinutes() - from.getMinutes();
+        let seconds = to.getSeconds() - from.getSeconds();
 
         if (seconds < 0) {
           seconds += 60;
@@ -37,7 +41,7 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
           days--;
         }
         if (days < 0) {
-          const prevMonth = new Date(target.getFullYear(), target.getMonth(), 0);
+          const prevMonth = new Date(to.getFullYear(), to.getMonth(), 0);
           days += prevMonth.getDate();
           months--;
         }
@@ -76,7 +80,7 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
       </div>
 
       <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl text-center z-10 font-bold flex-shrink-0 mb-1 sm:mb-2`}>
-        {t.standard.header}
+        {isMarried ? t.standard.headerMarried : t.standard.header}
       </h2>
 
       {/* 2. Main Visualization Area (Potato) - THE ABSOLUTE PRIORITY */}

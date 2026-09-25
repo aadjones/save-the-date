@@ -6,12 +6,9 @@ export const generateIcsFile = (
   description?: string
 ): void => {
   // Format date for ICS (YYYYMMDDTHHMMSSZ in UTC)
-  const formatIcsDate = (d: Date): string => {
-    const year = d.getFullYear();
-    const month = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return `${year}${month}${day}`;
-  };
+  // Use the venue's time zone so guests far east of California still get Oct 24
+  const formatIcsDate = (d: Date): string =>
+    d.toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' }).replace(/-/g, '');
 
   const eventDate = formatIcsDate(date);
   const now = new Date();

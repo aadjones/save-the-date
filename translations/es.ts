@@ -11,6 +11,7 @@ export const es: Translations = {
   },
   standard: {
     header: '¡La Boda de Aaron y Anakaren!',
+    headerMarried: 'Casados Desde Hace',
     years: 'Años',
     months: 'Meses',
     days: 'Días',
@@ -58,7 +59,13 @@ export const es: Translations = {
     age: 'Días de Edad',
     distance: 'Distancia (KM)',
     illuminated: 'Iluminada',
-    nextFull: 'Próxima Luna Llena'
+    nextFull: 'Próxima Luna Llena',
+    headerMarried: 'La Luna de la Boda',
+    tonight: 'Esta Noche',
+    fullMoonSince: 'luna llena desde la boda',
+    fullMoonsSince: 'lunas llenas desde la boda',
+    nextFullIn: 'Próxima luna llena en {n} días',
+    nextFullSoon: 'Luna llena esta noche',
   },
   social: {
     header: 'Construcciones Sociales',
@@ -68,7 +75,10 @@ export const es: Translations = {
     weekendsTooltip: 'Sábados y domingos restantes estimados',
     mealsTooltip: 'Asume 3 comidas al día (desayuno, comida, cena)',
     holidaysTooltip: 'Días festivos mexicanos entre hoy y la boda',
+    weekendsTooltipSince: 'Sábados y domingos estimados desde la boda',
+    holidaysTooltipSince: 'Días festivos mexicanos desde la boda',
     remaining: 'restantes',
+    since: 'desde la boda',
     footer: '*Estimaciones basadas en semanas calendario, 3 comidas/día y días festivos mexicanos.',
   },
   absurd: {
@@ -80,6 +90,7 @@ export const es: Translations = {
     tapHint: 'Toca para cambiar perspectiva',
     stressNote: '*Calculado con un coeficiente de estrés de 0.2 pánicos/día.',
     bpmNote: 'Basado en 70 LPM en reposo.',
+    since: 'desde el «sí, acepto»',
   },
   clock: {
     header: 'El Reloj Relativo',
@@ -101,6 +112,8 @@ export const es: Translations = {
     descSolarYear: 'Una órbita alrededor del Sol.',
     descSiderealDay: 'Rotación relativa a estrellas lejanas.',
     descCountdown: 'Del compromiso a la boda.',
+    anniversary: 'El Aniversario',
+    descAnniversary: 'Rumbo al próximo aniversario.',
     scrollHint: 'Toca para Cambiar Manecilla',
   },
   home: {

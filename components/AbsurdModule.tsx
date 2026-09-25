@@ -7,6 +7,7 @@ import { useT } from '../i18n';
 const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [unit, setUnit] = useState<AbsurdUnit>(AbsurdUnit.OH_SHIT);
   const [count, setCount] = useState<number>(0);
+  const [isMarried, setIsMarried] = useState(false);
   const t = useT();
   const vibe = 'humorous';
 
@@ -24,7 +25,9 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   useEffect(() => {
     const update = () => {
       const now = new Date();
-      const diffMs = targetDate.getTime() - now.getTime();
+      setIsMarried(now >= targetDate);
+      // Time until the wedding, or time since it once it has happened
+      const diffMs = Math.abs(targetDate.getTime() - now.getTime());
       const diffHours = diffMs / (1000 * 60 * 60);
       const diffDays = diffMs / MILLISECONDS_PER_DAY;
 
@@ -81,6 +84,11 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
           <div className={`${getVibeClass(vibe, 'header')} text-2xl sm:text-3xl md:text-4xl lg:text-5xl uppercase tracking-tighter`}>
             {unitLabels[unit]}
           </div>
+          {isMarried && (
+            <div className={`${getVibeClass(vibe, 'label')} text-xs sm:text-sm mt-2 sm:mt-3`}>
+              {t.absurd.since}
+            </div>
+          )}
         </div>
       </div>
 

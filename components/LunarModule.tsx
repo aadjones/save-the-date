@@ -64,7 +64,88 @@ const MoonIcon: React.FC<{ phase: number; size: number; className?: string; high
   );
 };
 
+const SYNODIC_MS = SYNODIC_MONTH_DAYS * MILLISECONDS_PER_DAY;
+
+// Lunar cycles elapsed since the reference new moon; the fractional part is the phase (0 = new, 0.5 = full)
+const cyclesAt = (d: Date) => (d.getTime() - REFERENCE_NEW_MOON.getTime()) / SYNODIC_MS;
+
+// After the wedding: the wedding-night moon beside tonight's, plus a count of full moons since
+const WeddingMoon: React.FC<{ targetDate: Date }> = ({ targetDate }) => {
+  const t = useT();
+  const [locale] = useLocale();
+  const vibe = 'mystical';
+  const now = new Date();
+
+  const phaseLabel = (p: number) => {
+    if (p < 0.25) return t.lunar.waxingCrescent;
+    if (p < 0.5) return t.lunar.waxingGibbous;
+    if (p < 0.75) return t.lunar.waningGibbous;
+    return t.lunar.waningCrescent;
+  };
+
+  // Full moons fall at cycle + 0.5, so count how many of those lie between the two dates
+  const fullMoonsBefore = (d: Date) => Math.floor(cyclesAt(d) - 0.5);
+  const fullMoonCount = fullMoonsBefore(now) - fullMoonsBefore(targetDate);
+  const nextFullMs = REFERENCE_NEW_MOON.getTime() + (fullMoonsBefore(now) + 1.5) * SYNODIC_MS;
+  const daysToNextFull = Math.ceil((nextFullMs - now.getTime()) / MILLISECONDS_PER_DAY);
+
+  const dateLocale = locale === 'es' ? 'es-MX' : 'en-US';
+  const moons = [
+    { id: 'wedding', title: t.lunar.theWedding, date: targetDate },
+    { id: 'tonight', title: t.lunar.tonight, date: now },
+  ];
+
+  return (
+    <div className={`lunar-after h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4`}>
+      <div className="absolute inset-0 pointer-events-none opacity-20">
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-900 rounded-full blur-[140px]"></div>
+        <div className="absolute bottom-1/4 right-1/4 w-[500px] h-[500px] bg-indigo-900/40 rounded-full blur-[160px]"></div>
+      </div>
+
+      <div className="lunar-header text-center z-20 flex-shrink-0">
+        <h2 className={`${getVibeClass(vibe, 'header')} text-xl sm:text-2xl md:text-3xl`}>{t.lunar.headerMarried}</h2>
+      </div>
+
+      <div className="flex-1 w-full min-h-0 z-10 flex flex-col items-center justify-center gap-10 sm:gap-16 pb-16 sm:pb-24">
+        <div className="moon-pair grid grid-cols-2 gap-6 sm:gap-20 w-full max-w-lg">
+          {moons.map((m) => {
+            const phase = ((cyclesAt(m.date) % 1) + 1) % 1;
+            return (
+              <div key={m.id} className="moon-card flex flex-col items-center text-center">
+                <div className={`${getVibeClass(vibe, 'label')} !text-[10px] sm:!text-xs mb-3 sm:mb-4`}>
+                  {m.title}
+                </div>
+                <MoonIcon phase={phase} size={120} highlight className="moon-disc w-24 h-24 sm:w-36 sm:h-36 drop-shadow-2xl" />
+                <div className={`moon-label ${getVibeClass(vibe, 'header')} lowercase !tracking-[0.1em] text-base sm:text-xl text-white mt-3 sm:mt-5`}>
+                  {phaseLabel(phase)}
+                </div>
+                <div className="moon-date text-[10px] sm:text-xs text-indigo-300/70 uppercase font-mono tracking-widest mt-1">
+                  {m.date.toLocaleDateString(dateLocale, { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'America/Los_Angeles' })}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        <div className="moon-count flex flex-col items-center text-center">
+          <div className={`count-number ${getVibeClass(vibe, 'number')} text-5xl sm:text-7xl text-white`}>
+            {fullMoonCount}
+          </div>
+          <div className={`count-label ${getVibeClass(vibe, 'header')} lowercase !tracking-[0.1em] text-sm sm:text-lg text-indigo-200 mt-1`}>
+            {fullMoonCount === 1 ? t.lunar.fullMoonSince : t.lunar.fullMoonsSince}
+          </div>
+          <div className="count-next text-[10px] sm:text-xs text-indigo-300/70 uppercase font-mono tracking-widest mt-3">
+            {daysToNextFull <= 1 ? t.lunar.nextFullSoon : t.lunar.nextFullIn.replace('{n}', String(daysToNextFull))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScrolledToBottom }) => {
+  // Re-checked on each render (e.g. when scrolled into view), so an open page switches over after the wedding
+  const isMarried = new Date() >= targetDate;
   const [phases, setPhases] = useState<MoonPhaseData[]>([]);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const itemRefs = useRef<Map<string, HTMLDivElement>>(new Map());
@@ -190,14 +271,24 @@ const LunarModule: React.FC<TimeModuleProps> = ({ targetDate, isActive, onScroll
   }, [onScrolledToBottom]);
 
   useLayoutEffect(() => {
-    if (isActive && phases.length > 0 && scrollContainerRef.current) {
+    const container = scrollContainerRef.current;
+    if (!container || phases.length === 0) return;
+    if (isActive) {
       const currentIndex = phases.findIndex(p => p.isCurrent);
-      if (currentIndex !== -1) {
-        const el = itemRefs.current.get(`item-${currentIndex}`);
-        el?.scrollIntoView({ behavior: 'auto', block: 'center' });
-      }
+      const el = itemRefs.current.get(`item-${currentIndex}`);
+      // Center "you are here" by scrolling only the list; scrollIntoView would also move the outer page
+      if (el) container.scrollTop = el.offsetTop - container.clientHeight / 2 + el.clientHeight / 2;
     }
-  }, [phases, isActive]);
+    // A list short enough to fit never fires a scroll event, so report "at bottom" directly
+    onScrolledToBottom?.(container.scrollHeight - container.scrollTop - container.clientHeight < 2);
+  }, [phases, isActive, onScrolledToBottom]);
+
+  // The after-wedding view doesn't scroll, so the "next section" arrow should show straight away
+  useEffect(() => {
+    if (isMarried) onScrolledToBottom?.(true);
+  }, [isMarried, onScrolledToBottom]);
+
+  if (isMarried) return <WeddingMoon targetDate={targetDate} />;
 
   return (
     <div className={`h-full w-full flex flex-col items-center ${vibes[vibe].container} relative overflow-hidden pt-28 sm:pt-32 px-4`}>

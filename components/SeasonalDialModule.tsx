@@ -13,13 +13,13 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [locale] = useLocale();
   const vibe = 'elemental';
 
-  // Handle Resize
+  // Redraw whenever the container's size changes. Watching the element (not the window) also
+  // catches the first real layout, since the container can still be 0px tall when this mounts.
   useEffect(() => {
-    const handleResize = () => {
-      setResizeTrigger((prev) => prev + 1);
-    };
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver(() => setResizeTrigger((prev) => prev + 1));
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -142,6 +142,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
       const foreignObject = rootSvg
         .append("foreignObject")
+        .attr("class", `season-icon-${i}`)
         .attr("x", absoluteX)
         .attr("y", absoluteY)
         .attr("width", iconSize)
@@ -316,7 +317,15 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     const curLabelY = -Math.cos(currentAngle) * curLabelR;
     const curTextAnchor = "middle";
 
-    const curGroup = svg.append("g");
+    // An inside label lands on the current season's icon; the tinted wedge already marks the season
+    if (isLeftRight) rootSvg.select(`.season-icon-${activeSeasonIndex}`).remove();
+
+    // Outline the label in the background color so the date line doesn't strike through it
+    const curGroup = svg.append("g")
+      .style("paint-order", "stroke")
+      .style("stroke", "#1a2f2a")
+      .style("stroke-width", "4px")
+      .style("stroke-linejoin", "round");
     curGroup.append("text")
       .attr("x", curLabelX)
       .attr("y", curLabelY)
@@ -374,7 +383,7 @@ const SeasonalDialModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       .attr("text-anchor", "middle")
       .attr("class", "font-sans text-amber-500 fill-current tracking-widest font-bold")
       .style("font-size", `${dateFontPx}px`)
-      .text(targetDate.toLocaleDateString(dateLocale, { month: "short", day: "numeric" }).toUpperCase());
+      .text(targetDate.toLocaleDateString(dateLocale, { month: "short", day: "numeric", timeZone: "America/Los_Angeles" }).toUpperCase());
 
   }, [targetDate, resizeTrigger, t, locale]);
 

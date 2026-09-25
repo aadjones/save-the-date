@@ -1,4 +1,5 @@
-export const TARGET_DATE = new Date('2026-10-24T00:00:00');
+// The moment the countdown flips to counting up: 4:30 p.m. Pacific, just after the 4:00 ceremony
+export const TARGET_DATE = new Date('2026-10-24T16:30:00-07:00');
 export const ENGAGEMENT_DATE = new Date('2025-12-19T00:00:00');
 
 export const VENUE_NAME = 'The Yellow Rose Inn';

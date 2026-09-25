@@ -9,6 +9,7 @@ import { useT, useLocale } from '../i18n';
 const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   const [selectedUnit, setSelectedUnit] = useState<SocialUnit>(SocialUnit.WEEKENDS);
   const [count, setCount] = useState<number>(0);
+  const [isMarried, setIsMarried] = useState(false);
   const t = useT();
   const [locale] = useLocale();
   const vibe = 'corporate';
@@ -74,13 +75,12 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
     const calculate = () => {
       const now = new Date();
-      const diffMs = targetDate.getTime() - now.getTime();
-      const diffDays = diffMs / MILLISECONDS_PER_DAY;
-
-      if (diffDays <= 0) {
-        setCount(0);
-        return;
-      }
+      const married = now >= targetDate;
+      setIsMarried(married);
+      // Before the wedding: now → wedding. After: wedding → now.
+      const from = married ? targetDate : now;
+      const to = married ? now : targetDate;
+      const diffDays = (to.getTime() - from.getTime()) / MILLISECONDS_PER_DAY;
 
       switch (selectedUnit) {
         case SocialUnit.WEEKENDS:
@@ -91,14 +91,14 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
           break;
         case SocialUnit.HOLIDAYS:
           let holidayCount = 0;
-          const startYear = now.getFullYear();
-          const endYear = targetDate.getFullYear();
+          const startYear = from.getFullYear();
+          const endYear = to.getFullYear();
           const getHolidays = locale === 'es' ? getMexicanHolidays : getFederalHolidays;
 
           for (let y = startYear; y <= endYear; y++) {
             const holidays = getHolidays(y);
             for (const h of holidays) {
-              if (h.getTime() > now.getTime() && h.getTime() < targetDate.getTime()) {
+              if (h.getTime() > from.getTime() && h.getTime() < to.getTime()) {
                 holidayCount++;
               }
             }
@@ -125,7 +125,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       id: SocialUnit.WEEKENDS,
       icon: Calendar,
       label: t.social.weekends,
-      tooltip: t.social.weekendsTooltip,
+      tooltip: isMarried ? t.social.weekendsTooltipSince : t.social.weekendsTooltip,
     },
     {
       id: SocialUnit.MEALS,
@@ -137,7 +137,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       id: SocialUnit.HOLIDAYS,
       icon: Flag,
       label: t.social.holidays,
-      tooltip: t.social.holidaysTooltip,
+      tooltip: isMarried ? t.social.holidaysTooltipSince : t.social.holidaysTooltip,
     },
   ];
 
@@ -170,7 +170,7 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
           {Math.floor(count).toLocaleString()}
         </span>
         <span className={`${getVibeClass(vibe, 'header')} text-lg sm:text-xl md:text-2xl lowercase opacity-40 italic`}>
-          {unitDisplayLabel[selectedUnit]} {t.social.remaining}
+          {unitDisplayLabel[selectedUnit]} {isMarried ? t.social.since : t.social.remaining}
         </span>
       </div>
 

@@ -15,11 +15,13 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
   const [resizeTrigger, setResizeTrigger] = useState(0);
   const vibe = 'space';
 
-  // Handle Resize
+  // Redraw whenever the container's size changes (including its first real layout, when it
+  // may still have been 0px tall at mount)
   useEffect(() => {
-    const handleResize = () => setResizeTrigger(prev => prev + 1);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    if (!containerRef.current) return;
+    const observer = new ResizeObserver(() => setResizeTrigger(prev => prev + 1));
+    observer.observe(containerRef.current);
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -132,7 +134,7 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       />
     );
 
-    svg.append('text')
+    const weddingLabel = svg.append('text')
       .attr('x', Math.cos(targetAngle) * (radius + (isMobile ? 30 : 40)))
       .attr('y', Math.sin(targetAngle) * (radius + (isMobile ? 45 : 60)))
       .attr('text-anchor', 'middle')
@@ -211,8 +213,37 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('r', isMobile ? 1.5 : 2.5)
       .attr('fill', '#fff'); // Space: White Moon
 
-    // "You Are Here" Label Group (will be updated in animation)
+    // "You Are Here" label: built once here, repositioned every frame in animate()
     const youAreHereGroup = svg.append('g').attr('class', 'you-are-here-label');
+
+    const youAreHereLine = youAreHereGroup.append('line')
+      .attr('stroke', '#334155')
+      .attr('stroke-width', 1)
+      .attr('stroke-dasharray', '2 2');
+
+    const mapPinSize = isMobile ? 10 : 12;
+    const mapPinFO = youAreHereGroup.append('foreignObject')
+      .attr('width', mapPinSize)
+      .attr('height', mapPinSize)
+      .style('pointer-events', 'none');
+
+    const mapPinDiv = document.createElement('div');
+    mapPinFO.node()?.appendChild(mapPinDiv);
+    const mapPinRoot = createRoot(mapPinDiv);
+    mapPinRoot.render(
+      <MapPin
+        size={mapPinSize}
+        className="text-white"
+        fill="currentColor"
+        strokeWidth={1.5}
+      />
+    );
+
+    const youAreHereText = youAreHereGroup.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#fff')
+      .attr('class', 'font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-black')
+      .text(t.orbit.youAreHere);
 
     // Animation Loop
     let animationId: number;
@@ -242,51 +273,34 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       moon.attr('cx', mx).attr('cy', my);
 
       // Update "You Are Here" Label
-      youAreHereGroup.selectAll('*').remove();
-
-      const youAreHereExtension = isMobile ? 40 : 60;
       const youAreHereLabelR = radius + youAreHereExtension;
-      const youAreHereLabelX = Math.cos(currentAngle) * youAreHereLabelR;
+      let youAreHereLabelX = Math.cos(currentAngle) * youAreHereLabelR;
       const youAreHereLabelY = Math.sin(currentAngle) * youAreHereLabelR;
 
-      // Leader line for "You Are Here"
-      youAreHereGroup.append('line')
+      // Within a few weeks of the wedding both labels sit at the top of the orbit and overlap.
+      // Slide "you are here" sideways (toward Earth's side) until the two labels clear each other.
+      const minLabelGap = (weddingLabel.node()!.getBBox().width + youAreHereText.node()!.getBBox().width) / 2 + 10;
+      if (youAreHereLabelY < 0 && Math.abs(youAreHereLabelX) < minLabelGap) {
+        youAreHereLabelX = (earthX >= 0 ? 1 : -1) * minLabelGap;
+      }
+
+      // Leader line from Earth toward the label, stopping short of the pin
+      const toLabelX = youAreHereLabelX - earthX;
+      const toLabelY = youAreHereLabelY - earthY;
+      const toLabelLen = Math.hypot(toLabelX, toLabelY) || 1;
+      youAreHereLine
         .attr('x1', earthX)
         .attr('y1', earthY)
-        .attr('x2', Math.cos(currentAngle) * (youAreHereLabelR - 10))
-        .attr('y2', Math.sin(currentAngle) * (youAreHereLabelR - 10))
-        .attr('stroke', '#334155')
-        .attr('stroke-width', 1)
-        .attr('stroke-dasharray', '2 2');
+        .attr('x2', youAreHereLabelX - (toLabelX / toLabelLen) * 16)
+        .attr('y2', youAreHereLabelY - (toLabelY / toLabelLen) * 16);
 
-      // MapPin Icon for "You Are Here"
-      const mapPinSize = isMobile ? 10 : 12;
-      const mapPinFO = youAreHereGroup.append('foreignObject')
+      mapPinFO
         .attr('x', youAreHereLabelX - mapPinSize / 2)
-        .attr('y', youAreHereLabelY - mapPinSize / 2 - (isMobile ? 8 : 10))
-        .attr('width', mapPinSize)
-        .attr('height', mapPinSize)
-        .style('pointer-events', 'none');
+        .attr('y', youAreHereLabelY - mapPinSize / 2 - (isMobile ? 8 : 10));
 
-      const mapPinDiv = document.createElement('div');
-      mapPinFO.node()?.appendChild(mapPinDiv);
-      const mapPinRoot = createRoot(mapPinDiv);
-      mapPinRoot.render(
-        <MapPin
-          size={mapPinSize}
-          className="text-white"
-          fill="currentColor"
-          strokeWidth={1.5}
-        />
-      );
-
-      youAreHereGroup.append('text')
+      youAreHereText
         .attr('x', youAreHereLabelX)
-        .attr('y', youAreHereLabelY + (isMobile ? 4 : 6))
-        .attr('text-anchor', 'middle')
-        .attr('fill', '#fff')
-        .attr('class', 'font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.2em] font-black')
-        .text(t.orbit.youAreHere);
+        .attr('y', youAreHereLabelY + (isMobile ? 4 : 6));
 
       const arrowStartOffset = 0.15;
       const arrowLength = 0.5;
@@ -301,10 +315,11 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
 
       arrowPath.attr('d', `M ${ax1} ${ay1} A ${radius} ${radius} 0 0 0 ${ax2} ${ay2}`);
 
+      // After the wedding diffDays goes negative; show distance travelled since instead
       setStats({
-        degrees: totalDegrees,
-        km: kmRemaining,
-        fraction: diffDays / DAYS_PER_YEAR
+        degrees: Math.abs(totalDegrees),
+        km: Math.abs(kmRemaining),
+        fraction: Math.abs(diffDays / DAYS_PER_YEAR)
       });
 
       if (isActive) {
