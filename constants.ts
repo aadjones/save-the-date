@@ -5,6 +5,7 @@ export const ENGAGEMENT_DATE = new Date('2025-12-19T00:00:00');
 export const VENUE_NAME = 'The Yellow Rose Inn';
 export const VENUE_ADDRESS = '26895 N Broadway, Escondido, CA 92026';
 export const VENUE_COORDINATES = '33°11\'52.9"N 117°05\'20.3"W'; // Display format
+export const VENUE_LONGITUDE_DEG = -(117 + 5 / 60 + 20.3 / 3600); // East-positive; used for local sidereal time
 
 export const BRUNCH_VENUE_NAME = 'Stone Brewing World Bistro';
 export const BRUNCH_VENUE_ADDRESS = '1999 Citracado Parkway, Escondido, CA';
@@ -12,7 +13,6 @@ export const BRUNCH_VENUE_ADDRESS = '1999 Citracado Parkway, Escondido, CA';
 export const VENMO_USERNAME = 'Aaron-Jones-126'; // Replace with your actual Venmo handle
 
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
-export const MILLISECONDS_PER_SIDEREAL_DAY = 86164090.5; // ~23h 56m 4.0905s
 export const SYNODIC_MONTH_DAYS = 29.53059;
 export const EARTH_ORBIT_KM = 940000000; // Approx circumference
 export const DAYS_PER_YEAR = 365.2564; // Sidereal year

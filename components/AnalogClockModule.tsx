@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { TimeModuleProps } from '../types';
-import { ENGAGEMENT_DATE, MILLISECONDS_PER_DAY, MILLISECONDS_PER_SIDEREAL_DAY, SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON } from '../constants';
+import { ENGAGEMENT_DATE, MILLISECONDS_PER_DAY, SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON, VENUE_LONGITUDE_DEG } from '../constants';
 import { vibes, getVibeClass } from '../designSystem';
 import { useT } from '../i18n';
 
@@ -50,14 +50,13 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         // 3. Hours (12h cycle)
         const hourVal = (h % 12) / 12;
 
-        // 4. Sidereal Day (Approx 23h 56m 4s)
-        // Sidereal time is roughly solar time + 1 day/year extra rotation
-        // Simplified simulation: It moves slightly faster than 24h solar cycle
-        const msInDay = h * 3600 * 1000; // Solar ms passed today (h already includes minutes and seconds)
-        // Percent of sidereal day passed (resetting at sidereal midnight roughly)
-        // We just want the rate relative to solar. 
-        // Let's anchor it to 0 at midnight for visualization simplicity, but faster rate.
-        const siderealVal = (msInDay % MILLISECONDS_PER_SIDEREAL_DAY) / MILLISECONDS_PER_SIDEREAL_DAY;
+        // 4. Sidereal Day: local sidereal time at the venue, i.e. how far the Earth has turned
+        // relative to the stars. Greenwich mean sidereal time from days since J2000.0
+        // (2000-01-01 12:00 UTC), shifted by the venue's longitude (15° per sidereal hour).
+        const daysSinceJ2000 = now.getTime() / MILLISECONDS_PER_DAY - 10957.5;
+        const gmstHours = 18.697374558 + 24.06570982441908 * daysSinceJ2000;
+        const lstHours = gmstHours + VENUE_LONGITUDE_DEG / 15;
+        const siderealVal = (((lstHours / 24) % 1) + 1) % 1;
 
         // 5. Day of Month
         const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
