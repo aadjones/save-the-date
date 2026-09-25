@@ -13,7 +13,6 @@ export const VENMO_USERNAME = 'Aaron-Jones-126'; // Replace with your actual Ven
 
 export const MILLISECONDS_PER_DAY = 1000 * 60 * 60 * 24;
 export const MILLISECONDS_PER_SIDEREAL_DAY = 86164090.5; // ~23h 56m 4.0905s
-export const MILLISECONDS_PER_SOLAR_DAY = 86400000;
 export const SYNODIC_MONTH_DAYS = 29.53059;
 export const EARTH_ORBIT_KM = 940000000; // Approx circumference
 export const DAYS_PER_YEAR = 365.2564; // Sidereal year

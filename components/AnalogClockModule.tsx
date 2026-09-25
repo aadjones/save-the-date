@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { TimeModuleProps } from '../types';
-import { ENGAGEMENT_DATE, MILLISECONDS_PER_DAY, SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON } from '../constants';
-import { typography, vibes, getVibeClass } from '../designSystem';
-import { useT, useLocale } from '../i18n';
+import { ENGAGEMENT_DATE, MILLISECONDS_PER_DAY, MILLISECONDS_PER_SIDEREAL_DAY, SYNODIC_MONTH_DAYS, REFERENCE_NEW_MOON } from '../constants';
+import { vibes, getVibeClass } from '../designSystem';
+import { useT } from '../i18n';
 
 const TWO_PI = Math.PI * 2;
 
@@ -20,7 +20,6 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
     const containerRef = useRef<HTMLDivElement>(null);
     const [now, setNow] = useState(new Date());
     const [activeIndex, setActiveIndex] = useState(0);
-    const lastScrollTime = useRef(0);
     const t = useT();
     const vibe = 'steampunk';
 
@@ -55,12 +54,10 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         // Sidereal time is roughly solar time + 1 day/year extra rotation
         // Simplified simulation: It moves slightly faster than 24h solar cycle
         const msInDay = (h * 3600 + m * 60 + s) * 1000; // Solar ms passed today
-        // Sidereal day in ms is approx 86164090.5
         // Percent of sidereal day passed (resetting at sidereal midnight roughly)
         // We just want the rate relative to solar. 
         // Let's anchor it to 0 at midnight for visualization simplicity, but faster rate.
-        const siderealDayLength = 86164.09 * 1000;
-        const siderealVal = (msInDay % siderealDayLength) / siderealDayLength;
+        const siderealVal = (msInDay % MILLISECONDS_PER_SIDEREAL_DAY) / MILLISECONDS_PER_SIDEREAL_DAY;
 
         // 5. Day of Month
         const daysInMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0).getDate();
@@ -128,7 +125,6 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
     // Helper for Arc Path
     const getArcPath = (val: number, radius: number) => {
         // Draw arc from top (0) to current value
-        const startAngle = -Math.PI / 2;
         const endAngle = val * TWO_PI - Math.PI / 2;
 
         // If val is near 0 or 1, path logic can get weird, handle full circle
@@ -163,7 +159,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
             {/* 1. Module Title & Subtitle */}
             <div className="text-center z-20 flex-shrink-0 mb-8 sm:mb-12">
                 <h2 className={getVibeClass(vibe, 'header')}>{t.clock.header}</h2>
-                <p className={`${typography.hint.animated} !text-amber-600/80 mt-1`}>
+                <p className="font-mono text-[10px] sm:text-xs md:text-sm uppercase tracking-widest animate-pulse text-amber-600/80 mt-1">
                     {t.clock.scrollHint}
                 </p>
             </div>

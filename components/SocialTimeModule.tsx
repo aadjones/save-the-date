@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, SocialUnit } from '../types';
 import { MILLISECONDS_PER_DAY } from '../constants';
 import { Coffee, Calendar, Flag } from 'lucide-react';
-import { getButtonClass, typography, colors, vibes, getVibeClass } from '../designSystem';
+import { getButtonClass, vibes, getVibeClass } from '../designSystem';
 import Tooltip from './Tooltip';
 import { useT, useLocale } from '../i18n';
 

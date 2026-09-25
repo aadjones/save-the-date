@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { EARTH_ORBIT_KM, DAYS_PER_YEAR, ENGAGEMENT_DATE } from '../constants';
 import { TimeModuleProps } from '../types';
-import { typography, spacing, vibes, getVibeClass } from '../designSystem';
+import { vibes, getVibeClass } from '../designSystem';
 import { Heart, MapPin } from 'lucide-react';
 import { createRoot } from 'react-dom/client';
 import { useT } from '../i18n';

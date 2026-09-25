@@ -56,10 +56,6 @@ export type Translations = {
     waxingGibbous: string;
     waningGibbous: string;
     waningCrescent: string;
-    age: string;
-    distance: string;
-    illuminated: string;
-    nextFull: string;
     headerMarried: string;
     tonight: string;
     fullMoonSince: string;

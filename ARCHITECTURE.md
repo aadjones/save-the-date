@@ -27,7 +27,7 @@ A wedding website for the Santana ~ Jones wedding (October 24, 2026). It has two
 │
 ├── constants.ts               # Wedding date, venue info, conversion factors
 ├── types.ts                   # TypeScript interfaces (TimeModuleProps, etc.)
-├── designSystem.ts            # All design tokens (colors, typography, spacing, vibes)
+├── designSystem.ts            # Per-module vibes, pagination dots, pill-button classes
 ├── i18n.tsx                   # LocaleProvider, useT/useLocale hooks, LanguageToggle variants
 │
 ├── components/
@@ -101,9 +101,9 @@ This makes all modules **swappable** - you can reorder them in `App.tsx` without
 
 **designSystem.ts** contains all visual constants:
 
-- **`vibes`**: One entry per module "vibe" (`wedding`, `space`, `elemental`, `mystical`, `corporate`, `humorous`, `steampunk`), each with its own palette and fonts: class strings for `container`, `header`, `number`, `label`, `footer`, `branding`, and pagination colors. This is what modules actually style themselves with.
+- **`vibes`**: One entry per module "vibe" (`wedding`, `space`, `elemental`, `mystical`, `corporate`, `humorous`, `steampunk`), each with its own palette and fonts: class strings for `container`, `header`, `number`, `label`, `footer`, and `branding`. This is what modules actually style themselves with.
 - **`getVibeClass(vibe, part)`**: Looks up one of those class strings.
-- **`colors`, `typography`, `spacing`, `components`**: Shared tokens (e.g. `components.pagination`, `getButtonClass`) used for cross-module chrome.
+- **`components.pagination`** and **`getButtonClass(isActive)`**: The only shared, non-vibe styles (pagination dots in App.tsx, unit buttons in the Social module).
 
 **Why it exists**: Each module has a distinct look, but all of it is defined in one file. App.tsx also uses the active module's vibe to recolor the shared chrome (title, date, coordinates, "← details" link, next-section arrow).
 
@@ -256,7 +256,7 @@ Active module runs animations, others pause
 
 ### Changing visual style:
 
-Edit `designSystem.ts` - specifically the `colors` object. Everything else follows.
+Edit the relevant entry in `vibes` in `designSystem.ts`; each module's whole look comes from its vibe.
 
 ### Using for a different event:
 

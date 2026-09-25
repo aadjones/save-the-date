@@ -9,7 +9,7 @@ import AnalogClockModule from './components/AnalogClockModule';
 import HomePage from './components/HomePage';
 import { ChevronDown } from 'lucide-react';
 import { TARGET_DATE, VENUE_NAME, VENUE_ADDRESS, VENUE_COORDINATES } from './constants';
-import { components, colors, typography, vibes, getVibeClass, Vibe } from './designSystem';
+import { components, getVibeClass, Vibe } from './designSystem';
 import { generateIcsFile } from './utils/calendarUtils';
 import { openMapsLink } from './utils/mapsUtils';
 import { useT, LanguageToggle } from './i18n';

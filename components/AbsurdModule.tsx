@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { TimeModuleProps, AbsurdUnit } from '../types';
 import { ABSURD_CONVERSIONS, MILLISECONDS_PER_DAY } from '../constants';
-import { typography, colors, vibes, getVibeClass } from '../designSystem';
+import { vibes, getVibeClass } from '../designSystem';
 import { useT } from '../i18n';
 
 const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
@@ -17,10 +17,6 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     [AbsurdUnit.OH_SHIT]: t.absurd.existentialPanics,
     [AbsurdUnit.HEARTBEATS]: t.absurd.heartbeats,
   };
-
-  useEffect(() => {
-    // Initial setup
-  }, []);
 
   useEffect(() => {
     const update = () => {
