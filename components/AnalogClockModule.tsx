@@ -53,7 +53,7 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
         // 4. Sidereal Day (Approx 23h 56m 4s)
         // Sidereal time is roughly solar time + 1 day/year extra rotation
         // Simplified simulation: It moves slightly faster than 24h solar cycle
-        const msInDay = (h * 3600 + m * 60 + s) * 1000; // Solar ms passed today
+        const msInDay = h * 3600 * 1000; // Solar ms passed today (h already includes minutes and seconds)
         // Percent of sidereal day passed (resetting at sidereal midnight roughly)
         // We just want the rate relative to solar. 
         // Let's anchor it to 0 at midnight for visualization simplicity, but faster rate.
