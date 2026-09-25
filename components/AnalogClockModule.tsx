@@ -202,7 +202,10 @@ const AnalogClockModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) 
                                 ? (activeHand.value * 100).toFixed(1) + '%'
                                 : activeHand.id === 'sec' || activeHand.id === 'min'
                                     ? Math.floor(activeHand.value * 60).toString().padStart(2, '0')
-                                    : (activeHand.value * (activeHand.id === 'hr' ? 12 : 1)).toFixed(2)
+                                    : activeHand.id === 'sidereal'
+                                        // Sidereal time as HH:MM (a full turn = 24 sidereal hours)
+                                        ? `${Math.floor(activeHand.value * 24).toString().padStart(2, '0')}:${Math.floor((activeHand.value * 1440) % 60).toString().padStart(2, '0')}`
+                                        : (activeHand.value * (activeHand.id === 'hr' ? 12 : 1)).toFixed(2)
                         }
                     </div>
                     <div className="text-amber-500 font-serif italic text-sm sm:text-lg mt-0.5 sm:mt-1">
