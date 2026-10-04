@@ -81,7 +81,7 @@ export const vibes: Record<Vibe, {
   },
   humorous: {
     container: 'bg-yellow-400 text-black',
-    header: 'font-mono font-black italic text-black -rotate-2',
+    header: 'font-mono font-bold italic text-black -rotate-2',
     number: 'font-mono font-black text-black scale-y-125',
     label: 'font-mono font-bold uppercase text-pink-600',
     footer: 'font-mono font-bold text-black opacity-60',
