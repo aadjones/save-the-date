@@ -73,7 +73,7 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
       {/* 2. Main Metric Area */}
       <div className="flex-1 flex flex-col items-center justify-center text-center w-full min-h-0 z-10">
-        <div key={unit} className="animate-in fade-in duration-300">
+        <div key={unit} className="w-full animate-in fade-in duration-300">
           <div className={`${getVibeClass(vibe, 'number')} text-5xl sm:text-7xl md:text-8xl lg:text-9xl mb-4 sm:mb-6 break-all sm:break-normal`}>
             {Math.floor(count).toLocaleString()}
           </div>
