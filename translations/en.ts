@@ -2,7 +2,7 @@ import { Translations } from './index';
 
 export const en: Translations = {
   app: {
-    title: 'Save the Date',
+    title: 'Aaron & Anakaren',
     date: 'October 24, 2026',
     calendarTitle: 'Wedding - Save the Date',
     calendarDescription: 'Join Aaron Demby Jones and Anakaren Santana Gálvez for their wedding celebration!',
@@ -23,7 +23,7 @@ export const en: Translations = {
   orbit: {
     header: 'Orbital Dynamics',
     wedding: 'WEDDING',
-    engaged: 'ENGAGED',
+    anniversary: 'ANNIVERSARY',
     youAreHere: 'YOU ARE HERE',
     arc: 'Arc',
     km: 'KM',
@@ -68,14 +68,17 @@ export const en: Translations = {
     weekends: 'Weekends',
     meals: 'Meals',
     holidays: 'Holidays',
+    weekend: 'Weekend',
+    meal: 'Meal',
+    holiday: 'Holiday',
     weekendsTooltip: 'Estimated Saturdays and Sundays remaining',
     mealsTooltip: 'Assumes 3 meals per day (breakfast, lunch, dinner)',
     holidaysTooltip: 'U.S. Federal Holidays between now and the wedding',
-    weekendsTooltipSince: 'Estimated Saturdays and Sundays since the wedding',
+    weekendsTooltipSince: 'Weekends since the wedding, counting the wedding weekend',
     holidaysTooltipSince: 'U.S. Federal Holidays since the wedding',
     remaining: 'remaining',
     since: 'since the wedding',
-    footer: '*Estimates based on standard calendar weeks, 3 meals/day, and U.S. Federal Holidays.',
+    footer: '*Based on calendar weekends, 3 meals/day, and U.S. Federal Holidays.',
   },
   absurd: {
     header: 'The Absurd Scale',
@@ -85,6 +88,7 @@ export const en: Translations = {
     heartbeats: 'Heartbeats',
     tapHint: 'Tap to change perspective',
     stressNote: '*Calculated based on a stress coefficient of 0.2 panics/day.',
+    stressNoteMarried: '*Stress coefficient dropped to 0 on October 24, 2026.',
     bpmNote: 'Based on 70 BPM resting rate.',
     since: 'since "I do"',
   },
@@ -156,6 +160,6 @@ export const en: Translations = {
     qrButton: "Show QR Code",
     qrClose: "Close",
     footerTeaser: 'Before you go:',
-    footerLink: 'Count down with us through time and space →',
+    footerLink: 'Keep count with us through time and space →',
   },
 };

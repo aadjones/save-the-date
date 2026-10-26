@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
-import { EARTH_ORBIT_KM, DAYS_PER_YEAR, ENGAGEMENT_DATE } from '../constants';
+import { EARTH_ORBIT_KM, DAYS_PER_YEAR } from '../constants';
 import { TimeModuleProps } from '../types';
 import { vibes, getVibeClass } from '../designSystem';
 import { Heart, MapPin } from 'lucide-react';
@@ -140,50 +140,8 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
       .attr('text-anchor', 'middle')
       .attr('fill', '#fff')
       .attr('class', 'font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.2em] font-bold')
-      .text(t.orbit.wedding);
-
-    // --- ENGAGEMENT MARKER ---
-    const engDiffMs = targetDate.getTime() - ENGAGEMENT_DATE.getTime();
-    const engDiffDays = engDiffMs / (1000 * 60 * 60 * 24);
-    const engTotalDegrees = (engDiffDays / DAYS_PER_YEAR) * 360;
-    const engRadians = (engTotalDegrees * Math.PI) / 180;
-    const engAngle = targetAngle + engRadians;
-
-    const engX = Math.cos(engAngle) * radius;
-    const engY = Math.sin(engAngle) * radius;
-
-    // Engagement marker circle (ring style)
-    svg.append('circle')
-      .attr('cx', engX)
-      .attr('cy', engY)
-      .attr('r', isMobile ? 4 : 5)
-      .attr('fill', 'none')
-      .attr('stroke', '#334155') // slate-700
-      .attr('stroke-width', 1.5);
-
-    // Label for Engagement with extended positioning
-    const engExtension = isMobile ? 35 : 50;
-    const engLabelR = radius + engExtension;
-    const engLabelX = Math.cos(engAngle) * engLabelR;
-    const engLabelY = Math.sin(engAngle) * engLabelR;
-
-    // Leader line for Engagement
-    svg.append('line')
-      .attr('x1', engX)
-      .attr('y1', engY)
-      .attr('x2', Math.cos(engAngle) * (engLabelR - 10))
-      .attr('y2', Math.sin(engAngle) * (engLabelR - 10))
-      .attr('stroke', '#334155') // slate-700
-      .attr('stroke-width', 1)
-      .attr('stroke-dasharray', '1 3');
-
-    svg.append('text')
-      .attr('x', engLabelX)
-      .attr('y', engLabelY)
-      .attr('text-anchor', 'middle')
-      .attr('fill', '#64748b') // slate-500
-      .attr('class', 'font-mono text-[8px] sm:text-[9px] uppercase tracking-widest')
-      .text(t.orbit.engaged);
+      // Once married, the same point on the orbit comes round again every anniversary
+      .text(new Date() >= targetDate ? t.orbit.anniversary : t.orbit.wedding);
 
     // Dynamic Arrow Path (Initialized empty)
     const arrowPath = svg.append('path')
@@ -349,14 +307,14 @@ const OrbitModule: React.FC<TimeModuleProps> = ({ targetDate, isActive }) => {
         <div className="grid grid-cols-3 gap-3 sm:gap-8 text-center w-full max-w-4xl mx-auto">
           <div className="flex flex-col items-center">
             <div className={`${getVibeClass(vibe, 'number')} text-base sm:text-xl md:text-2xl`}>
-              {stats.degrees.toFixed(1).padStart(5, '0')}°
+              {stats.degrees.toFixed(1)}°
             </div>
             <div className={`${getVibeClass(vibe, 'label')} mt-0.5 text-[10px] sm:text-xs`}>{t.orbit.arc}</div>
           </div>
 
           <div className="flex flex-col items-center">
             <div className={`${getVibeClass(vibe, 'number')} text-base sm:text-xl md:text-2xl`}>
-              {(stats.km / 1000000).toFixed(1).padStart(4, '0')}M
+              {(stats.km / 1000000).toFixed(1)}M
             </div>
             <div className={`${getVibeClass(vibe, 'label')} mt-0.5 text-[10px] sm:text-xs`}>{t.orbit.km}</div>
           </div>

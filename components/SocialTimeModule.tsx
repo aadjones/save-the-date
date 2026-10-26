@@ -83,9 +83,19 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       const diffDays = (to.getTime() - from.getTime()) / MILLISECONDS_PER_DAY;
 
       switch (selectedUnit) {
-        case SocialUnit.WEEKENDS:
-          setCount(Math.floor(diffDays / 7));
+        case SocialUnit.WEEKENDS: {
+          // Count the Saturdays in range, so the wedding weekend itself counts as the first one
+          const saturday = new Date(from);
+          saturday.setHours(0, 0, 0, 0);
+          saturday.setDate(saturday.getDate() + ((6 - saturday.getDay() + 7) % 7));
+          let weekends = 0;
+          while (saturday <= to) {
+            weekends++;
+            saturday.setDate(saturday.getDate() + 7);
+          }
+          setCount(weekends);
           break;
+        }
         case SocialUnit.MEALS:
           setCount(Math.floor(diffDays * 3));
           break;
@@ -113,11 +123,12 @@ const SocialTimeModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
     return () => clearInterval(interval);
   }, [targetDate, selectedUnit, locale]);
 
-  // Map SocialUnit enum to translated label for the "X remaining" display
+  // Map SocialUnit enum to translated label for the "X remaining" display, singular when the count is 1
+  const one = Math.floor(count) === 1;
   const unitDisplayLabel: Record<SocialUnit, string> = {
-    [SocialUnit.WEEKENDS]: t.social.weekends.toLowerCase(),
-    [SocialUnit.MEALS]: t.social.meals.toLowerCase(),
-    [SocialUnit.HOLIDAYS]: t.social.holidays.toLowerCase(),
+    [SocialUnit.WEEKENDS]: (one ? t.social.weekend : t.social.weekends).toLowerCase(),
+    [SocialUnit.MEALS]: (one ? t.social.meal : t.social.meals).toLowerCase(),
+    [SocialUnit.HOLIDAYS]: (one ? t.social.holiday : t.social.holidays).toLowerCase(),
   };
 
   const buttons = [

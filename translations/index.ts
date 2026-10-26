@@ -23,7 +23,7 @@ export type Translations = {
   orbit: {
     header: string;
     wedding: string;
-    engaged: string;
+    anniversary: string;
     youAreHere: string;
     arc: string;
     km: string;
@@ -68,6 +68,9 @@ export type Translations = {
     weekends: string;
     meals: string;
     holidays: string;
+    weekend: string;
+    meal: string;
+    holiday: string;
     weekendsTooltip: string;
     mealsTooltip: string;
     holidaysTooltip: string;
@@ -85,6 +88,7 @@ export type Translations = {
     heartbeats: string;
     tapHint: string;
     stressNote: string;
+    stressNoteMarried: string;
     bpmNote: string;
     since: string;
   };

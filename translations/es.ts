@@ -2,7 +2,7 @@ import { Translations } from './index';
 
 export const es: Translations = {
   app: {
-    title: 'Reserva la Fecha',
+    title: 'Aaron y Anakaren',
     date: '24 de Octubre, 2026',
     calendarTitle: 'Boda - Reserva la Fecha',
     calendarDescription: '¡Acompaña a Aaron Demby Jones y Anakaren Santana Gálvez en su celebración de boda!',
@@ -23,7 +23,7 @@ export const es: Translations = {
   orbit: {
     header: 'Dinámica Orbital',
     wedding: 'BODA',
-    engaged: 'COMPROMISO',
+    anniversary: 'ANIVERSARIO',
     youAreHere: 'ESTÁS AQUÍ',
     arc: 'Arco',
     km: 'KM',
@@ -68,14 +68,17 @@ export const es: Translations = {
     weekends: 'Fines de Semana',
     meals: 'Comidas',
     holidays: 'Días Festivos',
+    weekend: 'Fin de Semana',
+    meal: 'Comida',
+    holiday: 'Día Festivo',
     weekendsTooltip: 'Sábados y domingos restantes estimados',
     mealsTooltip: 'Asume 3 comidas al día (desayuno, comida, cena)',
     holidaysTooltip: 'Días festivos mexicanos entre hoy y la boda',
-    weekendsTooltipSince: 'Sábados y domingos estimados desde la boda',
+    weekendsTooltipSince: 'Fines de semana desde la boda, contando el de la boda',
     holidaysTooltipSince: 'Días festivos mexicanos desde la boda',
     remaining: 'restantes',
     since: 'desde la boda',
-    footer: '*Estimaciones basadas en semanas calendario, 3 comidas/día y días festivos mexicanos.',
+    footer: '*Basado en fines de semana calendario, 3 comidas/día y días festivos mexicanos.',
   },
   absurd: {
     header: 'La Escala Absurda',
@@ -85,6 +88,7 @@ export const es: Translations = {
     heartbeats: 'Latidos del Corazón',
     tapHint: 'Toca para cambiar perspectiva',
     stressNote: '*Calculado con un coeficiente de estrés de 0.2 pánicos/día.',
+    stressNoteMarried: '*El coeficiente de estrés bajó a 0 el 24 de octubre de 2026.',
     bpmNote: 'Basado en 70 LPM en reposo.',
     since: 'desde el «sí, acepto»',
   },
@@ -156,6 +160,6 @@ export const es: Translations = {
     qrButton: 'Mostrar código QR',
     qrClose: 'Cerrar',
     footerTeaser: 'Antes de que te vayas:',
-    footerLink: 'Cuenta regresiva con nosotros a través del tiempo y el espacio →',
+    footerLink: 'Lleva la cuenta con nosotros a través del tiempo y el espacio →',
   },
 };

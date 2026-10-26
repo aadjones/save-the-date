@@ -63,6 +63,14 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
     return () => clearInterval(timer);
   }, [targetDate]);
 
+  const allDateUnits = [
+    { val: timeLeft.years, label: t.standard.years },
+    { val: timeLeft.months, label: t.standard.months },
+    { val: timeLeft.days, label: t.standard.days },
+  ];
+  const firstNonZero = allDateUnits.findIndex((u) => u.val > 0);
+  const dateUnits = allDateUnits.slice(firstNonZero === -1 ? 2 : firstNonZero);
+
   const Item = ({ val, label }: { val: number; label: string }) => (
     <div className="flex flex-col items-center justify-center p-0.5 sm:p-2">
       <span className={`${getVibeClass(vibe, 'number')} text-2xl sm:text-4xl md:text-5xl lg:text-7xl tabular-nums leading-tight`}>
@@ -96,13 +104,18 @@ const StandardCountdown: React.FC<TimeModuleProps> = ({ targetDate }) => {
 
       {/* 3. Stats Area - Scales down to accommodate potatoes */}
       <div className="w-full max-w-4xl z-10 flex flex-col justify-center mb-6 px-2 sm:px-6 flex-shrink-0">
-        <div className="grid grid-cols-3 gap-x-1 gap-y-1 sm:gap-x-4 sm:gap-y-4 md:gap-x-8 md:gap-y-6">
-          <Item val={timeLeft.years} label={t.standard.years} />
-          <Item val={timeLeft.months} label={t.standard.months} />
-          <Item val={timeLeft.days} label={t.standard.days} />
-          <Item val={timeLeft.hours} label={t.standard.hours} />
-          <Item val={timeLeft.minutes} label={t.standard.minutes} />
-          <Item val={timeLeft.seconds} label={t.standard.seconds} />
+        <div className="flex flex-col gap-y-1 sm:gap-y-4 md:gap-y-6">
+          {/* Date row drops leading zero units (no "00 years" in the first year); days always show */}
+          <div className="flex justify-center">
+            {dateUnits.map((u) => (
+              <div key={u.label} className="w-1/3"><Item val={u.val} label={u.label} /></div>
+            ))}
+          </div>
+          <div className="flex justify-center">
+            <div className="w-1/3"><Item val={timeLeft.hours} label={t.standard.hours} /></div>
+            <div className="w-1/3"><Item val={timeLeft.minutes} label={t.standard.minutes} /></div>
+            <div className="w-1/3"><Item val={timeLeft.seconds} label={t.standard.seconds} /></div>
+          </div>
         </div>
       </div>
 

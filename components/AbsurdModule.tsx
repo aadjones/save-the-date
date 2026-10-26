@@ -5,7 +5,7 @@ import { vibes, getVibeClass } from '../designSystem';
 import { useT } from '../i18n';
 
 const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
-  const [unit, setUnit] = useState<AbsurdUnit>(AbsurdUnit.OH_SHIT);
+  const [unit, setUnit] = useState<AbsurdUnit>(AbsurdUnit.HEARTBEATS);
   const [count, setCount] = useState<number>(0);
   const [isMarried, setIsMarried] = useState(false);
   const t = useT();
@@ -21,7 +21,8 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
   useEffect(() => {
     const update = () => {
       const now = new Date();
-      setIsMarried(now >= targetDate);
+      const married = now >= targetDate;
+      setIsMarried(married);
       // Time until the wedding, or time since it once it has happened
       const diffMs = Math.abs(targetDate.getTime() - now.getTime());
       const diffHours = diffMs / (1000 * 60 * 60);
@@ -39,7 +40,8 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
           val = (diffMs / 1000 / 60) * ABSURD_CONVERSIONS.HEARTBEAT_BPM;
           break;
         case AbsurdUnit.OH_SHIT:
-          val = diffDays * ABSURD_CONVERSIONS.OH_SHIT_FACTOR;
+          // The joke: panics stop the moment they say "I do"
+          val = married ? 0 : diffDays * ABSURD_CONVERSIONS.OH_SHIT_FACTOR;
           break;
       }
       setCount(val);
@@ -92,7 +94,7 @@ const AbsurdModule: React.FC<TimeModuleProps> = ({ targetDate }) => {
       <div className="flex flex-col items-center gap-4 pb-14 sm:pb-32 px-4 z-10">
         {unit === AbsurdUnit.OH_SHIT && (
           <p className={`${getVibeClass(vibe, 'footer')} text-[9px] sm:text-[10px] opacity-60`}>
-            {t.absurd.stressNote}
+            {isMarried ? t.absurd.stressNoteMarried : t.absurd.stressNote}
           </p>
         )}
         {unit === AbsurdUnit.HEARTBEATS && (
