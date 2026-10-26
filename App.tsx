@@ -5,9 +5,9 @@ const NEW_HOME = 'https://www.studiodemby.com/extras/married-for';
 // The countdown moved to Studio Demby; every old link (including /#experience) lands here
 const App: React.FC = () => (
   <div className="moved-page min-h-dvh w-full bg-[#dbe9e6] text-stone-900 flex flex-col items-center justify-center gap-8 px-4 py-12">
-    <div className="moved-art w-full max-w-xs sm:max-w-sm">
-      <img src="/potatoes-transparent.png" alt="Aaron & Anakaren" className="w-full h-auto" />
-    </div>
+    <a href={NEW_HOME} className="moved-art block w-full max-w-xs sm:max-w-sm transition-transform hover:scale-[1.02]">
+      <img src="/potatoes-transparent.png" alt="Aaron & Anakaren: go to the new home" className="w-full h-auto" />
+    </a>
 
     <div className="moved-message flex flex-col items-center gap-6 text-center">
       <div>
