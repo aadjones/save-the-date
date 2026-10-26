@@ -1,5 +1,0 @@
-/* Dynamic viewport height — accounts for iOS Safari browser chrome */
-.h-dvh {
-  height: 100vh; /* fallback for older browsers */
-  height: 100dvh;
-}

@@ -1,190 +1,32 @@
-import React, { useState, useRef, useEffect } from 'react';
-import StandardCountdown from './components/StandardCountdown';
-import OrbitModule from './components/OrbitModule';
-import SeasonalDialModule from './components/SeasonalDialModule';
-import LunarModule from './components/LunarModule';
-import SocialTimeModule from './components/SocialTimeModule';
-import AbsurdModule from './components/AbsurdModule';
-import AnalogClockModule from './components/AnalogClockModule';
-import HomePage from './components/HomePage';
-import { ChevronDown } from 'lucide-react';
-import { TARGET_DATE, VENUE_NAME, VENUE_ADDRESS, VENUE_COORDINATES } from './constants';
-import { components, getVibeClass, Vibe } from './designSystem';
-import { generateIcsFile } from './utils/calendarUtils';
-import { openMapsLink } from './utils/mapsUtils';
-import { useT, LanguageToggle } from './i18n';
+import React from 'react';
 
-type View = 'home' | 'experience';
+const NEW_HOME = 'https://www.studiodemby.com/extras/married-for';
 
-const App: React.FC = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [activeModule, setActiveModule] = useState<number>(0);
-  const [lunarAtBottom, setLunarAtBottom] = useState(false);
-  const [view, setView] = useState<View>(() =>
-    window.location.hash === '#experience' ? 'experience' : 'home'
-  );
-  const t = useT();
-
-  const navigateTo = (v: View) => {
-    window.location.hash = v === 'experience' ? 'experience' : '';
-    setView(v);
-  };
-
-  useEffect(() => {
-    const onHashChange = () => {
-      setView(window.location.hash === '#experience' ? 'experience' : 'home');
-    };
-    window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
-  }, []);
-
-  const modules: { id: string; vibe: Vibe; Component: React.FC<any> }[] = [
-    { id: 'standard', vibe: 'wedding', Component: StandardCountdown },
-    { id: 'orbit', vibe: 'space', Component: OrbitModule },
-    { id: 'seasonal', vibe: 'elemental', Component: SeasonalDialModule },
-    { id: 'lunar', vibe: 'mystical', Component: LunarModule },
-    { id: 'social', vibe: 'corporate', Component: SocialTimeModule },
-    { id: 'absurd', vibe: 'humorous', Component: AbsurdModule },
-    { id: 'clock', vibe: 'steampunk', Component: AnalogClockModule },
-  ];
-
-  const handleScroll = () => {
-    if (!containerRef.current) return;
-    const scrollPosition = containerRef.current.scrollTop;
-    const height = containerRef.current.clientHeight;
-    const index = Math.round(scrollPosition / height);
-    if (index !== activeModule) {
-      setActiveModule(index);
-    }
-  };
-
-  const scrollToModule = (index: number) => {
-    if (!containerRef.current) return;
-    const height = containerRef.current.clientHeight;
-    containerRef.current.scrollTo({ top: index * height, behavior: 'smooth' });
-  };
-
-  const handleDateClick = () => {
-    generateIcsFile(
-      t.app.calendarTitle,
-      TARGET_DATE,
-      `${VENUE_NAME}, ${VENUE_ADDRESS}`,
-      t.app.calendarDescription
-    );
-  };
-
-  const handleLocationClick = () => {
-    openMapsLink(`${VENUE_NAME}, ${VENUE_ADDRESS}`);
-  };
-
-  if (view === 'home') {
-    return <HomePage onViewExperience={() => navigateTo('experience')} />;
-  }
-
-  return (
-    <div className="relative w-screen h-dvh overflow-hidden bg-gradient-to-b from-stone-950 via-stone-950 to-stone-900">
-      <div
-        ref={containerRef}
-        onScroll={handleScroll}
-        className="w-full h-full overflow-y-scroll snap-y snap-mandatory no-scrollbar scroll-smooth"
-      >
-        {modules.map((Module, index) => (
-          <div
-            key={Module.id}
-            className="w-full h-full snap-start relative flex-shrink-0"
-          >
-            <Module.Component
-              targetDate={TARGET_DATE}
-              isActive={index === activeModule}
-              {...(Module.id === 'lunar' && { onScrolledToBottom: setLunarAtBottom })}
-            />
-
-            {/* Pagination indicator */}
-            <div className={components.pagination.container}>
-              {modules.map((_, dotIndex) => (
-                <div
-                  key={dotIndex}
-                  className={`${components.pagination.dot} ${dotIndex === index
-                    ? components.pagination.dotActive
-                    : components.pagination.dotInactive
-                    }`}
-                />
-              ))}
-            </div>
-
-            {/* Scroll down arrow */}
-            {index < modules.length - 1 && Module.id !== 'lunar' && (
-              <div className="absolute bottom-4 sm:bottom-16 inset-x-0 flex justify-center z-20">
-                <button
-                  onClick={() => scrollToModule(index + 1)}
-                  className="animate-bounce opacity-80 hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
-                  aria-label="Scroll to next section"
-                >
-                  <ChevronDown size={28} className={`${getVibeClass(modules[index].vibe, 'branding')} sm:w-9 sm:h-9`} />
-                </button>
-              </div>
-            )}
-            {/* Lunar: arrow appears only once scrolled to the bottom of the timeline */}
-            {Module.id === 'lunar' && index < modules.length - 1 && (
-              <div className={`absolute bottom-4 sm:bottom-16 inset-x-0 flex justify-center z-20 transition-opacity duration-500 ${lunarAtBottom ? 'opacity-80' : 'opacity-0 pointer-events-none'}`}>
-                <button
-                  onClick={() => scrollToModule(index + 1)}
-                  className="animate-bounce hover:opacity-100 transition-opacity cursor-pointer bg-transparent border-none p-2"
-                  aria-label="Scroll to next section"
-                >
-                  <ChevronDown size={28} className={`${getVibeClass(modules[index].vibe, 'branding')} sm:w-9 sm:h-9`} />
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Global Header Elements */}
-      <div className="absolute top-4 left-4 right-4 z-50 pointer-events-none">
-        {/* Top row: Left (Logo/Date), Center (Toggle), Right (Coords - desktop) */}
-        {/* Using fixed width for the logo block to prevent the toggle from shifting when language changes */}
-        <div className="w-full flex justify-between items-start gap-2 sm:gap-4">
-          <div className="flex flex-col items-start pointer-events-auto flex-shrink-0 w-28 sm:w-40">
-            <button
-              onClick={() => navigateTo('home')}
-              className={`${getVibeClass(modules[activeModule].vibe, 'branding')} text-[9px] font-mono cursor-pointer opacity-40 hover:opacity-100 transition-all mb-1`}
-            >
-              ← details
-            </button>
-            <h1 className={`${getVibeClass(modules[activeModule].vibe, 'branding')} font-serif text-sm sm:text-lg tracking-wide font-bold whitespace-nowrap transition-colors duration-500`}>
-              {t.app.title}
-            </h1>
-            <button
-              onClick={handleDateClick}
-              className={`${getVibeClass(modules[activeModule].vibe, 'branding')} text-[9px] sm:text-xs font-mono cursor-pointer opacity-60 hover:opacity-100 transition-all underline decoration-dotted underline-offset-2`}
-              aria-label={t.app.calendarAriaLabel}
-            >
-              {t.app.date}
-            </button>
-          </div>
-
-          <div className="flex-1 flex justify-center pointer-events-auto min-w-0">
-            <div className="flex-shrink-0">
-              <LanguageToggle />
-            </div>
-          </div>
-
-          <div className="flex justify-end pointer-events-auto flex-shrink-0 w-10 sm:w-40">
-            <button
-              onClick={handleLocationClick}
-              className={`${getVibeClass(modules[activeModule].vibe, 'branding')} text-[9px] sm:text-xs font-mono cursor-pointer opacity-60 hover:opacity-100 transition-all underline decoration-dotted underline-offset-2 hidden sm:inline`}
-              aria-label={t.app.locationAriaLabel}
-            >
-              {VENUE_COORDINATES}
-            </button>
-          </div>
-        </div>
-      </div>
-
-
+// The countdown moved to Studio Demby; every old link (including /#experience) lands here
+const App: React.FC = () => (
+  <div className="moved-page min-h-dvh w-full bg-[#dbe9e6] text-stone-900 flex flex-col items-center justify-center gap-8 px-4 py-12">
+    <div className="moved-art w-full max-w-xs sm:max-w-sm">
+      <img src="/potatoes-transparent.png" alt="Aaron & Anakaren" className="w-full h-auto" />
     </div>
-  );
-};
+
+    <div className="moved-message flex flex-col items-center gap-6 text-center">
+      <div>
+        <h1 className="moved-headline font-serif italic font-bold text-stone-600 text-2xl sm:text-3xl tracking-wide">We've moved.</h1>
+        <p className="moved-subline font-serif text-stone-500 text-base sm:text-lg mt-2">The clock is still counting at its new home!</p>
+      </div>
+      <div lang="es">
+        <h1 className="moved-headline font-serif italic font-bold text-stone-600 text-2xl sm:text-3xl tracking-wide">Nos mudamos.</h1>
+        <p className="moved-subline font-serif text-stone-500 text-base sm:text-lg mt-2">¡El reloj sigue contando en su nuevo hogar!</p>
+      </div>
+    </div>
+
+    <a
+      href={NEW_HOME}
+      className="moved-link font-mono text-[11px] sm:text-xs text-stone-700 border border-stone-400 rounded-full px-4 py-2 hover:bg-stone-900 hover:text-stone-100 hover:border-stone-900 transition-colors"
+    >
+      studiodemby.com/extras/married-for →
+    </a>
+  </div>
+);
 
 export default App;

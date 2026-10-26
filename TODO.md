@@ -1,6 +1,5 @@
 # TODO
 
-- [x] Add brunch information: Sunday, Oct 25, 10 AM–1 PM at Stone Brewing World Bistro, 1999 Citracado Parkway, Escondido.
-- [x] Add venue arrival info: guests should arrive by 3:30 PM (parking/seating ahead of the day's events).
-- [ ] Anakaren to review the new after-wedding Spanish copy in `translations/es.ts` (`headerMarried`, `since`, `anniversary`, `descAnniversary`, and the lunar `headerMarried`/`tonight`/`fullMoon(s)Since`/`nextFull*` strings). Must be pushed before 4:30 PM on Oct 24.
-- [ ] After the wedding (no rush): move Tailwind from the runtime CDN script to a build-time setup. Styles would then exist before anything mounts, removing the class of "blank until refresh" bugs. Risk: dynamically built class names (e.g. `getVibeClass`) can silently drop out, so check every module and the homepage afterwards.
+The countdown moved to Studio Demby (`app/extras/married-for/` in the studio-demby repo); remaining work on it lives there. This site is just the "we've moved" screen.
+
+- [ ] Anakaren to review the count-up Spanish copy, now in studio-demby `app/extras/married-for/translations/es.ts`: `orbit.anniversary`, `social.weekend`/`meal`/`holiday`, `social.weekendsTooltipSince`, `social.footer`, `absurd.stressNoteMarried`, and the anniversary reminder `app.calendarTitle`/`calendarDescription`/`calendarAriaLabel`.
